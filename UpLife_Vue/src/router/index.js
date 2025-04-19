@@ -1,30 +1,33 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-// Importa las páginas o componentes que vas a usar como pantallas
-import Home from "../views/Home.vue";
-import About from "../views/About.vue";
-import Profile from "../views/Profile.vue";
+// Importa los componentes
+import Formularios from "@/views/Formularios.vue"; // Componente contenedor
+import Inicio from "@/components/Inicio.vue"; // Componente de inicio de sesión
+import Rexistro from "@/components/Rexistro.vue"; // Componente de registro
 
 const routes = [
   {
-    path: "/",
-    name: "Home",
-    component: Home,
-  },
-  {
-    path: "/about",
-    name: "About",
-    component: About,
-  },
-  {
-    path: "/profile",
-    name: "Profile",
-    component: Profile,
+    path: "/formularios",
+    name: "formularios",
+    component: Formularios,
+    redirect: "/formularios/rexistro", // Asegúrate de que coincide con la ruta de rexistro
+    children: [
+      {
+        path: "inicio", // Acceso a /formularios/inicio
+        name: "inicio",
+        component: Inicio,
+      },
+      {
+        path: "rexistro", // Acceso a /formularios/rexistro
+        name: "rexistro",
+        component: Rexistro,
+      },
+    ],
   },
 ];
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+  history: createWebHistory(),
   routes,
 });
 

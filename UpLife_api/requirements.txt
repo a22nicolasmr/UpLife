@@ -4,3 +4,4 @@ djangorestframework
 psycopg2-binary
 fastapi
 uvicorn[standard]
+django-cors-headers
