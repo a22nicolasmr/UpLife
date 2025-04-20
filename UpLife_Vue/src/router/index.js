@@ -4,6 +4,9 @@ import { createRouter, createWebHistory } from "vue-router";
 import Formularios from "@/views/Formularios.vue"; // Componente contenedor
 import Inicio from "@/components/Inicio.vue"; // Componente de inicio de sesión
 import Rexistro from "@/components/Rexistro.vue"; // Componente de registro
+import Tarefas from "@/views/Tarefas.vue";
+import ListaTarefas from "@/components/ListaTarefas.vue";
+import EngadirTarefas from "@/components/EngadirTarefas.vue";
 
 const routes = [
   {
@@ -21,6 +24,23 @@ const routes = [
         path: "rexistro", // Acceso a /formularios/rexistro
         name: "rexistro",
         component: Rexistro,
+      },
+    ],
+  },
+  {
+    path: "/tarefas",
+    name: "tarefas",
+    component: Tarefas,
+    children: [
+      {
+        path: "lista",
+        name: "lista",
+        component: ListaTarefas,
+      },
+      {
+        path: "engadirTarefas",
+        name: "engadirTarefas",
+        component: EngadirTarefas,
       },
     ],
   },

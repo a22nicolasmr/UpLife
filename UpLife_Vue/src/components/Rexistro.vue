@@ -1,4 +1,6 @@
 <script>
+import axios from "axios";
+
 export default {
   data() {
     return {
@@ -19,7 +21,6 @@ export default {
   methods: {
     async mandarFormulario() {
       let isValid = true;
-      // Resetea los errores
       this.errors = {
         nomeCompleto: "",
         email: "",
@@ -28,13 +29,11 @@ export default {
         repiteContrasinal: "",
       };
 
-      // Validación de Nome Completo
       if (!this.nomeCompleto) {
         this.errors.nomeCompleto = "Nome Completo obrigatorio";
         isValid = false;
       }
 
-      // Validación de Email
       const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
       if (!this.email) {
         this.errors.email = "Email obrigatorio";
@@ -44,19 +43,16 @@ export default {
         isValid = false;
       }
 
-      // Validación de Nome de Usuario
       if (!this.nomeUsuario) {
         this.errors.nomeUsuario = "Nome de Usuario obrigatorio";
         isValid = false;
       }
 
-      // Validación de Contraseña
       if (!this.contrasinal) {
         this.errors.contrasinal = "Contrasinal obrigatorio";
         isValid = false;
       }
 
-      // Validación de Repetir Contraseña
       if (!this.repiteContrasinal) {
         this.errors.repiteContrasinal = "Repite o contrasinal obrigatorio";
         isValid = false;
@@ -65,38 +61,51 @@ export default {
         isValid = false;
       }
 
-      // Si todo está bien, realiza el POST
       if (isValid) {
         try {
-          // Hacemos el POST al servidor con los datos del formulario
-          const response = await fetch("http://localhost:8000/api/usuarios/", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
+          const response = await axios.post(
+            "http://localhost:8000/api/usuarios/",
+            {
               nome: this.nomeCompleto,
               email: this.email,
               nome_usuario: this.nomeUsuario,
               contrasinal: this.contrasinal,
               modo_aplicacion: "C",
-            }),
-          });
+            }
+          );
 
-          // Si el POST es exitoso, muestra un mensaje
           if (response.status === 201) {
             this.$router.push({ name: "inicio" });
           } else {
-            const data = await response.json();
-            console.error("Error al crear la cuenta:", data);
-            alert("Erro ao crear a conta. Inténtao de novo.");
+            this.contrasinal = "";
+            this.repiteContrasinal = "";
+            console.error("Erro:", response.data);
           }
         } catch (error) {
-          console.error("Hubo un error al crear la cuenta:", error);
-          alert("Erro ao crear a conta. Inténtao de novo.");
+          this.contrasinal = "";
+          this.repiteContrasinal = "";
+
+          if (error.response?.status === 400) {
+            const data = error.response.data;
+            if (data.email) {
+              this.errors.email = "Xa existe unha conta con ese email";
+            }
+            if (data.nome_usuario) {
+              this.errors.nomeUsuario = "Este nome de usuario xa está en uso";
+            }
+          } else {
+            console.log("Erro ao crear a conta. Inténtao de novo.");
+          }
+
+          console.error(
+            "Erro ao crear a conta:",
+            error.response?.data || error
+          );
         }
       } else {
-        alert("Hai erros no formulario");
+        this.contrasinal = "";
+        this.repiteContrasinal = "";
+        console.log("Hai erros no formulario");
       }
     },
   },
@@ -104,8 +113,9 @@ export default {
 </script>
 
 <template>
-  <div>
+  <div class="formulario">
     <h1>Benvido a UpLife</h1>
+
     <form @submit.prevent="mandarFormulario">
       <label for="idNomeCompleto">Nome Completo</label>
       <input
@@ -114,24 +124,18 @@ export default {
         v-model="nomeCompleto"
         placeholder="Escribe o teu nome completo"
       />
-      <div v-if="errors.nomeCompleto" style="color: red">
+      <div v-if="errors.nomeCompleto" class="erro">
         {{ errors.nomeCompleto }}
       </div>
 
-      <br />
-
-      <label for="idEmail">Email</label><br />
+      <label for="idEmail">Email</label>
       <input
         type="text"
         id="idEmail"
         v-model="email"
         placeholder="Escribe o teu email"
       />
-      <div v-if="errors.email" style="color: red">
-        {{ errors.email }}
-      </div>
-
-      <br />
+      <div v-if="errors.email" class="erro">{{ errors.email }}</div>
 
       <label for="idNomeUsuario">Nome de Usuario</label>
       <input
@@ -140,11 +144,7 @@ export default {
         v-model="nomeUsuario"
         placeholder="Escribe o teu nome de usuario"
       />
-      <div v-if="errors.nomeUsuario" style="color: red">
-        {{ errors.nomeUsuario }}
-      </div>
-
-      <br />
+      <div v-if="errors.nomeUsuario" class="erro">{{ errors.nomeUsuario }}</div>
 
       <label for="idContrasinal">Contrasinal</label>
       <input
@@ -153,11 +153,7 @@ export default {
         v-model="contrasinal"
         placeholder="Escribe o teu contrasinal"
       />
-      <div v-if="errors.contrasinal" style="color: red">
-        {{ errors.contrasinal }}
-      </div>
-
-      <br />
+      <div v-if="errors.contrasinal" class="erro">{{ errors.contrasinal }}</div>
 
       <label for="idRepiteContrasinal">Repite Contrasinal</label>
       <input
@@ -166,16 +162,15 @@ export default {
         v-model="repiteContrasinal"
         placeholder="Repite o teu contrasinal"
       />
-      <div v-if="errors.repiteContrasinal" style="color: red">
+      <div v-if="errors.repiteContrasinal" class="erro">
         {{ errors.repiteContrasinal }}
       </div>
 
-      <br />
-
       <button type="submit">Crear conta</button>
+
       <p>
         Xa tes unha conta?
-        <a href="#" @click="this.$router.push({ name: 'inicio' })"
+        <a href="#" @click.prevent="$router.push({ name: 'inicio' })"
           >Iniciar sesión</a
         >
       </p>
@@ -184,5 +179,9 @@ export default {
 </template>
 
 <style scoped>
-/* Estilos opcionales */
+.erro {
+  color: red;
+  font-size: 0.9rem;
+  margin-bottom: 8px;
+}
 </style>

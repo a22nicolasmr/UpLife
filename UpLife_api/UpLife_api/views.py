@@ -1,7 +1,32 @@
-from rest_framework import viewsets
 from .models import Usuarios, Auga, Medallas, Tarefas, Categorias, Exercicios, Plantillas, Comidas, Grupos
 from .serializers import UsuariosSerializer, AugaSerializer, MedallasSerializer, TarefasSerializer, CategoriasSerializer, ExerciciosSerializer, PlantillasSerializer, ComidasSerializer, GruposSerializer
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+from django.contrib.auth.hashers import check_password
+from rest_framework import viewsets
 
+@api_view(['POST'])
+def login_usuario(request):
+    identificador = request.data.get('identificador')  # pode ser email ou nome_usuario
+    contrasinal = request.data.get('contrasinal')
+
+    if not identificador or not contrasinal:
+        return Response({'erro': 'Faltan campos obrigatorios'}, status=status.HTTP_400_BAD_REQUEST)
+
+    try:
+        if '@' in identificador:
+            usuario = Usuarios.objects.get(email=identificador)
+        else:
+            usuario = Usuarios.objects.get(nome_usuario=identificador)
+
+        if check_password(contrasinal, usuario.contrasinal):
+            return Response({'mensaxe': 'Login correcto'}, status=status.HTTP_200_OK)
+        else:
+            return Response({'erro': 'Contrasinal incorrecto'}, status=status.HTTP_401_UNAUTHORIZED)
+
+    except Usuarios.DoesNotExist:
+        return Response({'erro': 'Usuario non existe'}, status=status.HTTP_404_NOT_FOUND)
 class UsuariosViewSet(viewsets.ModelViewSet):
     queryset = Usuarios.objects.all()
     serializer_class = UsuariosSerializer
