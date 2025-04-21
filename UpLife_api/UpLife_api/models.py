@@ -10,7 +10,7 @@ MODO_CHOICES = [
 class Usuarios(models.Model):
     id_usuario = models.BigAutoField(primary_key=True)
     nome=models.CharField(max_length=100)
-    nome_usuario=models.CharField(max_length=100)
+    nome_usuario=models.CharField(max_length=100,unique=True)
     email=models.EmailField(max_length=255, unique=True)
     contrasinal=models.CharField(max_length=100)
     imaxe_perfil=models.ImageField(upload_to="media",null=True, blank=True)

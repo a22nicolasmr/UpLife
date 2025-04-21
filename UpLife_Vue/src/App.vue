@@ -15,6 +15,9 @@ export default {
         this.$route.path !== "/formularios/inicio"
       );
     },
+    nombreUsuario() {
+      return this.$route.query.nombre;
+    },
   },
 };
 </script>
@@ -47,5 +50,11 @@ body {
   display: flex;
   height: 100vh;
   width: 100vw;
+}
+.vista {
+  margin-left: 220px; /* Igual al ancho de tu barra */
+  width: calc(100% - 180px);
+  height: 100vh;
+  overflow-y: auto; /* Para scroll si el contenido es largo */
 }
 </style>

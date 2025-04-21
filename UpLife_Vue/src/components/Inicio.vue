@@ -26,12 +26,15 @@ export default {
         });
 
         if (response.status === 200) {
-          this.$router.push({ name: "tarefas" });
+          this.$router.push({
+            name: "tarefas",
+            query: { nombre: usuario.nombre },
+          });
         }
       } catch (error) {
         console.error("Erro ao iniciar sesión:", error);
         if (error.response?.status === 401 || error.response?.status === 404) {
-          this.erro = "Nome de usuario/email ou contrasinal incorrectos";
+          this.erro = "Nome de usuario";
         } else {
           this.erro = "Erro ao iniciar sesión. Inténtao de novo.";
         }
