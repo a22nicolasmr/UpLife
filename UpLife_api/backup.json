@@ -1,0 +1,47 @@
+[
+{
+  "model": "auth.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$qwmwkfhq907kvw2HMz9sbQ$as+6Jwi30tqPp/7f7PVESGpU15XsLtJZ54htHLQAP90=",
+    "last_login": "2025-04-21T11:47:34.909Z",
+    "is_superuser": true,
+    "username": "root",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2025-04-21T11:46:21.154Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "le7a5oz7wbgoi0voutwhpaktwnsss9vk",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQRe_C2pABCjIu3fcMzcCAVA0kpV0Z765NutDtf-_9l5hoW8u09bRMM4uLUOL0uwWKj1R3wHeqtyZjq-syB7kr8qBdjo3T83q4fweFevnW2RKyTQoha1QcLaMhtsE4A54cmujO7EMEh2AMYNJeRzVkxxpAD0q8P93iNww:1u6pcc:__aTLyONpm2sFpebdGbKXnV4AICQAwH8xkj9LLngo3o",
+    "expire_date": "2025-05-05T11:47:34.915Z"
+  }
+},
+{
+  "model": "UpLife_api.usuarios",
+  "pk": 1,
+  "fields": {
+    "nome": "lupi",
+    "nome_usuario": "lupi",
+    "email": "lupi@gmail.com",
+    "contrasinal": "pbkdf2_sha256$600000$PRQo908qwKQGJ5eoW6WXf4$AHdxJ9VAImwzx0gm7ag2f4KCyQFAkwHDBpoAssFyJtI=",
+    "imaxe_perfil": "",
+    "altura": null,
+    "peso": null,
+    "obxectivo": null,
+    "actividade": null,
+    "idade": null,
+    "calorias_diarias": null,
+    "auga_diaria": null,
+    "modo_aplicacion": "C"
+  }
+}
+]

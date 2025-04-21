@@ -7,8 +7,18 @@ import Rexistro from "@/components/Rexistro.vue"; // Componente de registro
 import Tarefas from "@/views/Tarefas.vue";
 import ListaTarefas from "@/components/ListaTarefas.vue";
 import EngadirTarefas from "@/components/EngadirTarefas.vue";
+import Auga from "@/views/Auga.vue";
+import Comidas from "@/views/Comidas.vue";
+import Exercicios from "@/views/Exercicios.vue";
+import Medallas from "@/views/Medallas.vue";
+import Perfil from "@/views/Perfil.vue";
+import Plantillas from "@/views/Plantillas.vue";
 
 const routes = [
+  {
+    path: "/",
+    redirect: "/tarefas", // o cualquier ruta principal
+  },
   {
     path: "/formularios",
     name: "formularios",
@@ -43,6 +53,36 @@ const routes = [
         component: EngadirTarefas,
       },
     ],
+  },
+  {
+    path: "/auga",
+    name: "auga",
+    component: Auga,
+  },
+  {
+    path: "/comidas",
+    name: "comidas",
+    component: Comidas,
+  },
+  {
+    path: "/exercicios",
+    name: "exercicios",
+    component: Exercicios,
+  },
+  {
+    path: "/medallas",
+    name: "medallas",
+    component: Medallas,
+  },
+  {
+    path: "/perfil",
+    name: "perfil",
+    component: Perfil,
+  },
+  {
+    path: "/plantillas",
+    name: "plantillas",
+    component: Plantillas,
   },
 ];
 
