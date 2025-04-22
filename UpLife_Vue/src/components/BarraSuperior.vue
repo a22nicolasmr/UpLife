@@ -19,11 +19,13 @@ watch(
   <div class="barra-superior">
     <div class="usuario-info">
       <img :src="usuarioStore.imagen" alt="Usuario" class="usuario-imagen" />
-      <div class="usuario-nombre" @click="$router.push('/perfil')">
-        {{ usuarioStore.nome }}
-      </div>
-      <div class="usuario-medallas" @click="$router.push('/medallas')">
-        {{ usuarioStore.medallas }} Medallas
+      <div class="usuario-detalles">
+        <div class="usuario-nombre" @click="$router.push('/perfil')">
+          {{ usuarioStore.nome }}
+        </div>
+        <div class="usuario-medallas" @click="$router.push('/medallas')">
+          {{ usuarioStore.medallas }} Medallas
+        </div>
       </div>
     </div>
   </div>
@@ -32,6 +34,7 @@ watch(
 <style scoped>
 .barra-superior {
   background-color: #4880ff; /* Azul */
+  padding: 6px;
   color: white;
   display: flex;
   justify-content: flex-end;
@@ -47,7 +50,6 @@ watch(
 
 .usuario-info {
   display: flex;
-  flex-direction: column;
   align-items: center;
   margin-left: 20px;
   margin-right: 20px;
@@ -57,7 +59,13 @@ watch(
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  margin-bottom: 10px;
+  margin-right: 10px; /* Espacio entre la imagen y los textos */
+}
+
+.usuario-detalles {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .usuario-nombre {

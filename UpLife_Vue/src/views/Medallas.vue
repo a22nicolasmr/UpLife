@@ -186,10 +186,6 @@ p {
   margin-top: 2px;
 }
 
-h1 {
-  color: #7f5af0;
-}
-
 #check {
   height: 4vh;
   margin-left: 20%;
