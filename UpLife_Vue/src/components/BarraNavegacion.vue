@@ -13,7 +13,7 @@ export default {
     <div class="menu-superior">
       <ul>
         <li>
-          <img src="../imaxes/Logo.PNG" alt="UpLife" />
+          <img src="/imaxes/Logo.PNG" alt="UpLife" />
         </li>
         <li
           :class="{ activo: rutaActual === '/tarefas' }"
@@ -82,7 +82,7 @@ nav {
   padding: 20px 10px;
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 96vh;
   min-width: 180px;
   border-right: 1px solid #ccc;
   position: fixed; /* Fija la barra de navegación */

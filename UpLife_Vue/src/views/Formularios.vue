@@ -2,7 +2,7 @@
   <div class="contenedor">
     <!-- Mitad izquierda -->
     <div class="izquierda">
-      <img src="../imaxes/imagen4.png" alt="" />
+      <img src="/imaxes/imagen4.png" alt="" />
     </div>
 
     <!-- Mitad derecha -->

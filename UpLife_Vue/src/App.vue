@@ -1,9 +1,11 @@
 <script>
 import BarraNavegacion from "./components/BarraNavegacion.vue";
+import BarraSuperior from "./components/BarraSuperior.vue";
 
 export default {
   components: {
     BarraNavegacion,
+    BarraSuperior,
   },
   computed: {
     rutaActual() {
@@ -16,7 +18,16 @@ export default {
       );
     },
     nombreUsuario() {
-      return this.$route.query.nombre;
+      return this.$route.query.nome;
+    },
+    mounted() {
+      const usuarioStore = useUsuarioStore();
+      usuarioStore.cargarDesdeStorage(); // Cargar los datos del usuario
+
+      // Esperar a que los datos se carguen
+      if (!usuarioStore.id || !usuarioStore.nome) {
+        this.$router.push("/formularios/inicio");
+      }
     },
   },
 };
@@ -25,8 +36,13 @@ export default {
 <template>
   <body>
     <div class="layout">
+      <BarraSuperior
+        v-if="mostrarBarra"
+        :nome="nombreUsuario"
+        :key="nombreUsuario"
+      ></BarraSuperior>
       <BarraNavegacion v-if="mostrarBarra" :rutaActual="rutaActual" />
-      <div class="vista">
+      <div :class="['vista', { 'sin-barras': !mostrarBarra }]">
         <router-view />
       </div>
     </div>
@@ -52,9 +68,17 @@ body {
   width: 100vw;
 }
 .vista {
+  margin-top: 10vh;
   margin-left: 220px; /* Igual al ancho de tu barra */
   width: calc(100% - 180px);
   height: 100vh;
-  overflow-y: auto; /* Para scroll si el contenido es largo */
+  overflow-y: hidden; /* Para scroll si el contenido es largo */
+}
+
+/* quitar barras en los formularios */
+.sin-barras {
+  margin: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
 }
 </style>

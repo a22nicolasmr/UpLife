@@ -13,7 +13,7 @@ class Usuarios(models.Model):
     nome_usuario=models.CharField(max_length=100,unique=True)
     email=models.EmailField(max_length=255, unique=True)
     contrasinal=models.CharField(max_length=100)
-    imaxe_perfil=models.ImageField(upload_to="media",null=True, blank=True)
+    imaxe_perfil=models.ImageField(upload_to="avatares",null=True, blank=True)
     altura=models.IntegerField(null=True, blank=True)
     peso=models.IntegerField(null=True, blank=True)
     obxectivo=models.CharField(max_length=20, null=True, blank=True)
@@ -46,10 +46,9 @@ class Medallas(models.Model):
     descripcion=models.CharField(max_length=200,unique=True)
     completado=models.BooleanField()
     icona=models.ImageField(upload_to="media")
-    usuario=models.ForeignKey(Usuarios,on_delete=models.CASCADE)
-
+    usuarios=models.ManyToManyField(Usuarios)
     def __str__(self):
-        return f"nome={self.nome}, descripcion={self.descripcion}, completado={self.completado}, icona={self.icona}, usuario={self.usuario}"
+        return f"nome={self.nome}, descripcion={self.descripcion}, completado={self.completado}, icona={self.icona}"
 
 class Tarefas(models.Model):
     id_tarefa=models.BigAutoField(primary_key=True)

@@ -1,23 +1,30 @@
-<script>
-export default {
-  data() {
-    return {
-      // Aquí puedes usar datos de tu usuario, ya sea de un API o del estado global (Vuex)
-      user: {
-        image: "../imaxes/usuario.jpg", // Ruta a la imagen del usuario
-        name: "Usuario Ejemplo", // Nombre del usuario
-        medals: 5, // Número de medallas
-      },
-    };
+<script setup>
+import { useUsuarioStore } from "@/stores/useUsuario";
+import { onMounted, watch } from "vue";
+import { useRoute } from "vue-router";
+
+const usuarioStore = useUsuarioStore();
+const route = useRoute();
+
+watch(
+  () => route.query.nome,
+  (novoNome) => {
+    if (novoNome) usuarioStore.cargarUsuario(novoNome);
   },
-};
+  { immediate: true }
+);
 </script>
+
 <template>
   <div class="barra-superior">
     <div class="usuario-info">
-      <img :src="user.image" alt="Usuario" class="usuario-imagen" />
-      <div class="usuario-nombre">{{ user.name }}</div>
-      <div class="usuario-medallas">{{ user.medals }} Medallas</div>
+      <img :src="usuarioStore.imagen" alt="Usuario" class="usuario-imagen" />
+      <div class="usuario-nombre" @click="$router.push('/perfil')">
+        {{ usuarioStore.nome }}
+      </div>
+      <div class="usuario-medallas" @click="$router.push('/medallas')">
+        {{ usuarioStore.medallas }} Medallas
+      </div>
     </div>
   </div>
 </template>
@@ -26,15 +33,14 @@ export default {
 .barra-superior {
   background-color: #4880ff; /* Azul */
   color: white;
-  padding: 20px;
   display: flex;
-  justify-content: flex-start;
+  justify-content: flex-end;
   align-items: center;
   position: fixed;
   top: 0;
-  left: 180px; /* Alineado con la barra lateral, ajusta según el ancho de tu barra lateral */
+  left: 200px; /* Alineado con la barra lateral, ajusta según el ancho de tu barra lateral */
   width: calc(
-    100% - 180px
+    100% - 200px
   ); /* Asegura que la barra superior ocupe todo el espacio menos la barra lateral */
   z-index: 1000;
 }
@@ -44,6 +50,7 @@ export default {
   flex-direction: column;
   align-items: center;
   margin-left: 20px;
+  margin-right: 20px;
 }
 
 .usuario-imagen {

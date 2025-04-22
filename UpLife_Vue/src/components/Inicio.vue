@@ -20,15 +20,16 @@ export default {
       }
 
       try {
-        const response = await axios.post("http://localhost:8000/login/", {
+        const response = await axios.post("http://localhost:8001/login/", {
           identificador: this.email,
           contrasinal: this.contrasinal,
         });
 
         if (response.status === 200) {
+          // redirixese a ruta desexada mandando como query o nome do usuario
           this.$router.push({
             name: "tarefas",
-            query: { nombre: usuario.nombre },
+            query: { nome: this.email },
           });
         }
       } catch (error) {
