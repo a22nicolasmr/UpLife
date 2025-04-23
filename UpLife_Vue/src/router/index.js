@@ -13,6 +13,7 @@ import Exercicios from "@/views/Exercicios.vue";
 import Medallas from "@/views/Medallas.vue";
 import Perfil from "@/views/Perfil.vue";
 import Plantillas from "@/views/Plantillas.vue";
+import Calculadora from "@/components/Calculadora.vue";
 
 const routes = [
   {
@@ -78,6 +79,13 @@ const routes = [
     path: "/perfil",
     name: "perfil",
     component: Perfil,
+    children: [
+      {
+        path: "calculadora",
+        name: "calculadora",
+        component: Calculadora,
+      },
+    ],
   },
   {
     path: "/plantillas",

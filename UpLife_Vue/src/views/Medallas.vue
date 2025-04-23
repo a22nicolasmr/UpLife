@@ -113,15 +113,16 @@ export default {
 
 <style scoped>
 .general {
-  height: 100%;
-  width: 100%;
+  height: 80%;
+  width: 95%;
   padding: 10px;
   box-sizing: border-box;
   background-color: white;
-  border-radius: 5%;
+  border-radius: 10px; /* <--- redondeo uniforme en todos los bordes */
   display: flex;
   justify-self: center;
-  margin-right: 20px;
+  margin-right: 30px;
+  margin-left: 20px;
 }
 
 .medallas-container {

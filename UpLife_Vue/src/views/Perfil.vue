@@ -1,64 +1,134 @@
 <script>
+import Calculadora from "@/components/Calculadora.vue";
+import { useUsuarioStore } from "@/stores/useUsuario";
+
 export default {
+  components: {
+    Calculadora,
+  },
   data() {
-    return { name: "Apples", message: "I like apples" };
+    return {
+      imagen: "", // <- acá se guarda la URL de la imagen
+      nome: "",
+      email: "",
+      nomeUsuario: "",
+    };
+  },
+  computed: {
+    id() {
+      const store = useUsuarioStore();
+      return store.id;
+    },
+  },
+  async mounted() {
+    if (this.id) {
+      try {
+        const response = await fetch(
+          `http://localhost:8001/api/usuarios/${this.id}/`
+        );
+        const data = await response.json();
+
+        // Asegurate de que el campo correcto se llama 'imaxe_perfil' o algo similar
+        this.imagen = data.imaxe_perfil || "/imaxes/usuario.png";
+        this.nome = data.nome;
+        this.email = data.email;
+        this.nomeUsuario = data.nome_usuario;
+      } catch (error) {
+        console.error("Erro ao obter imaxe do usuario:", error);
+        this.imagen = "/imaxes/usuario.png";
+      }
+    }
   },
 };
 </script>
 
 <template>
   <div class="container">
-    <h1>Perfil</h1>
-    <div class="datos">
-      <h2>Detalles da conta</h2>
-      <h4>Nome:</h4>
-      <h4>Email:</h4>
-      <h4>Nome de usuario:</h4>
-      <h4>Imaxe de usuario:</h4>
-      <img src="" alt="Imaxe de usuario" />
-      <h2>Datos do usuario</h2>
-      <h4>Peso:</h4>
-      <h4>Obxectivo:</h4>
-      <h4>Actividade:</h4>
-      <h4>Idade:</h4>
-      <h4>Calorías diarias:</h4>
-      <h4>Cantidade de auga diaria:</h4>
+    <div class="perfil-layout">
+      <div class="datos">
+        <h2>Detalles da conta</h2>
+        <p><strong>Nome:</strong> {{ nome }}</p>
+        <p><strong>Email:</strong> {{ email }}</p>
+        <p><strong>Nome de usuario:</strong> {{ nomeUsuario }}</p>
+        <p><strong>Imaxe de usuario:</strong></p>
+        <img :src="imagen" alt="Imaxe de usuario" />
+
+        <h2>Datos do usuario</h2>
+        <p>Peso:</p>
+        <p>Obxectivo:</p>
+        <p>Actividade:</p>
+        <p>Idade:</p>
+        <p>Calorías diarias:</p>
+        <p>Cantidade de auga diaria:</p>
+      </div>
+      <div class="calculadora">
+        <Calculadora />
+      </div>
     </div>
-    <div class="calculador"></div>
   </div>
 </template>
 
 <style scoped>
-/* Aseguramos que el body y el html tengan 100% de altura */
+img {
+  height: 10vh;
+  width: 10vh;
+  border-radius: 50%;
+}
+h2 {
+  color: #7f5af0;
+}
+
 html,
 body {
-  height: 100%;
-  margin: 0;
+  height: 100vh;
+}
+.container {
+  background-color: #f2f2f2;
 }
 
-.container {
-  height: 80%; /* La altura del contenedor principal es 100% */
+.perfil-layout {
+  max-height: 89vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: stretch;
+  gap: 0; /* sin espacio explícito, el color los separa visualmente */
+  margin-right: 14px;
+}
+
+/* Columna izquierda (datos) */
+.datos {
+  flex: 1;
+  padding: 20px;
+  background-color: white;
+  border-radius: 10px 0 0 10px;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
+  gap: 6px;
+  min-height: 83vh; /* <-- Ajustá este valor según lo que necesites */
 }
 
-.datos {
-  flex: 1; /* Esto hace que el div ocupe todo el espacio disponible */
-  width: 97%;
-  padding: 10px;
+.datos p {
+  margin: 8px 0;
+  line-height: 1.2;
+}
+
+/* Columna derecha (calculadora) */
+.calculadora {
+  width: 40%;
+  background-color: black;
+  padding: 20px;
+  border-radius: 0 10px 10px 0;
+  color: white;
   box-sizing: border-box;
-  background-color: white;
-  border-radius: 5%;
   display: flex;
-  flex-direction: column; /* Organiza los elementos verticalmente */
-  justify-content: flex-start; /* Alinea el contenido al principio */
-  margin-right: 20px;
-  margin-left: 20px; /* Añade un margen izquierdo para simetría */
-  gap: 10px; /* Añade espacio entre los elementos dentro de .datos */
+  flex-direction: column;
+  justify-content: stretch;
 }
-
-/* Estilo adicional para el contenedor principal */
-h1 {
-  color: #333;
+.datos,
+.calculadora {
+  padding-top: 40px;
+  padding-bottom: 40px;
 }
 </style>
