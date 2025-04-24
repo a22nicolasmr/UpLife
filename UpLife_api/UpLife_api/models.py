@@ -74,7 +74,7 @@ class Medallas(models.Model):
 
 class Tarefas(models.Model):
     id_tarefa=models.BigAutoField(primary_key=True)
-    hora=models.TimeField()
+    hora=models.TimeField(blank=True,null=True)
     titulo=models.CharField(max_length=255)
     data=models.DateField()
     completado=models.BooleanField()

@@ -1,11 +1,150 @@
 <script>
+import { useUsuarioStore } from "@/stores/useUsuario";
+
 export default {
-  mounted() {},
+  props: {
+    dataSeleccionada: {
+      type: Date,
+      required: true,
+    },
+  },
+  data() {
+    return {
+      tarefa: "",
+      hora: "",
+    };
+  },
+  computed: {
+    id() {
+      const store = useUsuarioStore();
+      return store.id;
+    },
+    dataFormateada() {
+      return this.dataSeleccionada
+        .toLocaleDateString("gl-ES", {
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        })
+        .toUpperCase();
+    },
+  },
+  methods: {
+    async engadirTarefa() {
+      console.log(this.id); // <- Arreglado aquí también
+
+      const payload = {
+        hora: this.hora === "" ? null : this.hora,
+        titulo: this.tarefa,
+        data: this.dataSeleccionada.toISOString().split("T")[0],
+        completado: false,
+        usuario: this.id, // <- Aquí estaba el fallo real
+      };
+
+      try {
+        console.log("Payload enviado:", payload);
+
+        const response = await fetch("http://localhost:8001/api/tarefas/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        });
+
+        if (!response.ok) throw new Error("Erro ao engadir tarefa");
+
+        const resultado = await response.json();
+        console.log("Tarefa engadida:", resultado);
+
+        this.tarefa = "";
+        this.hora = "";
+      } catch (error) {
+        console.error("Erro:", error);
+      }
+    },
+  },
 };
 </script>
+
 <template>
-  <body>
-    <h1>Engadir Tarefas</h1>
-  </body>
+  <div class="engadir-container">
+    <h2>Engadir tarefa</h2>
+    <p class="data">
+      <strong>{{ dataFormateada }}</strong>
+    </p>
+
+    <div class="formulario">
+      <label for="hora">Hora</label>
+      <input type="time" id="hora" v-model="hora" />
+
+      <label for="tarefa">Descrición da tarefa</label>
+      <input
+        type="text"
+        id="tarefa"
+        v-model="tarefa"
+        placeholder="Escribe a túa tarefa"
+      />
+
+      <button @click="engadirTarefa">Engadir</button>
+    </div>
+  </div>
 </template>
-<style></style>
+
+<style scoped>
+.engadir-container {
+  background-color: black;
+  padding: 40px;
+  border-radius: 12px;
+  max-width: 500px;
+  margin: auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  text-align: left;
+}
+
+h2 {
+  color: #7f5af0;
+  font-size: 24px;
+}
+
+.data {
+  color: white;
+  margin-bottom: 15px;
+  font-weight: 500;
+}
+
+.formulario {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin: 10px 0 5px;
+  font-weight: 500;
+  color: white;
+}
+
+input {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+}
+
+button {
+  margin-top: 20px;
+  background-color: #4880ff;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #3461cc;
+}
+</style>
