@@ -7,6 +7,7 @@ const usuarioStore = useUsuarioStore();
 const route = useRoute();
 
 watch(
+  // cargar novo nome de usuario
   () => route.query.nome,
   (novoNome) => {
     if (novoNome) usuarioStore.cargarUsuario(novoNome);
@@ -16,6 +17,7 @@ watch(
 </script>
 
 <template>
+  <!-- cargar o nome e imaxe de usuario  -->
   <div class="barra-superior">
     <div class="usuario-info">
       <img :src="usuarioStore.imagen" alt="Usuario" class="usuario-imagen" />
@@ -33,7 +35,7 @@ watch(
 
 <style scoped>
 .barra-superior {
-  background-color: #4880ff; /* Azul */
+  background-color: #4880ff;
   padding: 6px;
   color: white;
   display: flex;
@@ -41,10 +43,8 @@ watch(
   align-items: center;
   position: fixed;
   top: 0;
-  left: 200px; /* Alineado con la barra lateral, ajusta según el ancho de tu barra lateral */
-  width: calc(
-    100% - 200px
-  ); /* Asegura que la barra superior ocupe todo el espacio menos la barra lateral */
+  left: 200px;
+  width: calc(100% - 200px);
   z-index: 1000;
 }
 
@@ -59,7 +59,7 @@ watch(
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  margin-right: 10px; /* Espacio entre la imagen y los textos */
+  margin-right: 10px;
 }
 
 .usuario-detalles {

@@ -1,10 +1,19 @@
 <script>
 export default {
+  emits: ["updateAltura", "updatePeso"],
   data() {
     return {
       altura: 170,
       peso: 72,
     };
+  },
+  watch: {
+    altura(nuevaAltura) {
+      this.$emit("updateAltura", nuevaAltura);
+    },
+    peso(nuevoPeso) {
+      this.$emit("updatePeso", nuevoPeso);
+    },
   },
   computed: {
     imc() {
@@ -30,6 +39,7 @@ export default {
   },
 };
 </script>
+
 s
 <template>
   <div class="imc-wrapper">

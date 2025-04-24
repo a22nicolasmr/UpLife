@@ -19,6 +19,7 @@ export default {
     };
   },
   methods: {
+    // mandar formulario de rexistro facendo un post se o formulario está correcto
     async mandarFormulario() {
       let isValid = true;
       this.errors = {

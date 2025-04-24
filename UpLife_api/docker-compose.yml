@@ -1,6 +1,7 @@
 services:
   web:
     build: .
+    # comando para ejecutar uvinicorn no porto 8001 esperando a que a bd esté lista usando o script waitforit
     command:
       [
         "./wait-for-it.sh",

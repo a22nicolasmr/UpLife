@@ -6,6 +6,7 @@ from rest_framework import status
 from django.contrib.auth.hashers import check_password
 from rest_framework import viewsets
 
+# validacion de campos de inicio de sesión
 @api_view(['POST'])
 def login_usuario(request):
     identificador = request.data.get('identificador')  # pode ser email ou nome_usuario
@@ -27,6 +28,8 @@ def login_usuario(request):
 
     except Usuarios.DoesNotExist:
         return Response({'erro': 'Usuario non existe'}, status=status.HTTP_404_NOT_FOUND)
+    
+# creación de endpoint automáticamente para todos os modelos definidos de forma que aceptarán todo tipo de peticións
 class UsuariosViewSet(viewsets.ModelViewSet):
     queryset = Usuarios.objects.all()
     serializer_class = UsuariosSerializer

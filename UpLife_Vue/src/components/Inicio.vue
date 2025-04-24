@@ -10,6 +10,7 @@ export default {
     };
   },
   methods: {
+    // mandar formulario se os datos estan correctos
     async mandarFormulario() {
       this.erro = "";
 
@@ -19,6 +20,7 @@ export default {
         return;
       }
 
+      // accede a login donde se fai validación dos campos
       try {
         const response = await axios.post("http://localhost:8001/login/", {
           identificador: this.email,

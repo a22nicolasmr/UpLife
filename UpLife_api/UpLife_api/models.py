@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.hashers import make_password
-
+from django.dispatch import receiver
+import os
 # opcions modo_aplicacion
 MODO_CHOICES = [
     ('C', 'Claro'),
@@ -14,10 +15,11 @@ class Usuarios(models.Model):
     email=models.EmailField(max_length=255, unique=True)
     contrasinal=models.CharField(max_length=100)
     imaxe_perfil=models.ImageField(upload_to="avatares",null=True, blank=True)
+    xenero=models.CharField(max_length=7, null=True, blank=True)
     altura=models.IntegerField(null=True, blank=True)
     peso=models.IntegerField(null=True, blank=True)
-    obxectivo=models.CharField(max_length=20, null=True, blank=True)
-    actividade=models.CharField(max_length=20,null=True, blank=True)
+    obxectivo=models.CharField(max_length=30, null=True, blank=True)
+    actividade=models.CharField(max_length=30,null=True, blank=True)
     idade=models.IntegerField(null=True, blank=True)
     calorias_diarias=models.IntegerField(null=True, blank=True)
     auga_diaria=models.IntegerField(null=True, blank=True)
@@ -31,6 +33,26 @@ class Usuarios(models.Model):
     def __str__(self):
         return f"nome={self.nome}, nome_usuario={self.nome_usuario}, email={self.email}, contrasinal={self.contrasinal}, imaxe_perfil={self.imaxe_perfil}, altura={self.altura}, peso={self.peso}, obxectivo={self.obxectivo}, actividade={self.actividade}, idade={self.idade}, calorias_diarias={self.calorias_diarias}, auga_diaria={self.auga_diaria}, modo_aplicacion={self.modo_aplicacion}"
 
+# cando se actualiza a imaxe de perfil , borrase a existente e actualizase ca nova
+@receiver(models.signals.pre_save, sender=Usuarios)
+def auto_delete_old_file_on_change(sender, instance, **kwargs):
+    if not instance.pk:
+        return
+
+    try:
+        old_file = sender.objects.get(pk=instance.pk).imaxe_perfil
+    except sender.DoesNotExist:
+        return
+
+    new_file = instance.imaxe_perfil
+    if old_file and old_file.name:
+        try:
+            if os.path.isfile(old_file.path):
+                os.remove(old_file.path)
+        except Exception as e:
+            print(f"Error eliminando archivo anterior: {e}")
+
+            
 class Auga(models.Model):
     id_auga=models.BigAutoField(primary_key=True)
     cantidade=models.IntegerField()

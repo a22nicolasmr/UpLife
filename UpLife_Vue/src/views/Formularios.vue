@@ -1,13 +1,11 @@
 <template>
   <div class="contenedor">
-    <!-- Mitad izquierda -->
     <div class="izquierda">
       <img src="/imaxes/imagen4.png" alt="" />
     </div>
 
-    <!-- Mitad derecha -->
     <div class="derecha">
-      <!-- Aquí se cargan los formularios -->
+      <!-- cargar formularios -->
       <router-view />
     </div>
   </div>
@@ -20,7 +18,6 @@ export default {
 </script>
 
 <style>
-/* Contenedor principal */
 .contenedor {
   display: flex;
   height: 100%;
@@ -30,7 +27,7 @@ export default {
 .izquierda img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* ou usa 'contain' se non queres que se corte nada */
+  object-fit: cover;
 }
 
 .izquierda,
@@ -50,9 +47,9 @@ export default {
 .derecha {
   background-color: #ffffff;
   display: flex;
-  justify-content: center; /* centrado horizontal */
-  align-items: flex-start; /* arriba del todo */
-  padding: 0; /* sin espacio */
+  justify-content: center;
+  align-items: flex-start;
+  padding: 0;
   height: 100%;
 }
 

@@ -8,6 +8,7 @@ export const useUsuarioStore = defineStore("usuario", {
     medallas: 0,
   }),
   actions: {
+    // cargar datos de usuario
     async cargarUsuario(nome) {
       try {
         const response = await fetch("http://localhost:8001/api/usuarios/");
@@ -19,7 +20,7 @@ export const useUsuarioStore = defineStore("usuario", {
         this.nome = usuario.nome;
         this.imagen = usuario.imaxe_perfil || "/imaxes/usuario.png";
 
-        // Guarda solo lo necesario en localStorage
+        // gardar solo o necesario no localStorage
         localStorage.setItem(
           "usuario",
           JSON.stringify({
@@ -28,13 +29,14 @@ export const useUsuarioStore = defineStore("usuario", {
           })
         );
 
-        // Carga medallas
+        // cargar medallas de usuario
         await this.cargarMedallas();
       } catch (error) {
         console.error("Error cargando datos del usuario:", error);
       }
     },
 
+    // cargar medallas de usuario
     async cargarMedallas() {
       try {
         const medallasRes = await fetch("http://localhost:8001/api/medallas/");
@@ -46,6 +48,8 @@ export const useUsuarioStore = defineStore("usuario", {
         console.error("Error cargando medallas:", error);
       }
     },
+
+    // cargar datos de usuario desde localStorage
 
     cargarDesdeStorage() {
       const datos = localStorage.getItem("usuario");
@@ -65,6 +69,6 @@ export const useUsuarioStore = defineStore("usuario", {
       this.medallas = 0;
     },
   },
-  // Al crear el store, cargamos los datos desde localStorage si existen
+  // cargar datos desde localStorage se existen
   persist: true,
 });

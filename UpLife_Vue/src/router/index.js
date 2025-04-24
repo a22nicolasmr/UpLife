@@ -1,9 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-// Importa los componentes
-import Formularios from "@/views/Formularios.vue"; // Componente contenedor
-import Inicio from "@/components/Inicio.vue"; // Componente de inicio de sesión
-import Rexistro from "@/components/Rexistro.vue"; // Componente de registro
+import Formularios from "@/views/Formularios.vue";
+import Inicio from "@/components/Inicio.vue";
+import Rexistro from "@/components/Rexistro.vue";
 import Tarefas from "@/views/Tarefas.vue";
 import ListaTarefas from "@/components/ListaTarefas.vue";
 import EngadirTarefas from "@/components/EngadirTarefas.vue";
@@ -14,25 +13,28 @@ import Medallas from "@/views/Medallas.vue";
 import Perfil from "@/views/Perfil.vue";
 import Plantillas from "@/views/Plantillas.vue";
 import Calculadora from "@/components/Calculadora.vue";
+import Calculador from "@/components/Calculador.vue";
 
 const routes = [
   {
+    // redirixir a tarefas cando se abre a aplicacion
     path: "/",
-    redirect: "/tarefas", // o cualquier ruta principal
+    redirect: "/tarefas",
+    // redirect: "/formularios/rexistro",
   },
   {
     path: "/formularios",
     name: "formularios",
     component: Formularios,
-    redirect: "/formularios/rexistro", // Asegúrate de que coincide con la ruta de rexistro
+    redirect: "/formularios/rexistro",
     children: [
       {
-        path: "inicio", // Acceso a /formularios/inicio
+        path: "inicio",
         name: "inicio",
         component: Inicio,
       },
       {
-        path: "rexistro", // Acceso a /formularios/rexistro
+        path: "rexistro",
         name: "rexistro",
         component: Rexistro,
       },
@@ -84,6 +86,13 @@ const routes = [
         path: "calculadora",
         name: "calculadora",
         component: Calculadora,
+        children: [
+          {
+            path: "calculador",
+            name: "calculador",
+            component: Calculador,
+          },
+        ],
       },
     ],
   },
@@ -94,6 +103,7 @@ const routes = [
   },
 ];
 
+// creacion do router coas rutas
 const router = createRouter({
   history: createWebHistory(),
   routes,

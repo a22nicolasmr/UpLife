@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import Usuarios, Auga, Medallas, Tarefas, Categorias, Exercicios, Plantillas, Comidas, Grupos
 
+# facer apis con todos os campos de todos os modelos
 class UsuariosSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuarios

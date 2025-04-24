@@ -19,6 +19,7 @@ export default {
     this.obterMedallas();
   },
   methods: {
+    // obter medallas
     async obterMedallas() {
       try {
         const response = await fetch("http://localhost:8001/api/medallas/");
@@ -33,6 +34,7 @@ export default {
         console.error("Error cargando datos de medallas:", error);
       }
     },
+    // comprobar se usuario completou a medalla
     medallaCompletadaPorUsuario(medalla) {
       return medalla.usuarios.includes(this.usuarioId) && medalla.completado;
     },
@@ -52,6 +54,7 @@ export default {
             class="medalla"
           >
             <div class="medalla-content">
+              <!-- amosar icona check en caso afirmativo -->
               <div
                 v-if="medallaCompletadaPorUsuario(medalla)"
                 class="check-icon"
@@ -118,7 +121,7 @@ export default {
   padding: 10px;
   box-sizing: border-box;
   background-color: white;
-  border-radius: 10px; /* <--- redondeo uniforme en todos los bordes */
+  border-radius: 10px;
   display: flex;
   justify-self: center;
   margin-right: 30px;

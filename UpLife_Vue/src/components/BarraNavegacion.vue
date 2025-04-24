@@ -1,5 +1,6 @@
 <script>
 export default {
+  // cambiar ruta actual segun onde se atope o usuario
   computed: {
     rutaActual() {
       return this.$route.path;
@@ -9,6 +10,7 @@ export default {
 </script>
 
 <template>
+  <!-- reidirixir usuario segun onde pulse -->
   <nav>
     <div class="menu-superior">
       <ul>
@@ -75,8 +77,6 @@ export default {
 </template>
 
 <style scoped>
-/* Ajustar la barra de navegación para que el tamaño no cambie al cambiar de vista */
-/* Barra de navegación (nav) */
 nav {
   background-color: white;
   padding: 20px 10px;
@@ -85,26 +85,23 @@ nav {
   height: 96vh;
   min-width: 180px;
   border-right: 1px solid #ccc;
-  position: fixed; /* Fija la barra de navegación */
+  position: fixed;
   width: 180px;
 }
 
-/* Menú superior que ocupará el espacio restante */
 .menu-superior {
-  flex-grow: 1; /* Hace que ocupe el espacio disponible */
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-/* Menú inferior */
 .menu-inferior {
   display: flex;
   flex-direction: column;
-  margin-top: auto; /* Esto asegura que se quede en el fondo */
+  margin-top: auto;
 }
 
-/* Estilos generales de la lista (ul) */
 ul {
   list-style: none;
   padding: 0;
@@ -116,7 +113,6 @@ ul {
   align-items: center;
 }
 
-/* Estilos de cada elemento de la lista (li) */
 li {
   padding: 10px;
   color: black;
@@ -127,7 +123,6 @@ li {
   transition: background-color 0.3s;
 }
 
-/* Estado de los elementos activos */
 li.activo {
   color: white;
   background-color: #4880ff;
@@ -135,7 +130,6 @@ li.activo {
   padding-right: 40px;
 }
 
-/* Línea horizontal */
 hr {
   margin: 10px 0;
   border: none;

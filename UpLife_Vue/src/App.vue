@@ -11,6 +11,8 @@ export default {
     rutaActual() {
       return this.$route.path;
     },
+
+    //se a ruta actual e calquera dos formularios de rexistro , oculta a barra de navegación
     mostrarBarra() {
       return (
         this.$route.path !== "/formularios/rexistro" &&
@@ -24,7 +26,7 @@ export default {
       const usuarioStore = useUsuarioStore();
       usuarioStore.cargarDesdeStorage(); // Cargar los datos del usuario
 
-      // Esperar a que los datos se carguen
+      // esperar a que os datos se carguen
       if (!usuarioStore.id || !usuarioStore.nome) {
         this.$router.push("/formularios/inicio");
       }
@@ -50,6 +52,7 @@ export default {
 </template>
 
 <style>
+/* fonte de Google nunito sans */
 @import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap");
 body {
   margin: 0;
@@ -59,7 +62,7 @@ body {
   background-color: #eff0f2;
 }
 * {
-  font-family: "Nunito Sans", sans-serif !important; /* !important asegura que prevalezca */
+  font-family: "Nunito Sans", sans-serif !important;
 }
 
 .layout {
@@ -69,13 +72,12 @@ body {
 }
 .vista {
   margin-top: 10vh;
-  margin-left: 220px; /* Igual al ancho de tu barra */
+  margin-left: 220px;
   width: calc(100% - 180px);
   height: 100vh;
-  overflow-y: hidden; /* Para scroll si el contenido es largo */
+  overflow-y: hidden;
 }
 
-/* quitar barras en los formularios */
 .sin-barras {
   margin: 0 !important;
   width: 100vw !important;

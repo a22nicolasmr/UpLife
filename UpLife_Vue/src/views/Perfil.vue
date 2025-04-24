@@ -8,10 +8,18 @@ export default {
   },
   data() {
     return {
-      imagen: "", // <- acá se guarda la URL de la imagen
+      imagen: "",
       nome: "",
       email: "",
       nomeUsuario: "",
+      xenero: "",
+      altura: 0,
+      peso: 0,
+      obxectivo: "",
+      actividade: "",
+      idade: 0,
+      calorias: 0,
+      auga: 0,
     };
   },
   computed: {
@@ -20,24 +28,65 @@ export default {
       return store.id;
     },
   },
-  async mounted() {
-    if (this.id) {
+  methods: {
+    // actualizar datos do usuario cando click en Calcular de Calculadora
+    async actualizarDatos() {
+      if (this.id) {
+        try {
+          const response = await fetch(
+            `http://localhost:8001/api/usuarios/${this.id}/`
+          );
+          const data = await response.json();
+
+          this.imagen = data.imaxe_perfil || "/imaxes/usuario.png";
+          this.nome = data.nome;
+          this.email = data.email;
+          this.nomeUsuario = data.nome_usuario;
+          this.xenero = data.xenero;
+          this.altura = data.altura;
+          this.peso = data.peso;
+          this.obxectivo = data.obxectivo;
+          this.actividade = data.actividade;
+          this.idade = data.idade;
+          this.calorias = data.calorias_diarias;
+          this.auga = data.auga_diaria;
+        } catch (error) {
+          console.error("Erro ao actualizar datos:", error);
+        }
+      }
+    },
+
+    // cambiar imaxe de usuario cando click enriba da imaxe de usuario
+    cambiarImagen() {
+      this.$refs.fileInput.click();
+    },
+    async subirImagen(event) {
+      const archivo = event.target.files[0];
+      if (!archivo) return;
+
+      const formData = new FormData();
+      formData.append("imaxe_perfil", archivo);
+
       try {
         const response = await fetch(
-          `http://localhost:8001/api/usuarios/${this.id}/`
+          `http://localhost:8001/api/usuarios/${this.id}/`,
+          {
+            method: "PATCH",
+            body: formData,
+          }
         );
-        const data = await response.json();
-
-        // Asegurate de que el campo correcto se llama 'imaxe_perfil' o algo similar
-        this.imagen = data.imaxe_perfil || "/imaxes/usuario.png";
-        this.nome = data.nome;
-        this.email = data.email;
-        this.nomeUsuario = data.nome_usuario;
+        const resultado = await response.json();
+        console.log("Imagen actualizada:", resultado);
+        this.actualizarDatos();
+        const store = useUsuarioStore();
+        store.imagen = resultado.imaxe_perfil || "/imaxes/usuario.png";
       } catch (error) {
-        console.error("Erro ao obter imaxe do usuario:", error);
-        this.imagen = "/imaxes/usuario.png";
+        console.error("Erro ao subir imaxe:", error);
       }
-    }
+    },
+  },
+  mounted() {
+    this.actualizarDatos();
   },
 };
 </script>
@@ -51,18 +100,41 @@ export default {
         <p><strong>Email:</strong> {{ email }}</p>
         <p><strong>Nome de usuario:</strong> {{ nomeUsuario }}</p>
         <p><strong>Imaxe de usuario:</strong></p>
-        <img :src="imagen" alt="Imaxe de usuario" />
-
+        <img :src="imagen" alt="Imaxe de usuario" @click="cambiarImagen()" />
+        <input
+          type="file"
+          ref="fileInput"
+          style="display: none"
+          @change="subirImagen"
+        />
         <h2>Datos do usuario</h2>
-        <p>Peso:</p>
-        <p>Obxectivo:</p>
-        <p>Actividade:</p>
-        <p>Idade:</p>
-        <p>Calorías diarias:</p>
-        <p>Cantidade de auga diaria:</p>
+        <p>
+          Xénero: <strong>{{ xenero }}</strong>
+        </p>
+        <p>
+          Altura: <strong>{{ altura }} cm</strong>
+        </p>
+        <p>
+          Peso: <strong>{{ peso }} kg</strong>
+        </p>
+        <p>
+          Obxectivo: <strong>{{ obxectivo }}</strong>
+        </p>
+        <p>
+          Actividade: <strong>{{ actividade }}</strong>
+        </p>
+        <p>
+          Idade: <strong>{{ idade }} anos</strong>
+        </p>
+        <p>
+          Calorías diarias: <strong>{{ calorias }} kcal</strong>
+        </p>
+        <p>
+          Cantidade de auga diaria: <strong>{{ auga }} ml</strong>
+        </p>
       </div>
       <div class="calculadora">
-        <Calculadora />
+        <Calculadora @actualizarDatos="actualizarDatos" />
       </div>
     </div>
   </div>
@@ -70,8 +142,8 @@ export default {
 
 <style scoped>
 img {
-  height: 10vh;
-  width: 10vh;
+  height: 8vh;
+  width: 8vh;
   border-radius: 50%;
 }
 h2 {
