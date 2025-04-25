@@ -23,6 +23,12 @@ export default {
   methods: {
     seleccionarData(dia) {
       this.dataSeleccionada = dia.date;
+
+      this.$nextTick(() => {
+        if (this.$refs.listaTarefasRef?.scrollAtaData) {
+          this.$refs.listaTarefasRef.scrollAtaData(dia.date);
+        }
+      });
     },
   },
 };
@@ -53,16 +59,13 @@ export default {
     <!-- Layout calendario + sección lateral -->
     <div class="tarefas-layout">
       <div class="calendario">
-        <vc-calendar
-          is-expanded
-          :attributes="attrs"
-          @dayclick="seleccionarData"
-        />
+        <vc-calendar :attributes="attrs" @dayclick="seleccionarData" />
       </div>
 
       <div class="lateral">
         <ListaTarefas
           v-if="componenteActivo === 'lista'"
+          ref="listaTarefasRef"
           :dataSeleccionada="dataSeleccionada"
         />
         <EngadirTarefas
@@ -145,19 +148,24 @@ export default {
 
 /* v-calendar estilos */
 .vc-container {
-  width: 100%;
-  font-size: 18px;
+  width: 100% !important;
+  font-size: 18px !important;
 }
 
 .vc-pane {
   min-height: 420px;
 }
-
+.vc-week {
+  padding-top: 25px;
+}
+.vc-weekdays {
+  padding-top: 25px;
+}
 .vc-day-content {
-  font-size: 20px;
+  font-size: large !important;
   height: 48px;
   width: 48px;
-  margin: 0 auto;
+  margin: 5 auto !important;
   display: flex;
   justify-content: center;
   align-items: center;

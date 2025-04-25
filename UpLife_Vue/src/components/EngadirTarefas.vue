@@ -32,19 +32,17 @@ export default {
   },
   methods: {
     async engadirTarefa() {
-      console.log(this.id); // <- Arreglado aquí también
+      console.log(this.id);
 
       const payload = {
         hora: this.hora === "" ? null : this.hora,
         titulo: this.tarefa,
-        data: this.dataSeleccionada.toISOString().split("T")[0],
+        data: this.dataSeleccionada.toLocaleDateString("en-CA"),
         completado: false,
-        usuario: this.id, // <- Aquí estaba el fallo real
+        usuario: this.id,
       };
 
       try {
-        console.log("Payload enviado:", payload);
-
         const response = await fetch("http://localhost:8001/api/tarefas/", {
           method: "POST",
           headers: {
