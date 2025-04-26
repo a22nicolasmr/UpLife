@@ -79,14 +79,14 @@ export default {
 <style scoped>
 nav {
   background-color: white;
-  padding: 20px 10px;
+  padding: 1% 1%;
   display: flex;
   flex-direction: column;
-  height: 96vh;
-  min-width: 180px;
+  height: 96%;
+  min-width: 11%;
   border-right: 1px solid #ccc;
   position: fixed;
-  width: 180px;
+  width: 11%;
 }
 
 .menu-superior {
@@ -104,8 +104,8 @@ nav {
 
 ul {
   list-style: none;
-  padding: 0;
-  margin: 0;
+  padding: 0%;
+  margin: 0%;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -114,24 +114,27 @@ ul {
 }
 
 li {
-  padding: 10px;
+  padding: 5%;
   color: black;
   cursor: pointer;
-  border-radius: 5px;
+  border-radius: 7%;
   display: flex;
   justify-content: center;
   transition: background-color 0.3s;
 }
-
+img {
+  height: 100%;
+  width: 100%;
+}
 li.activo {
   color: white;
   background-color: #4880ff;
-  padding-left: 40px;
-  padding-right: 40px;
+  padding-left: 20%;
+  padding-right: 20%;
 }
 
 hr {
-  margin: 10px 0;
+  margin: 10% 0;
   border: none;
   border-top: 1px solid #ccc;
 }

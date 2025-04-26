@@ -142,8 +142,8 @@ export default {
 
 <style scoped>
 img {
-  height: 8vh;
-  width: 8vh;
+  height: 8%;
+  width: 6%;
   border-radius: 50%;
 }
 h2 {
@@ -156,41 +156,42 @@ body {
 }
 .container {
   background-color: #f2f2f2;
+  height: 48.5%;
 }
 
 .perfil-layout {
-  max-height: 89vh;
+  margin-top: 1%;
+  max-height: 178%;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: stretch;
   gap: 0; /* sin espacio explícito, el color los separa visualmente */
-  margin-right: 14px;
+  margin-right: 1%;
 }
 
 /* Columna izquierda (datos) */
 .datos {
   flex: 1;
-  padding: 20px;
+  padding: 5%;
   background-color: white;
-  border-radius: 10px 0 0 10px;
+  border-radius: 2% 0 0 2%;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  min-height: 83vh; /* <-- Ajustá este valor según lo que necesites */
+  gap: 2%;
 }
 
 .datos p {
-  margin: 8px 0;
-  line-height: 1.2;
+  margin: 1% 0;
+  line-height: 20%;
 }
 
 /* Columna derecha (calculadora) */
 .calculadora {
   width: 40%;
   background-color: black;
-  padding: 20px;
+  padding: 2%;
   border-radius: 0 10px 10px 0;
   color: white;
   box-sizing: border-box;
@@ -200,7 +201,7 @@ body {
 }
 .datos,
 .calculadora {
-  padding-top: 40px;
-  padding-bottom: 40px;
+  padding-top: 2%;
+  padding-bottom: 2%;
 }
 </style>

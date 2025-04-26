@@ -116,7 +116,7 @@ export default {
 };
 </script>
 <template>
-  <div class="">
+  <div id="principal">
     <h3>Calculadora IMC</h3>
     <Calculador
       @updateAltura="actualizarAltura"
@@ -193,8 +193,6 @@ h1 {
 
 .calculadora form {
   width: 100%;
-  max-width: 400px;
-  margin: 0 auto;
   align-items: start;
 }
 
@@ -203,16 +201,22 @@ h1 {
   color: white;
   font-weight: 500;
 }
+#principal {
+  height: 100vh;
+  overflow-y: auto;
+  padding: 1rem;
+  box-sizing: border-box;
+}
 
 .calculadora select,
 .calculadora input {
   width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
+  padding: 2.5%;
+  margin-bottom: 1%;
   background-color: #eff0f2;
   border: none;
   border-radius: 4px;
-  font-size: 14px;
+  font-size: 0.8em;
   color: #043133;
   box-sizing: border-box;
 }
@@ -241,9 +245,7 @@ h1 {
 }
 
 .calculadora p {
-  margin-top: 15px;
-  text-align: left; /* <-- aquí está el cambio */
-  font-size: 14px;
+  text-align: left;
   color: white;
 }
 </style>

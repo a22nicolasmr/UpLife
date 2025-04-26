@@ -7,6 +7,7 @@ export default {
       medallas: [],
       primeirasMedallas: [],
       segundasMedallas: [],
+      terceirasMedallas: [],
     };
   },
   computed: {
@@ -19,7 +20,6 @@ export default {
     this.obterMedallas();
   },
   methods: {
-    // obter medallas
     async obterMedallas() {
       try {
         const response = await fetch("http://localhost:8001/api/medallas/");
@@ -27,14 +27,16 @@ export default {
 
         if (medallas) {
           this.medallas = medallas;
-          this.primeirasMedallas = medallas.slice(0, 5);
-          this.segundasMedallas = medallas.slice(5, 10);
+          const total = medallas.length;
+          const tercio = Math.ceil(total / 3);
+          this.primeirasMedallas = medallas.slice(0, tercio);
+          this.segundasMedallas = medallas.slice(tercio, tercio * 2);
+          this.terceirasMedallas = medallas.slice(tercio * 2, total);
         }
       } catch (error) {
         console.error("Error cargando datos de medallas:", error);
       }
     },
-    // comprobar se usuario completou a medalla
     medallaCompletadaPorUsuario(medalla) {
       return medalla.usuarios.includes(this.usuarioId) && medalla.completado;
     },
@@ -43,18 +45,17 @@ export default {
 </script>
 
 <template>
-  <div>
+  <div id="todo">
     <h1>Medallas</h1>
     <div class="general">
       <div class="medallas-container">
-        <div class="column left-column">
+        <div class="column">
           <div
             v-for="medalla in primeirasMedallas"
             :key="medalla.id_medalla"
             class="medalla"
           >
             <div class="medalla-content">
-              <!-- amosar icona check en caso afirmativo -->
               <div
                 v-if="medallaCompletadaPorUsuario(medalla)"
                 class="check-icon"
@@ -79,9 +80,40 @@ export default {
           </div>
         </div>
 
-        <div class="column right-column">
+        <div class="column">
           <div
             v-for="medalla in segundasMedallas"
+            :key="medalla.id_medalla"
+            class="medalla"
+          >
+            <div class="medalla-content">
+              <div
+                v-if="medallaCompletadaPorUsuario(medalla)"
+                class="check-icon"
+              >
+                <img src="/imaxes/check.png" alt="Check" id="check" />
+              </div>
+              <div v-else>
+                <img
+                  src="/imaxes/invisible.PNG"
+                  alt="Invisible"
+                  id="invisible"
+                />
+              </div>
+              <div class="medalla-info">
+                <img :src="medalla.icona" alt="Icona medalla" />
+                <div>
+                  <h3>{{ medalla.nome }}</h3>
+                  <p>{{ medalla.descripcion }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="column">
+          <div
+            v-for="medalla in terceirasMedallas"
             :key="medalla.id_medalla"
             class="medalla"
           >
@@ -116,82 +148,105 @@ export default {
 
 <style scoped>
 .general {
-  height: 80%;
   width: 95%;
-  padding: 10px;
+  padding: 2vw;
   box-sizing: border-box;
   background-color: white;
-  border-radius: 10px;
+  border-radius: 1vw;
   display: flex;
-  justify-self: center;
-  margin-right: 30px;
-  margin-left: 20px;
+  flex-direction: column;
+  align-items: center;
+  margin: 2vh auto;
 }
 
 .medallas-container {
   display: flex;
-  justify-content: space-between;
-  gap: 10px;
+  flex-wrap: wrap;
+  gap: 2vw;
   width: 100%;
+  justify-content: center;
 }
 
 .column {
-  width: 48%;
-}
-
-.left-column {
+  flex: 1 1 30%;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-}
-
-.right-column {
-  display: flex;
-  flex-direction: column;
+  gap: 1.5vh;
 }
 
 .medalla {
-  margin-bottom: 10px;
+  display: flex;
+  align-items: stretch; /* Asegura que todos los elementos se estiren */
+  flex-direction: column;
+  height: 100%; /* Hace que las medallas tengan el mismo alto */
 }
 
 .medalla-content {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 1vw;
+  height: 100%;
 }
 
-.check-icon {
-  font-size: 1.2em;
-  color: green;
-  margin-right: 5px;
+.check-icon,
+#invisible {
+  margin-right: 0.5vw;
+  flex-shrink: 0; /* Evita que las imágenes se deformen */
 }
 
 .medalla-info {
   display: flex;
+  align-items: center;
+  gap: 1vw;
+  flex-grow: 1; /* Hace que el texto ocupe el espacio restante */
+}
+
+.medalla-info img {
+  width: 4vw;
+  height: 4vw;
+  object-fit: cover;
+  border-radius: 8%;
+  flex-shrink: 0; /* Para que la imagen no se deforme */
+}
+
+.medalla-info div {
+  display: flex;
   flex-direction: column;
-  gap: 3px;
+  justify-content: center;
+  height: 100%; /* Asegura que los textos se alineen con la imagen */
 }
 
 img {
-  max-width: 50px;
-  height: auto;
-  border-radius: 10px;
+  max-width: 5vw;
+  min-width: 1vw;
+  border-radius: 8%;
+}
+
+h1 {
+  font-size: 2vw;
+  margin-bottom: 3vh;
+  color: #7f5af0;
 }
 
 h3 {
-  font-size: 1.1em;
-  margin-top: 3px;
+  font-size: 1.5vw;
+  margin: 0;
   color: #333;
 }
 
 p {
-  font-size: 0.7em;
+  font-size: 1vw;
+  margin: 0;
   color: #666;
-  margin-top: 2px;
 }
 
-#check {
-  height: 4vh;
-  margin-left: 20%;
+#check,
+#invisible {
+  height: 3vh;
+  margin-left: 2vw;
+}
+
+#todo {
+  max-height: 80vh;
 }
 </style>

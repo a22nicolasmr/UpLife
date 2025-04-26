@@ -56,7 +56,7 @@ s
       </div>
     </div>
     <div class="resultado">
-      <p>Índice de Masa Corporal (IMC)</p>
+      <p id="indice">Índice de Masa Corporal (IMC)</p>
       <div class="valor-imc">{{ imc.toFixed(1) }}</div>
       <div class="etiqueta">{{ estadoIMC }}</div>
       <div class="barra-imc">
@@ -74,27 +74,31 @@ s
 </template>
 
 <style scoped>
+#indice {
+  font-size: 0.8em;
+}
 .imc-wrapper {
   display: flex;
-  gap: 20px;
-  align-items: stretch; /* <-- hace que ambos lados tengan misma altura */
+  gap: 6%;
+  align-items: stretch;
   color: white;
-  height: 31%;
+  height: 27%;
+  margin-bottom: 25%;
 }
 
 .inputs {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 25%;
   flex: 1;
-  height: 100%; /* <-- clave para que iguale a .resultado */
+  height: 55%;
 }
 
 .input-box {
-  flex: 1; /* <-- reparte el espacio entre los dos */
+  flex: 1;
   background-color: #ffe5b4;
-  padding: 16px;
-  border-radius: 20px 0 0 20px;
+  padding: 10%;
+  border-radius: 10% 0 0 10%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -106,51 +110,49 @@ s
 }
 .resultado {
   background-color: #2d2d2d;
-  border-radius: 0 20px 20px 0;
-  padding: 20px;
-  flex: none;
-  width: 230px; /* <-- ajustá el ancho al deseado */
+  border-radius: 0 10% 10% 0;
+  padding: 6%;
+  width: 40%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   text-align: center;
+  height: 135%;
 }
 
 .valor-imc {
-  font-size: 32px;
+  font-size: 1.5em;
   font-weight: bold;
-  margin: 10px 0;
 }
 
 .etiqueta {
-  background-color: #b2f2bb;
-  padding: 5px 10px;
-  border-radius: 12px;
+  background-color: #47c758;
+  padding: 1%;
+  border-radius: 1.2vh;
   display: inline-block;
   font-weight: bold;
 }
 
 .barra-imc {
-  height: 10px;
+  height: 40px;
   background: linear-gradient(to right, #00b4d8, #90e0ef, #ffe066, #ff6b6b);
-  border-radius: 10px;
+  border-radius: 5em;
   position: relative;
-  margin: 10px 0;
+  margin: 2vh 0;
   width: 100%;
 }
 
 .indicador {
   position: absolute;
-  top: -5px;
-  width: 10px;
-  height: 20px;
+  top: -0.5vh;
+  width: 0.5vw;
+  height: 1.5vh;
   background-color: red;
-  border-radius: 3px;
+  border-radius: 4vh;
 }
 .valores {
   display: flex;
   justify-content: space-between;
-  font-size: 12px;
+  font-size: 2vh;
   color: #ccc;
 }
 </style>
