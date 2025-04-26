@@ -108,29 +108,15 @@ export default {
           @change="subirImagen"
         />
         <h2>Datos do usuario</h2>
-        <p>
-          Xénero: <strong>{{ xenero }}</strong>
-        </p>
-        <p>
-          Altura: <strong>{{ altura }} cm</strong>
-        </p>
-        <p>
-          Peso: <strong>{{ peso }} kg</strong>
-        </p>
-        <p>
-          Obxectivo: <strong>{{ obxectivo }}</strong>
-        </p>
-        <p>
-          Actividade: <strong>{{ actividade }}</strong>
-        </p>
-        <p>
-          Idade: <strong>{{ idade }} anos</strong>
-        </p>
-        <p>
-          Calorías diarias: <strong>{{ calorias }} kcal</strong>
-        </p>
-        <p>
-          Cantidade de auga diaria: <strong>{{ auga }} ml</strong>
+        <p><strong>Xénero:</strong> {{ xenero }}</p>
+        <p><strong>Altura:</strong> {{ altura }} cm</p>
+        <p><strong>Peso:</strong> {{ peso }} kg</p>
+        <p><strong>Obxectivo:</strong> {{ obxectivo }}</p>
+        <p><strong>Actividade:</strong> {{ actividade }}</p>
+        <p><strong>Idade:</strong> {{ idade }} anos</p>
+        <p><strong>Calorías diarias:</strong> {{ calorias }} kcal</p>
+        <p id="ultimoP">
+          <strong>Cantidad de auga diaria:</strong> {{ auga }} ml
         </p>
       </div>
       <div class="calculadora">
@@ -142,8 +128,8 @@ export default {
 
 <style scoped>
 img {
-  height: 8%;
-  width: 6%;
+  height: 10%;
+  width: 10%;
   border-radius: 50%;
 }
 h2 {
@@ -180,10 +166,17 @@ body {
   display: flex;
   flex-direction: column;
   gap: 2%;
+  padding-bottom: 5%; /* Agregado para más espacio abajo */
+  margin-bottom: 2%;
+  height: 86.3vh;
+}
+
+#ultimoP {
+  margin-bottom: 2%; /* Añadido margen para separación adicional */
 }
 
 .datos p {
-  margin: 1% 0;
+  margin: 0.8% 0;
   line-height: 20%;
 }
 

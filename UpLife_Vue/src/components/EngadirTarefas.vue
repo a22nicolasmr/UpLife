@@ -93,12 +93,12 @@ export default {
 <style scoped>
 .engadir-container {
   background-color: black;
-  padding: 40px;
+  padding: 7%;
   border-radius: 12px;
-  max-width: 500px;
   margin: auto;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
   text-align: left;
+  height: 88%;
 }
 
 h2 {
@@ -108,38 +108,34 @@ h2 {
 
 .data {
   color: white;
-  margin-bottom: 15px;
+  margin-bottom: 4%;
   font-weight: 500;
 }
 
-.formulario {
-  display: flex;
-  flex-direction: column;
-}
-
 label {
-  margin: 10px 0 5px;
+  margin: 3% 0 1%;
   font-weight: 500;
   color: white;
 }
 
 input {
-  padding: 10px;
+  padding: 3%;
   border-radius: 8px;
   border: 1px solid #ddd;
   font-size: 14px;
+  width: 94%;
 }
 
 button {
-  margin-top: 20px;
+  padding: 3%;
   background-color: #4880ff;
   color: white;
   border: none;
-  padding: 12px;
   border-radius: 8px;
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  width: 100%;
 }
 
 button:hover {

@@ -121,8 +121,8 @@ export default {
     <Calculador
       @updateAltura="actualizarAltura"
       @updatePeso="actualizarPeso"
-    ></Calculador>
-    <hr />
+    ></Calculador
+    ><br />
     <h3>Calculadora de Auga e Calorias</h3>
     <form action="">
       <label for="inputXenero">Xénero</label>

@@ -248,5 +248,6 @@ p {
 
 #todo {
   max-height: 80vh;
+  margin-right: 4%;
 }
 </style>

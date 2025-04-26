@@ -9,6 +9,10 @@ export default {
   },
   data() {
     return {
+      rTarefas: 0,
+      rExercicios: 0,
+      rComidas: 0,
+      rAuga: 0,
       componenteActivo: "lista",
       dataSeleccionada: new Date(),
       attrs: [
@@ -30,15 +34,75 @@ export default {
         }
       });
     },
+    actualizarDatasConTarefas(datas) {
+      // Creamos novos atributos para o calendario
+      const tarefasAttrs = datas.map((dataISO) => ({
+        key: `tarefa-${dataISO}`,
+        highlight: {
+          color: "#add8e6", // azul claro
+          fillMode: "outline",
+        },
+        dates: new Date(dataISO),
+      }));
+
+      this.attrs = [
+        {
+          key: "today",
+          highlight: true,
+          dates: new Date(),
+        },
+        ...tarefasAttrs,
+      ];
+    },
   },
 };
 </script>
 
 <template>
-  <div class="tarefas-wrapper">
+  <div id="divXeral">
     <h1 class="titulo">Tarefas</h1>
+    <div class="divsArriba">
+      <div id="izquierda">
+        <div>
+          <p>Racha de tarefas</p>
+          <p>{{ rTarefas }}</p>
+        </div>
+        <div>
+          <img src="/imaxes/task.png" alt="Icona tarefas" />
+        </div>
+      </div>
 
-    <!-- Selector de pestañas -->
+      <div id="exercicio">
+        <div>
+          <p>Racha de exercicios</p>
+          <p>{{ rExercicios }}</p>
+        </div>
+        <div>
+          <img src="/imaxes/exercise.png" alt="Icona exercicios" />
+        </div>
+      </div>
+
+      <div id="comidas">
+        <div>
+          <p>Racha de comidas</p>
+          <p>{{ rComidas }}</p>
+        </div>
+        <div>
+          <img src="/imaxes/diet.png" alt="Icona comidas" />
+        </div>
+      </div>
+
+      <div id="auga">
+        <div>
+          <p>Racha de auga</p>
+          <p>{{ rAuga }}</p>
+        </div>
+        <div>
+          <img src="/imaxes/water-bottle.png" alt="Icona auga" />
+        </div>
+      </div>
+    </div>
+
     <div class="tarxetas">
       <div
         class="tarxeta"
@@ -67,7 +131,9 @@ export default {
           v-if="componenteActivo === 'lista'"
           ref="listaTarefasRef"
           :dataSeleccionada="dataSeleccionada"
+          @datas-con-tarefas="actualizarDatasConTarefas"
         />
+
         <EngadirTarefas
           v-if="componenteActivo === 'engadir'"
           :dataSeleccionada="dataSeleccionada"
@@ -78,10 +144,43 @@ export default {
 </template>
 
 <style>
+#izquierda,
+#exercicio,
+#auga,
+#comidas {
+  display: flex;
+  padding: 1%;
+  padding-right: 2%;
+}
+#izquierda p:nth-of-type(2),
+#exercicio p:nth-of-type(2),
+#auga p:nth-of-type(2),
+#comidas p:nth-of-type(2) {
+  font-size: x-large;
+}
+#divXeral {
+  height: 100%;
+  overflow-y: auto;
+}
+
+.divsArriba img {
+  height: 8vh;
+  width: 8vh;
+  padding-top: 60%;
+}
+.divsArriba {
+  display: flex;
+  flex: 1;
+  justify-content: space-between;
+  margin-right: 4%;
+  margin-bottom: 2%;
+}
+.divsArriba > div {
+  background-color: white;
+  border-radius: 5%;
+}
 .tarefas-wrapper {
-  padding: 40px;
   background-color: #f5f6f8;
-  min-height: 100vh;
 }
 
 .titulo {
@@ -94,15 +193,14 @@ export default {
 .tarxetas {
   display: flex;
   justify-content: center;
-  gap: 20px;
-  margin-bottom: 20px;
+  margin-left: 34%;
 }
 
 .tarxeta {
   background-color: #4880ff;
   color: white;
   padding: 12px 30px;
-  border-radius: 12px;
+  border-radius: 1vh 1vh 0 0;
   cursor: pointer;
   font-weight: bold;
   font-size: 16px;
@@ -119,42 +217,46 @@ export default {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  gap: 0;
-  margin: 0 auto;
-  max-width: 1100px;
   background-color: white;
-  border-radius: 12px;
+  margin-bottom: 20vh;
+  border-radius: 2%;
   overflow: hidden;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  margin-right: 4%;
+  height: 75%;
 }
 
 /* Calendario */
 .calendario {
   flex: 1;
-  padding: 30px;
   background-color: white;
   border-right: 1px solid #eee;
   box-sizing: border-box;
+  height: 100%;
 }
-
+h1 {
+  display: flex;
+  align-self: flex-start;
+  font-size: 2vw;
+  margin-bottom: 3vh;
+  color: #7f5af0;
+}
 /* Compoñente lateral */
 .lateral {
   width: 40%;
   background-color: #1c1c1c;
   color: white;
-  padding: 30px;
   box-sizing: border-box;
+  padding: 2%;
 }
 
 /* v-calendar estilos */
 .vc-container {
   width: 100% !important;
   font-size: 18px !important;
+  padding: 2%;
 }
 
-.vc-pane {
-  min-height: 420px;
-}
 .vc-week {
   padding-top: 25px;
 }

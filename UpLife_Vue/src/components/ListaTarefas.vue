@@ -35,6 +35,10 @@ export default {
     },
   },
   methods: {
+    emitirDatasConTarefas() {
+      const datasConTarefas = Object.keys(this.tarefasPorData);
+      this.$emit("datas-con-tarefas", datasConTarefas);
+    },
     scrollAtaData(data) {
       this.$nextTick(() => {
         const dataISO = new Date(data).toLocaleDateString("en-CA");
@@ -77,6 +81,7 @@ export default {
         }
 
         this.tarefasPorData = agrupadas;
+        this.emitirDatasConTarefas();
       } catch (error) {
         console.error("Erro cargando tarefas:", error);
       }
@@ -96,6 +101,7 @@ export default {
           // Si después de filtrar el array está vacío, lo eliminamos del objeto
           if (this.tarefasPorData[data].length === 0) {
             delete this.tarefasPorData[data];
+            this.emitirDatasConTarefas();
           }
         }
       } catch (error) {
@@ -173,21 +179,20 @@ export default {
 .lista-container {
   color: white;
   background-color: black;
-  padding: 20px;
+  padding: 5%;
   border-radius: 12px;
-  max-height: 400px;
   overflow: hidden;
 }
 
 .scroll-area {
-  max-height: 300px;
+  max-height: 50vh;
   overflow-y: auto;
-  padding-right: 10px;
+  padding-right: 2%;
 }
 
 .data-header {
   color: #7f5af0;
-  margin-top: 15px;
+  margin-top: 4%;
 }
 
 ul {
@@ -201,20 +206,20 @@ ul {
   align-items: center;
   justify-content: space-between;
   background-color: #222;
-  padding: 10px;
+  padding: 3%;
   border-radius: 8px;
-  margin-bottom: 10px;
+  margin-bottom: 3%;
 }
 
 .tarefa-item span {
   flex: 1;
-  margin-left: 10px;
+  margin-left: 4%;
 }
 
 .tarefa-item button {
   background: none;
   border: none;
-  font-size: 18px;
+  font-size: 1.5em;
   color: red;
   cursor: pointer;
 }
