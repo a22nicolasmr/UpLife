@@ -9,6 +9,7 @@ export default {
   data() {
     return {
       tarefasPorData: {},
+      tarefasConHora: {},
     };
   },
   watch: {
@@ -20,15 +21,6 @@ export default {
           this.$nextTick(() => {
             const el = this.$refs["data-" + dataISO];
             const target = Array.isArray(el) ? el[0] : el;
-
-            if (target && scrollContainer) {
-              const targetRect = target.getBoundingClientRect();
-              const containerRect = scrollContainer.getBoundingClientRect();
-              const offset =
-                targetRect.top - containerRect.top + scrollContainer.scrollTop;
-
-              scrollContainer.scrollTo({ top: offset, behavior: "smooth" });
-            }
           });
         });
       },
@@ -73,6 +65,12 @@ export default {
 
         if (!response.ok) throw new Error("Erro ao cargar tarefas");
         const tarefas = await response.json();
+        console.log(tarefas);
+
+        const hoyISO = new Date().toISOString().split("T")[0];
+        this.tarefasConHora = tarefas.filter(
+          (t) => t.hora != null && t.data === hoyISO
+        );
 
         const agrupadas = {};
         for (const tarefa of tarefas) {
@@ -81,7 +79,8 @@ export default {
         }
 
         this.tarefasPorData = agrupadas;
-        this.emitirDatasConTarefas();
+
+        this.emitirDatasConTarefas(this.tarefasConHora);
       } catch (error) {
         console.error("Erro cargando tarefas:", error);
       }
@@ -98,7 +97,7 @@ export default {
             (t) => t.id_tarefa !== id
           );
 
-          // Si después de filtrar el array está vacío, lo eliminamos del objeto
+          // se o array esta vacío, eliminar o obxecto
           if (this.tarefasPorData[data].length === 0) {
             delete this.tarefasPorData[data];
             this.emitirDatasConTarefas();
@@ -182,6 +181,9 @@ export default {
   padding: 5%;
   border-radius: 12px;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 90%;
 }
 
 .scroll-area {

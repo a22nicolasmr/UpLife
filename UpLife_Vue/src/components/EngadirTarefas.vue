@@ -58,6 +58,7 @@ export default {
 
         this.tarefa = "";
         this.hora = "";
+        window.location.reload();
       } catch (error) {
         console.error("Erro:", error);
       }
@@ -91,6 +92,9 @@ export default {
 </template>
 
 <style scoped>
+.formulario {
+  padding-top: 0;
+}
 .engadir-container {
   background-color: black;
   padding: 7%;
@@ -98,7 +102,8 @@ export default {
   margin: auto;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
   text-align: left;
-  height: 88%;
+  display: flex;
+  flex-direction: column;
 }
 
 h2 {
@@ -108,7 +113,6 @@ h2 {
 
 .data {
   color: white;
-  margin-bottom: 4%;
   font-weight: 500;
 }
 

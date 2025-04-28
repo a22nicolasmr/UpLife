@@ -93,6 +93,7 @@ export default {
 
 <template>
   <div class="container">
+    <h1>Perfil</h1>
     <div class="perfil-layout">
       <div class="datos">
         <h2>Detalles da conta</h2>
@@ -127,29 +128,40 @@ export default {
 </template>
 
 <style scoped>
+p {
+  font-size: large;
+}
 img {
   height: 10%;
-  width: 10%;
+  width: 8%;
   border-radius: 50%;
+}
+h1 {
+  font-size: xx-large;
 }
 h2 {
   color: #7f5af0;
+  font-size: x-large;
 }
 
 html,
 body {
   height: 100vh;
 }
+
 .container {
   background-color: #f2f2f2;
-  height: 48.5%;
+  display: flex;
+  max-height: 100%;
+  flex-direction: column;
+  margin-left: 1%;
+  margin-right: 1%;
 }
 
 .perfil-layout {
-  margin-top: 1%;
-  max-height: 178%;
   display: flex;
   flex-direction: row;
+  max-height: 75vh;
   justify-content: center;
   align-items: stretch;
   gap: 0; /* sin espacio explícito, el color los separa visualmente */
@@ -167,8 +179,6 @@ body {
   flex-direction: column;
   gap: 2%;
   padding-bottom: 5%; /* Agregado para más espacio abajo */
-  margin-bottom: 2%;
-  height: 86.3vh;
 }
 
 #ultimoP {

@@ -43,8 +43,7 @@ watch(
   align-items: center;
   position: fixed;
   top: 0;
-  left: 13%;
-  width: calc(100% - 13%);
+  width: 100%;
 }
 
 .usuario-info {
@@ -54,8 +53,8 @@ watch(
 }
 
 .usuario-imagen {
-  width: 8vh;
-  height: 8vh;
+  width: 7vh;
+  height: 7vh;
   border-radius: 50%;
   margin-right: 2vh;
 }

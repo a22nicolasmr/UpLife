@@ -159,8 +159,11 @@ export default {
   font-size: x-large;
 }
 #divXeral {
-  height: 100%;
+  display: flex;
+  flex-direction: column;
+  height: 85%;
   overflow-y: auto;
+  margin-left: 4%;
 }
 
 .divsArriba img {
@@ -170,7 +173,7 @@ export default {
 }
 .divsArriba {
   display: flex;
-  flex: 1;
+  flex: 0.5;
   justify-content: space-between;
   margin-right: 4%;
   margin-bottom: 2%;
@@ -193,7 +196,7 @@ export default {
 .tarxetas {
   display: flex;
   justify-content: center;
-  margin-left: 34%;
+  margin-left: 28.3%;
 }
 
 .tarxeta {
@@ -203,7 +206,7 @@ export default {
   border-radius: 1vh 1vh 0 0;
   cursor: pointer;
   font-weight: bold;
-  font-size: 16px;
+  font-size: medium;
   transition: 0.3s ease;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
@@ -218,21 +221,17 @@ export default {
   flex-direction: row;
   justify-content: center;
   background-color: white;
-  margin-bottom: 20vh;
   border-radius: 2%;
   overflow: hidden;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
   margin-right: 4%;
-  height: 75%;
 }
 
 /* Calendario */
 .calendario {
   flex: 1;
   background-color: white;
-  border-right: 1px solid #eee;
   box-sizing: border-box;
-  height: 100%;
 }
 h1 {
   display: flex;
@@ -247,7 +246,6 @@ h1 {
   background-color: #1c1c1c;
   color: white;
   box-sizing: border-box;
-  padding: 2%;
 }
 
 /* v-calendar estilos */
@@ -255,18 +253,17 @@ h1 {
   width: 100% !important;
   font-size: 18px !important;
   padding: 2%;
+  border: none !important;
 }
 
 .vc-week {
-  padding-top: 25px;
+  padding-top: 3.5%;
 }
 .vc-weekdays {
-  padding-top: 25px;
+  padding-top: 1%;
 }
 .vc-day-content {
   font-size: large !important;
-  height: 48px;
-  width: 48px;
   margin: 5 auto !important;
   display: flex;
   justify-content: center;

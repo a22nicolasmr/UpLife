@@ -1,11 +1,46 @@
 <script>
 import BarraNavegacion from "./components/BarraNavegacion.vue";
 import BarraSuperior from "./components/BarraSuperior.vue";
+import VentaAviso from "./components/VentaAviso.vue";
+import VentaPechar from "./components/VentaPechar.vue";
+import { useUsuarioStore } from "@/stores/useUsuario";
 
 export default {
+  data() {
+    return {
+      modalActivo: false,
+      avisoActivo: false,
+      tarefasConHora: [],
+      intervalId: null,
+    };
+  },
   components: {
     BarraNavegacion,
     BarraSuperior,
+    VentaPechar,
+    VentaAviso,
+  },
+  methods: {
+    toggleModal() {
+      this.modalActivo = !this.modalActivo;
+    },
+    emitirDatasConTarefas(tarefas) {
+      this.tarefasConHora = tarefas;
+    },
+    comprobarHoras() {
+      const agora = new Date();
+      const horaActual = agora.toTimeString().slice(0, 5); // "HH:MM"
+      console.log(this.tarefasConHora);
+
+      // Recorrer tarefas
+      for (const tarefa of this.tarefasConHora) {
+        console.log("Hora tarefa", tarefa.hora);
+        if (tarefa.hora && tarefa.hora.slice(0, 5) === horaActual) {
+          this.avisoActivo = true;
+          return; // Solo activar una vez por coincidencia
+        }
+      }
+    },
   },
   computed: {
     rutaActual() {
@@ -22,15 +57,22 @@ export default {
     nombreUsuario() {
       return this.$route.query.nome;
     },
-    mounted() {
-      const usuarioStore = useUsuarioStore();
-      usuarioStore.cargarDesdeStorage(); // Cargar los datos del usuario
+  },
+  mounted() {
+    // Cada 30 segundos (o 10s para testear más rápido)
+    // this.intervalId = setInterval(this.comprobarHoras, 1000);
 
-      // esperar a que os datos se carguen
-      if (!usuarioStore.id || !usuarioStore.nome) {
-        this.$router.push("/formularios/inicio");
-      }
-    },
+    // Comprobar también que el usuario esté cargado
+    const usuarioStore = useUsuarioStore();
+    usuarioStore.cargarDesdeStorage();
+    if (!usuarioStore.id || !usuarioStore.nome) {
+      this.$router.push("/formularios/inicio");
+    }
+  },
+  beforeUnmount() {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+    }
   },
 };
 </script>
@@ -43,10 +85,22 @@ export default {
         :nome="nombreUsuario"
         :key="nombreUsuario"
       ></BarraSuperior>
-      <BarraNavegacion v-if="mostrarBarra" :rutaActual="rutaActual" />
+      <BarraNavegacion
+        v-if="mostrarBarra"
+        :rutaActual="rutaActual"
+        @toggleModal="toggleModal"
+      />
       <div :class="['vista', { 'sin-barras': !mostrarBarra }]">
-        <router-view />
+        <router-view @emitirDatasConTarefas="emitirDatasConTarefas" />
       </div>
+      <VentaPechar
+        v-show="modalActivo"
+        @pecharModal="toggleModal"
+      ></VentaPechar>
+      <VentaAviso
+        v-show="avisoActivo"
+        :tarefasConHora="tarefasConHora"
+      ></VentaAviso>
     </div>
   </body>
 </template>

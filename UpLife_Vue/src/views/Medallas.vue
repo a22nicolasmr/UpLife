@@ -149,6 +149,7 @@ export default {
 <style scoped>
 .general {
   width: 95%;
+  height: 70%;
   padding: 2vw;
   box-sizing: border-box;
   background-color: white;
@@ -156,7 +157,6 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 2vh auto;
 }
 
 .medallas-container {
@@ -165,6 +165,7 @@ export default {
   gap: 2vw;
   width: 100%;
   justify-content: center;
+  height: 100%;
 }
 
 .column {
@@ -223,7 +224,7 @@ img {
 }
 
 h1 {
-  font-size: 2vw;
+  font-size: x-large;
   margin-bottom: 3vh;
   color: #7f5af0;
 }
@@ -247,7 +248,9 @@ p {
 }
 
 #todo {
-  max-height: 80vh;
-  margin-right: 4%;
+  display: flex;
+  flex-direction: column;
+  margin-left: 2%;
+  height: 100%;
 }
 </style>

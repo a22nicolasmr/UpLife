@@ -75,23 +75,22 @@ s
 
 <style scoped>
 #indice {
-  font-size: 0.8em;
+  font-size: 0.9em;
+  margin-top: 12%;
 }
 .imc-wrapper {
   display: flex;
   gap: 6%;
   align-items: stretch;
   color: white;
-  height: 27%;
-  margin-bottom: 25%;
+  height: 40%;
 }
 
 .inputs {
   display: flex;
   flex-direction: column;
-  gap: 25%;
   flex: 1;
-  height: 55%;
+  gap: 5%;
 }
 
 .input-box {
@@ -116,7 +115,6 @@ s
   display: flex;
   flex-direction: column;
   text-align: center;
-  height: 135%;
 }
 
 .valor-imc {
@@ -130,20 +128,20 @@ s
   border-radius: 1.2vh;
   display: inline-block;
   font-weight: bold;
+  margin-bottom: 10%;
 }
 
 .barra-imc {
-  height: 40px;
+  height: 5%;
   background: linear-gradient(to right, #00b4d8, #90e0ef, #ffe066, #ff6b6b);
   border-radius: 5em;
   position: relative;
-  margin: 2vh 0;
   width: 100%;
 }
 
 .indicador {
   position: absolute;
-  top: -0.5vh;
+  top: -0.3vh;
   width: 0.5vw;
   height: 1.5vh;
   background-color: red;

@@ -1,11 +1,17 @@
 <script>
 export default {
+  data() {
+    return {
+      modal: false,
+    };
+  },
   // cambiar ruta actual segun onde se atope o usuario
   computed: {
     rutaActual() {
       return this.$route.path;
     },
   },
+  methods: {},
 };
 </script>
 
@@ -67,7 +73,7 @@ export default {
         </li>
         <li
           :class="{ activo: rutaActual === '/formularios/rexistro' }"
-          @click="$router.push('/formularios/rexistro')"
+          @click="$emit('toggleModal')"
         >
           Pechar sesión
         </li>
@@ -82,24 +88,23 @@ nav {
   padding: 1% 1%;
   display: flex;
   flex-direction: column;
-  height: 96%;
-  min-width: 11%;
+  height: 98%;
   border-right: 1px solid #ccc;
   position: fixed;
-  width: 11%;
 }
 
 .menu-superior {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  font-size: large;
 }
 
 .menu-inferior {
   display: flex;
   flex-direction: column;
   margin-top: auto;
+  font-size: large;
 }
 
 ul {
