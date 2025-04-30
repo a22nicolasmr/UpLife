@@ -143,12 +143,14 @@ label {
   color: white;
 }
 
-input {
+input,
+select {
   padding: 3%;
   border-radius: 8px;
   border: 1px solid #ddd;
-  font-size: 14px;
-  width: 94%;
+  font-size: medium;
+  width: 100%;
+  box-sizing: border-box; /* 🔹 asegura que el padding no sume al width */
 }
 
 button {
@@ -161,6 +163,7 @@ button {
   cursor: pointer;
   transition: background-color 0.3s ease;
   width: 100%;
+  box-sizing: border-box; /* 🔹 asegura que el padding no sume al width */
 }
 
 button:hover {

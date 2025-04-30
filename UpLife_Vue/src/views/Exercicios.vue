@@ -87,6 +87,7 @@ export default {
                 <th>Categoría</th>
                 <th>Repeticións</th>
                 <th>Peso</th>
+                <th>Eliminar</th>
               </tr>
             </thead>
             <tbody>
@@ -98,6 +99,7 @@ export default {
                 <td>{{ nomeCategoriaPorId(exercicio.categoria) }}</td>
                 <td>{{ exercicio.repeticions }}</td>
                 <td>{{ exercicio.peso }} kg</td>
+                <td><img src="/imaxes/trash.png" alt="icona borrar" /></td>
               </tr>
               <tr v-if="exerciciosHoxe.length === 0">
                 <td colspan="4">Non hai exercicios rexistrados para hoxe.</td>

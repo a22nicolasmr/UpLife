@@ -89,9 +89,9 @@ export default {
 
 <template>
   <div class="engadir-container">
-    <h2>Engadir exercicio</h2>
-
     <div class="formulario">
+      <h2>Engadir exercicio</h2>
+
       <label for="categoria">Categoría</label>
       <select v-model="categoriaSeleccionada" id="categoria">
         <option disabled value="">Selecciona unha categoría</option>
@@ -125,8 +125,26 @@ export default {
 </template>
 
 <style scoped>
+.engadir-container {
+  height: 100%;
+  width: 100%;
+  overflow-y: auto;
+}
+h2 {
+  color: #7f5af0;
+}
 p,
 label {
   color: white;
+}
+input,
+select {
+  padding: 3%;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: medium;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 5%;
 }
 </style>
