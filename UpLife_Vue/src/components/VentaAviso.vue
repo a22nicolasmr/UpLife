@@ -1,23 +1,55 @@
 <script>
 export default {
   props: {
-    tarefasConHora: Object,
+    tarefaActual: Object,
   },
   data() {
     return {};
   },
   mounted() {},
-  methods: {},
+  methods: {
+    async posporTarefa() {
+      try {
+        const [horas, minutos] = this.tarefaActual.hora.split(":").map(Number);
+        const tarefaDate = new Date();
+        tarefaDate.setHours(horas, minutos + 10);
+
+        const novaHora = tarefaDate.toTimeString().slice(0, 5);
+
+        const payload = {
+          hora: novaHora,
+        };
+
+        const response = await fetch(
+          `http://localhost:8001/api/tarefas/${this.tarefaActual.id_tarefa}/`,
+          {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload),
+          }
+        );
+
+        if (!response.ok) throw new Error("Erro ao pospor tarefa");
+
+        console.log("Tarefa posposta:", await response.json());
+        window.location.reload();
+      } catch (error) {
+        console.error("Erro ao pospor tarefa:", error);
+      }
+    },
+  },
 };
 </script>
 <template>
   <div class="modal-mask">
     <div class="modal-container">
-      <h1>Pechar sesión?</h1>
-      <h2>Algo</h2>
+      <h1>{{ tarefaActual.hora }}</h1>
+      <h1>{{ tarefaActual.titulo }}</h1>
       <div class="buttons">
-        <button id="pechar">Pechar</button>
-        <button @click="$emit('pecharModal')" id="cancelar">Cancelar</button>
+        <button @click="$emit('cerrarAviso')" id="aceptar">Aceptar</button>
+        <button id="posponher" @click="posporTarefa">Pospor 10 minutos</button>
       </div>
     </div>
   </div>
@@ -27,8 +59,8 @@ export default {
   display: flex;
   justify-content: space-between;
 }
-#pechar,
-#cancelar {
+#posponher,
+#aceptar {
   padding: 10px 20px;
   font-size: 1rem;
   border: none;
@@ -37,12 +69,12 @@ export default {
   transition: background-color 0.3s ease;
 }
 
-#pechar {
-  background-color: red;
+#posponher {
+  background-color: lightgrey;
   color: white;
 }
 
-#cancelar {
+#aceptar {
   background-color: #4880ff;
   color: white;
 }

@@ -29,10 +29,31 @@ export default {
         })
         .toUpperCase();
     },
+    minHora() {
+      const now = new Date();
+      const hojeISO = now.toISOString().split("T")[0];
+      const seleccionadaISO = this.dataSeleccionada.toISOString().split("T")[0];
+
+      if (seleccionadaISO === hojeISO) {
+        const horas = now.getHours().toString().padStart(2, "0");
+        const minutos = now.getMinutes().toString().padStart(2, "0");
+        return `${horas}:${minutos}`;
+      }
+
+      return "00:00";
+    },
   },
   methods: {
     async engadirTarefa() {
-      console.log(this.id);
+      if (
+        this.dataSeleccionada.toDateString() === new Date().toDateString() &&
+        this.hora <= this.minHora
+      ) {
+      } else if (hora == "") {
+      } else {
+        alert("Non podes engadir unha tarefa para unha hora pasada de hoxe.");
+        return;
+      }
 
       const payload = {
         hora: this.hora === "" ? null : this.hora,
@@ -76,7 +97,7 @@ export default {
 
     <div class="formulario">
       <label for="hora">Hora</label>
-      <input type="time" id="hora" v-model="hora" />
+      <input type="time" id="hora" v-model="hora" :min="minHora" />
 
       <label for="tarefa">Descrición da tarefa</label>
       <input

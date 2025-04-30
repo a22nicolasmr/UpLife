@@ -13,6 +13,7 @@ export default {
       rExercicios: 0,
       rComidas: 0,
       rAuga: 0,
+      dataPasada: false,
       componenteActivo: "lista",
       dataSeleccionada: new Date(),
       attrs: [
@@ -25,7 +26,24 @@ export default {
     };
   },
   methods: {
+    reenviarTarefasConHora(tarefas) {
+      this.$emit("emitirDatasConTarefas", tarefas);
+    },
+    getFechasDeshabilitadas({ date }) {
+      const hoy = new Date();
+      hoy.setHours(0, 0, 0, 0);
+
+      const comparar = new Date(date);
+      comparar.setHours(0, 0, 0, 0);
+
+      return comparar < hoy;
+    },
     seleccionarData(dia) {
+      const hoy = new Date();
+      hoy.setHours(0, 0, 0, 0); // Elimina horas para comparar solo la fecha
+
+      if (dia.date < hoy) return; // Evita selección si es día pasado
+
       this.dataSeleccionada = dia.date;
 
       this.$nextTick(() => {
@@ -34,8 +52,8 @@ export default {
         }
       });
     },
+
     actualizarDatasConTarefas(datas) {
-      // Creamos novos atributos para o calendario
       const tarefasAttrs = datas.map((dataISO) => ({
         key: `tarefa-${dataISO}`,
         highlight: {
@@ -52,6 +70,15 @@ export default {
           dates: new Date(),
         },
         ...tarefasAttrs,
+      ];
+    },
+  },
+  computed: {
+    disabledDates() {
+      return [
+        {
+          end: new Date(new Date().setDate(new Date().getDate() - 1)),
+        },
       ];
     },
   },
@@ -120,10 +147,14 @@ export default {
       </div>
     </div>
 
-    <!-- Layout calendario + sección lateral -->
     <div class="tarefas-layout">
       <div class="calendario">
-        <vc-calendar :attributes="attrs" @dayclick="seleccionarData" />
+        <vc-calendar
+          :attributes="attrs"
+          @dayclick="seleccionarData"
+          :min-date="new Date()"
+          :disabled-dates="disabledDates"
+        />
       </div>
 
       <div class="lateral">
@@ -131,7 +162,7 @@ export default {
           v-if="componenteActivo === 'lista'"
           ref="listaTarefasRef"
           :dataSeleccionada="dataSeleccionada"
-          @datas-con-tarefas="actualizarDatasConTarefas"
+          @datas-con-tarefas="reenviarTarefasConHora"
         />
 
         <EngadirTarefas

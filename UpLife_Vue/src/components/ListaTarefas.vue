@@ -27,9 +27,8 @@ export default {
     },
   },
   methods: {
-    emitirDatasConTarefas() {
-      const datasConTarefas = Object.keys(this.tarefasPorData);
-      this.$emit("datas-con-tarefas", datasConTarefas);
+    emitirDatasConTarefas(tarefasConHora) {
+      this.$emit("datas-con-tarefas", tarefasConHora);
     },
     scrollAtaData(data) {
       this.$nextTick(() => {
@@ -65,7 +64,6 @@ export default {
 
         if (!response.ok) throw new Error("Erro ao cargar tarefas");
         const tarefas = await response.json();
-        console.log(tarefas);
 
         const hoyISO = new Date().toISOString().split("T")[0];
         this.tarefasConHora = tarefas.filter(
@@ -79,7 +77,6 @@ export default {
         }
 
         this.tarefasPorData = agrupadas;
-
         this.emitirDatasConTarefas(this.tarefasConHora);
       } catch (error) {
         console.error("Erro cargando tarefas:", error);
