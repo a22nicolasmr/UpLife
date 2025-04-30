@@ -58,6 +58,8 @@ class Auga(models.Model):
     cantidade=models.IntegerField()
     hora=models.TimeField()
     usuario=models.ForeignKey(Usuarios,on_delete=models.CASCADE)
+    data=models.DateField(null=True, blank=True)
+    
 
     def __str__(self):
         return f"cantidade={self.cantidade}, hora={self.hora}, usuario={self.usuario}"
@@ -78,6 +80,7 @@ class Tarefas(models.Model):
     titulo=models.CharField(max_length=255)
     data=models.DateField()
     completado=models.BooleanField()
+    data=models.DateField(null=True, blank=True)
     usuario=models.ForeignKey(Usuarios,on_delete=models.CASCADE)
 
     def __str__(self):
@@ -95,6 +98,7 @@ class Exercicios(models.Model):
     nome=models.CharField(max_length=255)
     repeticions=models.CharField(max_length=10)
     peso=models.FloatField()
+    data=models.DateField(null=True, blank=True)
     usuario=models.ForeignKey(Usuarios,on_delete=models.CASCADE)
     categoria=models.ForeignKey(Categorias,on_delete=models.CASCADE)
 
@@ -118,6 +122,7 @@ class Comidas(models.Model):
     carbohidratos=models.FloatField()
     proteinas=models.FloatField()
     calorias=models.FloatField()
+    data=models.DateField(null=True, blank=True)
     usuario=models.ForeignKey(Usuarios,on_delete=models.CASCADE)
 
     def __str__(self):

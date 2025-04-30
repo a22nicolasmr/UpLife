@@ -28,8 +28,7 @@ class CategoriasSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class ExerciciosSerializer(serializers.ModelSerializer):
-    categoria = CategoriasSerializer()
-    
+    categoria = serializers.PrimaryKeyRelatedField(queryset=Categorias.objects.all())
     class Meta:
         model = Exercicios
         fields = '__all__'
