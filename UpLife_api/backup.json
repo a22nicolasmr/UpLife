@@ -429,6 +429,84 @@
   }
 },
 {
+  "model": "admin.logentry",
+  "pk": 66,
+  "fields": {
+    "action_time": "2025-04-30T10:06:30.465Z",
+    "user": 1,
+    "content_type": 11,
+    "object_id": "1",
+    "object_repr": "nome=Perna",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 67,
+  "fields": {
+    "action_time": "2025-04-30T10:06:36.952Z",
+    "user": 1,
+    "content_type": 11,
+    "object_id": "2",
+    "object_repr": "nome=Brazo",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 68,
+  "fields": {
+    "action_time": "2025-04-30T10:06:53.918Z",
+    "user": 1,
+    "content_type": 11,
+    "object_id": "3",
+    "object_repr": "nome=Core",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 69,
+  "fields": {
+    "action_time": "2025-04-30T10:06:57.784Z",
+    "user": 1,
+    "content_type": 11,
+    "object_id": "4",
+    "object_repr": "nome=Espalda",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 70,
+  "fields": {
+    "action_time": "2025-04-30T10:07:03.129Z",
+    "user": 1,
+    "content_type": 11,
+    "object_id": "5",
+    "object_repr": "nome=Peito",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 71,
+  "fields": {
+    "action_time": "2025-04-30T10:07:28.347Z",
+    "user": 1,
+    "content_type": 12,
+    "object_id": "1",
+    "object_repr": "nome=Exercicio1, repeticions=5x10, peso=20.0, usuario=nome=lupi, nome_usuario=lupi, email=lupi@gmail.com, contrasinal=pbkdf2_sha256$600000$PRQo908qwKQGJ5eoW6WXf4$AHdxJ9VAImwzx0gm7ag2f4KCyQFAkwHDBpoAss",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
   "model": "auth.user",
   "pk": 1,
   "fields": {
@@ -478,7 +556,7 @@
     "nome_usuario": "lupi",
     "email": "lupi@gmail.com",
     "contrasinal": "pbkdf2_sha256$600000$PRQo908qwKQGJ5eoW6WXf4$AHdxJ9VAImwzx0gm7ag2f4KCyQFAkwHDBpoAssFyJtI=",
-    "imaxe_perfil": "avatares/imagen4.png",
+    "imaxe_perfil": "avatares/lunaa_gzPwiYp.jpg",
     "xenero": "Muller",
     "altura": 156,
     "peso": 57,
@@ -642,123 +720,82 @@
 },
 {
   "model": "UpLife_api.tarefas",
-  "pk": 12,
+  "pk": 43,
   "fields": {
-    "hora": "16:04:00",
-    "titulo": "dfg",
-    "data": "2025-04-27",
+    "hora": "10:08:00",
+    "titulo": "asdasd",
     "completado": false,
+    "data": "2025-04-30",
     "usuario": 1
   }
 },
 {
   "model": "UpLife_api.tarefas",
-  "pk": 13,
+  "pk": 44,
   "fields": {
-    "hora": null,
-    "titulo": "s",
-    "data": "2025-04-26",
+    "hora": "10:09:00",
+    "titulo": "asdasd",
     "completado": false,
+    "data": "2025-04-30",
     "usuario": 1
   }
 },
 {
   "model": "UpLife_api.tarefas",
-  "pk": 15,
+  "pk": 45,
   "fields": {
-    "hora": null,
-    "titulo": "sdfsf",
-    "data": "2025-04-26",
+    "hora": "10:28:00",
+    "titulo": "fsd",
     "completado": false,
+    "data": "2025-04-30",
     "usuario": 1
   }
 },
 {
-  "model": "UpLife_api.tarefas",
-  "pk": 16,
+  "model": "UpLife_api.categorias",
+  "pk": 1,
   "fields": {
-    "hora": null,
-    "titulo": "sfdsdf",
-    "data": "2025-04-26",
-    "completado": false,
-    "usuario": 1
+    "nome": "Perna"
   }
 },
 {
-  "model": "UpLife_api.tarefas",
-  "pk": 17,
+  "model": "UpLife_api.categorias",
+  "pk": 2,
   "fields": {
-    "hora": null,
-    "titulo": "sfdsdfsdf",
-    "data": "2025-04-26",
-    "completado": false,
-    "usuario": 1
+    "nome": "Brazo"
   }
 },
 {
-  "model": "UpLife_api.tarefas",
-  "pk": 18,
+  "model": "UpLife_api.categorias",
+  "pk": 3,
   "fields": {
-    "hora": null,
-    "titulo": "sfsfsdf",
-    "data": "2025-04-26",
-    "completado": false,
-    "usuario": 1
+    "nome": "Core"
   }
 },
 {
-  "model": "UpLife_api.tarefas",
-  "pk": 19,
+  "model": "UpLife_api.categorias",
+  "pk": 4,
   "fields": {
-    "hora": null,
-    "titulo": "sfsdfsf",
-    "data": "2025-04-26",
-    "completado": false,
-    "usuario": 1
+    "nome": "Espalda"
   }
 },
 {
-  "model": "UpLife_api.tarefas",
-  "pk": 20,
+  "model": "UpLife_api.categorias",
+  "pk": 5,
   "fields": {
-    "hora": null,
-    "titulo": "sdfsdf",
-    "data": "2025-04-28",
-    "completado": false,
-    "usuario": 1
+    "nome": "Peito"
   }
 },
 {
-  "model": "UpLife_api.tarefas",
-  "pk": 21,
+  "model": "UpLife_api.exercicios",
+  "pk": 1,
   "fields": {
-    "hora": null,
-    "titulo": "sdfsdfs",
-    "data": "2025-04-28",
-    "completado": false,
-    "usuario": 1
-  }
-},
-{
-  "model": "UpLife_api.tarefas",
-  "pk": 22,
-  "fields": {
-    "hora": null,
-    "titulo": "sdfsfdsf",
-    "data": "2025-04-28",
-    "completado": false,
-    "usuario": 1
-  }
-},
-{
-  "model": "UpLife_api.tarefas",
-  "pk": 23,
-  "fields": {
-    "hora": null,
-    "titulo": "sdfsdfsfsd",
-    "data": "2025-04-28",
-    "completado": false,
-    "usuario": 1
+    "nome": "Exercicio1",
+    "repeticions": "5x10",
+    "peso": 20.0,
+    "data": "2025-04-30",
+    "usuario": 1,
+    "categoria": 2
   }
 }
 ]
