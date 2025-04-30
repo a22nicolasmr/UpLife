@@ -31,7 +31,6 @@ export default {
     },
     async cargarExerciciosHoxe() {
       const hoxe = new Date().toISOString().split("T")[0];
-
       try {
         const response = await fetch("http://localhost:8001/api/exercicios/");
         if (!response.ok) throw new Error("Erro ao cargar exercicios");
@@ -40,6 +39,24 @@ export default {
         this.exerciciosHoxe = exercicios.filter((ex) => ex.data === hoxe);
       } catch (error) {
         console.error("Erro cargando exercicios:", error);
+      }
+    },
+    async eliminarExercicio(id) {
+      try {
+        const response = await fetch(
+          `http://localhost:8001/api/exercicios/${id}/`,
+          {
+            method: "DELETE",
+          }
+        );
+        if (!response.ok) throw new Error("Erro ao eliminar exercicio");
+
+        this.exerciciosHoxe = this.exerciciosHoxe.filter(
+          (ex) => ex.id_exercicio !== id
+        );
+        window.location.reload();
+      } catch (error) {
+        console.error("Erro eliminando exercicio:", error);
       }
     },
   },
@@ -99,7 +116,13 @@ export default {
                 <td>{{ nomeCategoriaPorId(exercicio.categoria) }}</td>
                 <td>{{ exercicio.repeticions }}</td>
                 <td>{{ exercicio.peso }} kg</td>
-                <td><img src="/imaxes/trash.png" alt="icona borrar" /></td>
+                <td>
+                  <img
+                    src="/imaxes/trash.png"
+                    alt="icona borrar"
+                    @click="eliminarExercicio(exercicio.id_exercicio)"
+                  />
+                </td>
               </tr>
               <tr v-if="exerciciosHoxe.length === 0">
                 <td colspan="4">Non hai exercicios rexistrados para hoxe.</td>
