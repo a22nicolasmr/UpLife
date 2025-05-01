@@ -64,7 +64,7 @@ export default {
 </script>
 
 <template>
-  <div id="divXeral">
+  <div id="divXeral2">
     <h1 class="titulo">Exercicios</h1>
     <div class="tarxetas">
       <div
@@ -150,6 +150,7 @@ export default {
 }
 #engadirP {
   font-size: smaller;
+  width: 25%;
 }
 .esquerdaAbaixo {
   display: flex;
@@ -180,7 +181,7 @@ button {
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  width: 10%;
+  width: 9%;
   height: 5%;
 }
 html,
@@ -191,31 +192,30 @@ body {
 .esquerda {
   width: 60%;
 }
-#divXeral {
+#divXeral2 {
   display: flex;
   flex-direction: column;
   height: 85%;
   overflow-y: auto;
-  margin-left: 4%;
+  margin: none;
 }
 
 .titulo {
   text-align: center;
-  font-size: 28px;
+  font-size: xx-large;
   font-weight: bold;
-  margin-bottom: 30px;
+  margin-bottom: 2%;
 }
 
 .tarxetas {
   display: flex;
   justify-content: center;
-  margin-left: 46.4%;
 }
 
 .tarxeta {
   background-color: #4880ff;
   color: white;
-  padding: 12px 30px;
+  padding: 1% 2%;
   border-radius: 1vh 1vh 0 0;
   cursor: pointer;
   font-weight: bold;
@@ -239,6 +239,7 @@ body {
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
   margin-right: 4%;
   height: 100%;
+  margin-bottom: 1%;
 }
 h2 {
   color: #7f5af0;
@@ -270,13 +271,13 @@ table {
   border-collapse: collapse;
   background-color: #d8d8d8;
   color: black;
-  border-radius: 8px;
+  border-radius: 2%;
   overflow: hidden;
 }
 
 th,
 td {
-  padding: 12px;
+  padding: 2%;
   text-align: center;
   flex: 1;
 }
@@ -289,7 +290,7 @@ thead {
 }
 
 tbody tr {
-  border-bottom: 1px solid #acacac;
+  border-bottom: 1% solid #acacac;
 }
 
 tr {

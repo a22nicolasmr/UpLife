@@ -83,7 +83,7 @@ s
   gap: 6%;
   align-items: stretch;
   color: white;
-  height: 40%;
+  flex: 1;
 }
 
 .inputs {
@@ -132,11 +132,12 @@ s
 }
 
 .barra-imc {
-  height: 5%;
+  height: 1vh;
   background: linear-gradient(to right, #00b4d8, #90e0ef, #ffe066, #ff6b6b);
   border-radius: 5em;
   position: relative;
   width: 100%;
+  /* border: 1px solid red; */
 }
 
 .indicador {

@@ -113,7 +113,7 @@ ul {
   margin: 0%;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 2%;
   justify-content: center;
   align-items: center;
 }

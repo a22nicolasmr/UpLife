@@ -133,7 +133,7 @@ p {
 }
 img {
   height: 10%;
-  width: 8%;
+  width: 10%;
   border-radius: 50%;
 }
 h1 {
@@ -152,16 +152,17 @@ body {
 .container {
   background-color: #f2f2f2;
   display: flex;
-  max-height: 100%;
+  max-height: 70%;
   flex-direction: column;
   margin-left: 1%;
   margin-right: 1%;
+  margin-bottom: 2%;
 }
 
 .perfil-layout {
   display: flex;
   flex-direction: row;
-  max-height: 75vh;
+  max-height: 80%;
   justify-content: center;
   align-items: stretch;
   gap: 0; /* sin espacio explícito, el color los separa visualmente */
@@ -171,14 +172,13 @@ body {
 /* Columna izquierda (datos) */
 .datos {
   flex: 1;
-  padding: 5%;
+  padding: 6%;
   background-color: white;
   border-radius: 2% 0 0 2%;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   gap: 2%;
-  padding-bottom: 5%; /* Agregado para más espacio abajo */
 }
 
 #ultimoP {
@@ -195,7 +195,7 @@ body {
   width: 40%;
   background-color: black;
   padding: 2%;
-  border-radius: 0 10px 10px 0;
+  border-radius: 0 2% 2% 0;
   color: white;
   box-sizing: border-box;
   display: flex;

@@ -183,26 +183,13 @@ h1 {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.calculadora h2 {
-  font-size: 24px;
-  margin-bottom: 20px;
-  color: white;
-  font-weight: bold;
-  text-align: left;
-}
-
 .calculadora form {
   width: 100%;
   align-items: start;
 }
 
-.calculadora label {
-  margin-bottom: 5px;
-  color: white;
-  font-weight: 500;
-}
 #principal {
-  height: 100vh;
+  height: 100%;
   overflow-y: auto;
   padding: 1rem;
   box-sizing: border-box;
@@ -215,7 +202,7 @@ h1 {
   margin-bottom: 1%;
   background-color: #eff0f2;
   border: none;
-  border-radius: 4px;
+  border-radius: 2px;
   font-size: 0.8em;
   color: #043133;
   box-sizing: border-box;
@@ -228,16 +215,16 @@ h1 {
 
 .calculadora button {
   width: 100%;
-  padding: 12px;
+  padding: 3%;
   background-color: #4880ff;
   color: white;
   border: none;
-  border-radius: 4px;
-  font-size: 16px;
+  border-radius: 2px;
+  font-size: medium;
   font-weight: 600;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  margin-top: 10px;
+  margin-top: 2%;
 }
 
 .calculadora button:hover {

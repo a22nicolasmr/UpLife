@@ -49,7 +49,6 @@ export default {
         this.dataSeleccionada.toDateString() === new Date().toDateString() &&
         this.hora <= this.minHora
       ) {
-      } else if (hora == "") {
       } else {
         alert("Non podes engadir unha tarefa para unha hora pasada de hoxe.");
         return;

@@ -90,6 +90,6 @@ export default {
 .erro {
   color: red;
   font-size: 0.9rem;
-  margin-bottom: 8px;
+  margin-bottom: 1%;
 }
 </style>

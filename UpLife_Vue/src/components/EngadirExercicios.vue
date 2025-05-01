@@ -33,16 +33,6 @@ export default {
     },
     async engadirExercicio() {
       const idCategoria = this.obterIdCategoria(this.categoriaSeleccionada);
-
-      console.log("Campos do formulario:");
-      console.log("Nome:", this.nome);
-      console.log("Repeticións:", this.repeticions);
-      console.log("Peso:", this.peso);
-      console.log("Categoría seleccionada:", this.categoriaSeleccionada);
-      console.log("ID categoría:", idCategoria);
-      console.log("Data:", this.dataHoxeISO);
-      console.log("ID usuario:", this.idUsuario);
-
       if (!this.nome || !this.repeticions || !this.peso || !idCategoria) {
         alert("Por favor, cobre todos os campos.");
         return;
@@ -125,10 +115,26 @@ export default {
 </template>
 
 <style scoped>
+.formulario button {
+  margin-bottom: 4%;
+  width: 100%;
+}
+.formulario label {
+  width: 100%;
+}
+.formulario {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
 .engadir-container {
   height: 100%;
   width: 100%;
   overflow-y: auto;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 h2 {
   color: #7f5af0;
@@ -139,7 +145,7 @@ label {
 }
 input,
 select {
-  padding: 3%;
+  padding: 2%;
   border-radius: 8px;
   border: 1px solid #ddd;
   font-size: medium;

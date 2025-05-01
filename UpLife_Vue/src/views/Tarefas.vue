@@ -192,9 +192,8 @@ export default {
 #divXeral {
   display: flex;
   flex-direction: column;
-  height: 85%;
-  overflow-y: auto;
-  margin-left: 4%;
+  min-height: 100%; /* Esto cubre la ventana completa */
+  box-sizing: border-box; /* <-- Muy útil si usas paddings/margins */
 }
 
 .divsArriba img {
@@ -219,21 +218,20 @@ export default {
 
 .titulo {
   text-align: center;
-  font-size: 28px;
+  font-size: xx-large;
   font-weight: bold;
-  margin-bottom: 30px;
+  margin-bottom: 2%;
 }
 
 .tarxetas {
   display: flex;
   justify-content: center;
-  margin-left: 28.3%;
 }
 
 .tarxeta {
   background-color: #4880ff;
   color: white;
-  padding: 12px 30px;
+  padding: 1% 2%;
   border-radius: 1vh 1vh 0 0;
   cursor: pointer;
   font-weight: bold;
@@ -246,6 +244,13 @@ export default {
   background-color: #d8d8d8;
   color: #fff;
 }
+html,
+body,
+#app {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
 
 .tarefas-layout {
   display: flex;
@@ -256,10 +261,13 @@ export default {
   overflow: hidden;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
   margin-right: 4%;
+  height: 90%;
+  margin-bottom: 2%;
 }
 
 /* Calendario */
 .calendario {
+  display: flex;
   flex: 1;
   background-color: white;
   box-sizing: border-box;
@@ -267,7 +275,7 @@ export default {
 h1 {
   display: flex;
   align-self: flex-start;
-  font-size: 2vw;
+  font-size: large;
   margin-bottom: 3vh;
   color: #7f5af0;
 }
@@ -282,9 +290,10 @@ h1 {
 /* v-calendar estilos */
 .vc-container {
   width: 100% !important;
-  font-size: 18px !important;
+  font-size: medium !important;
   padding: 2%;
   border: none !important;
+  height: 100%;
 }
 
 .vc-week {

@@ -1,4 +1,6 @@
 <script>
+import { useUsuarioStore } from "@/stores/useUsuario";
+
 export default {
   data() {
     return {
@@ -13,7 +15,7 @@ export default {
       const exercicios = await response.json();
 
       const seteDiasAtras = new Date();
-      seteDiasAtras.setDate(seteDiasAtras.getDate() - 6); // últimos 7 días incluyendo hoxe
+      seteDiasAtras.setDate(seteDiasAtras.getDate() - 6); // últimos 7 días incluindo hoxe
 
       const exerciciosFiltrados = exercicios.filter((ex) => {
         const dataEx = new Date(ex.data);
@@ -37,8 +39,47 @@ export default {
       console.error("Erro ao obter historial:", error);
     }
   },
+  computed: {
+    idUsuario() {
+      const store = useUsuarioStore();
+      return store.id;
+    },
+    dataHoxeISO() {
+      return new Date().toISOString().split("T")[0]; // formato YYYY-MM-DD
+    },
+  },
   methods: {
-    nomeCategoria(id) {
+    async engadirExercicio(exercicio) {
+      const payload = {
+        nome: exercicio.nome,
+        repeticions: exercicio.repeticions,
+        peso: exercicio.peso,
+        data: this.dataHoxeISO, // 👈 siempre hoy
+        usuario: this.idUsuario,
+        categoria: exercicio.categoria, // 👈 mantenemos categoría
+      };
+
+      try {
+        const response = await fetch("http://localhost:8001/api/exercicios/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        });
+
+        if (!response.ok) {
+          throw new Error("Erro ao engadir exercicio");
+        }
+
+        const resultado = await response.json();
+
+        window.location.reload();
+      } catch (error) {
+        console.error("❗Erro no try-catch:", error);
+      }
+    },
+    nomeCategoria(idCategoria) {
       const mapa = {
         1: "Perna",
         2: "Brazo",
@@ -46,7 +87,7 @@ export default {
         4: "Espalda",
         5: "Peito",
       };
-      return mapa[id] || "Descoñecida";
+      return mapa[idCategoria] || "Descoñecida";
     },
   },
 };
@@ -78,7 +119,9 @@ export default {
                   nomeCategoria(ex.categoria)
                 }})
               </span>
-              <button class="boton-dereita">+</button>
+              <button class="boton-dereita" @click="engadirExercicio(ex)">
+                +
+              </button>
             </div>
           </li>
         </ul>
@@ -94,19 +137,17 @@ export default {
 
 h2 {
   color: #7f5af0;
-  margin-bottom: 20px;
+  margin-bottom: 2%;
 }
 
 .historial-scroll {
-  max-height: 400px;
   overflow-y: auto;
-  padding-right: 10px;
+  padding-right: 2%;
 }
 
 .grupo-dia {
-  margin-bottom: 20px;
   border-bottom: 1px solid #aaa;
-  padding-bottom: 10px;
+  padding-bottom: 2%;
 }
 
 h3 {
@@ -122,7 +163,7 @@ ul {
 
 li {
   color: white;
-  padding: 6px 0;
+  padding: 1% 0;
 }
 
 .fila-exercicio {
@@ -136,7 +177,7 @@ li {
   background-color: #7f5af0;
   color: white;
   border: none;
-  padding: 6px 12px;
+  padding: 1% 2%;
   border-radius: 6px;
   cursor: pointer;
   white-space: nowrap;
