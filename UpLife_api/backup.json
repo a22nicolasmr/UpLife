@@ -719,39 +719,6 @@
   }
 },
 {
-  "model": "UpLife_api.tarefas",
-  "pk": 43,
-  "fields": {
-    "hora": "10:08:00",
-    "titulo": "asdasd",
-    "completado": false,
-    "data": "2025-04-30",
-    "usuario": 1
-  }
-},
-{
-  "model": "UpLife_api.tarefas",
-  "pk": 44,
-  "fields": {
-    "hora": "10:09:00",
-    "titulo": "asdasd",
-    "completado": false,
-    "data": "2025-04-30",
-    "usuario": 1
-  }
-},
-{
-  "model": "UpLife_api.tarefas",
-  "pk": 45,
-  "fields": {
-    "hora": "10:28:00",
-    "titulo": "fsd",
-    "completado": false,
-    "data": "2025-04-30",
-    "usuario": 1
-  }
-},
-{
   "model": "UpLife_api.categorias",
   "pk": 1,
   "fields": {
@@ -794,6 +761,30 @@
     "repeticions": "5x10",
     "peso": 20.0,
     "data": "2025-04-30",
+    "usuario": 1,
+    "categoria": 2
+  }
+},
+{
+  "model": "UpLife_api.exercicios",
+  "pk": 2,
+  "fields": {
+    "nome": "Press de banca",
+    "repeticions": "5x7",
+    "peso": 80.0,
+    "data": "2025-05-01",
+    "usuario": 1,
+    "categoria": 5
+  }
+},
+{
+  "model": "UpLife_api.exercicios",
+  "pk": 3,
+  "fields": {
+    "nome": "Exercicio1",
+    "repeticions": "5x10",
+    "peso": 20.0,
+    "data": "2025-05-01",
     "usuario": 1,
     "categoria": 2
   }
