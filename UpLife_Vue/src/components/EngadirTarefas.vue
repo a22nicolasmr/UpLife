@@ -124,6 +124,7 @@ export default {
   text-align: left;
   display: flex;
   flex-direction: column;
+  height: 100%;
 }
 
 h2 {

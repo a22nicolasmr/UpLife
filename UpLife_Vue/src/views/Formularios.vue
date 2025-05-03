@@ -18,12 +18,20 @@ export default {
 </script>
 
 <style>
-.contenedor {
-  display: flex;
+html,
+body,
+#app {
   height: 100%;
   width: 100%;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
 }
+
+.contenedor {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+}
+
 .izquierda img {
   width: 100%;
   height: 100%;
@@ -33,7 +41,7 @@ export default {
 .izquierda,
 .derecha {
   width: 50%;
-  padding: 40px;
+  padding: 2%;
   box-sizing: border-box;
 }
 
@@ -48,21 +56,24 @@ export default {
   background-color: #ffffff;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
   padding: 0;
   height: 100%;
 }
 
 .formulario {
-  max-width: 400px;
+  max-width: 60%;
   width: 100%;
   margin: 0 auto;
-  padding-top: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-sizing: border-box;
 }
 
 .formulario h1 {
-  font-size: 24px;
-  margin-bottom: 20px;
+  font-size: xx-large;
+  margin-bottom: 5%;
   color: #043133;
   font-weight: bold;
   text-align: center;
@@ -70,20 +81,21 @@ export default {
 
 .formulario label {
   display: block;
-  margin-bottom: 5px;
+  margin-bottom: 2%;
   color: #043133;
   font-weight: 500;
 }
 
 .formulario input {
   width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
+  padding: 3%;
+  margin-bottom: 4%;
   background-color: #eff0f2;
   border: none;
   border-radius: 4px;
-  font-size: 14px;
+  font-size: medium;
   color: #043133;
+  box-sizing: border-box;
 }
 
 .formulario input::placeholder {
@@ -92,12 +104,12 @@ export default {
 
 .formulario button {
   width: 100%;
-  padding: 12px;
+  padding: 3%;
   background-color: #4880ff;
   color: white;
   border: none;
   border-radius: 4px;
-  font-size: 16px;
+  font-size: medium;
   font-weight: 600;
   cursor: pointer;
   transition: background-color 0.3s ease;
@@ -108,9 +120,9 @@ export default {
 }
 
 .formulario p {
-  margin-top: 15px;
+  margin-top: 3%;
   text-align: center;
-  font-size: 14px;
+  font-size: medium;
   color: #4d5959;
 }
 
@@ -122,17 +134,5 @@ export default {
 
 .formulario a:hover {
   text-decoration: underline;
-}
-body {
-  height: 100vh;
-  width: 100vw;
-  margin: 0;
-}
-
-html,
-body,
-#app {
-  height: 100%;
-  margin: 0;
 }
 </style>

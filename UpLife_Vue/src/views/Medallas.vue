@@ -224,19 +224,19 @@ img {
 }
 
 h1 {
-  font-size: x-large;
+  font-size: xx-large;
   margin-bottom: 3vh;
   color: #7f5af0;
 }
 
 h3 {
-  font-size: 1.5vw;
+  font-size: x-large;
   margin: 0;
   color: #333;
 }
 
 p {
-  font-size: 1vw;
+  font-size: large;
   margin: 0;
   color: #666;
 }
