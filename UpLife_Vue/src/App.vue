@@ -156,11 +156,11 @@ body {
 }
 
 .vista {
-  flex: 1; /* 🔥 la clave para ocupar todo el espacio restante */
+  flex: 1;
   margin-top: 4%;
-  margin-left: 17%;
+  margin-left: 15%;
   overflow-y: auto;
-  min-height: 0; /* 👈 muy importante en layouts flexibles */
+  min-height: 0;
 }
 
 .sin-barras {

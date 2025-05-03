@@ -8,16 +8,20 @@ export default {
     };
   },
   async mounted() {
+    const usuarioStore = useUsuarioStore();
+    const idUsuario = usuarioStore.id;
     try {
       const response = await fetch("http://localhost:8001/api/exercicios/");
       if (!response.ok) throw new Error("Erro ao cargar exercicios");
 
       const exercicios = await response.json();
-
+      const exerciciosPorUsuario = exercicios.filter(
+        (e) => e.usuario === idUsuario
+      );
       const seteDiasAtras = new Date();
       seteDiasAtras.setDate(seteDiasAtras.getDate() - 6); // últimos 7 días incluindo hoxe
 
-      const exerciciosFiltrados = exercicios.filter((ex) => {
+      const exerciciosFiltrados = exerciciosPorUsuario.filter((ex) => {
         const dataEx = new Date(ex.data);
         return dataEx >= seteDiasAtras;
       });
@@ -54,9 +58,9 @@ export default {
         nome: exercicio.nome,
         repeticions: exercicio.repeticions,
         peso: exercicio.peso,
-        data: this.dataHoxeISO, // 👈 siempre hoy
+        data: this.dataHoxeISO,
         usuario: this.idUsuario,
-        categoria: exercicio.categoria, // 👈 mantenemos categoría
+        categoria: exercicio.categoria,
       };
 
       try {

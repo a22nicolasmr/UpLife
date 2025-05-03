@@ -2,6 +2,7 @@
 import EngadirExercicios from "@/components/EngadirExercicios.vue";
 import EngadirPlantillasExercicios from "@/components/EngadirPlantillasExercicios.vue";
 import HistorialExercicios from "@/components/HistorialExercicios.vue";
+import { useUsuarioStore } from "@/stores/useUsuario";
 
 export default {
   components: {
@@ -30,18 +31,25 @@ export default {
       return mapa[id] || "Descoñecida";
     },
     async cargarExerciciosHoxe() {
+      const usuarioStore = useUsuarioStore();
+      const idUsuario = usuarioStore.id;
+
       const hoxe = new Date().toISOString().split("T")[0];
       try {
         const response = await fetch("http://localhost:8001/api/exercicios/");
         if (!response.ok) throw new Error("Erro ao cargar exercicios");
 
         const exercicios = await response.json();
-        this.exerciciosHoxe = exercicios.filter((ex) => ex.data === hoxe);
+        this.exerciciosHoxe = exercicios.filter(
+          (ex) => ex.usuario === idUsuario && ex.data === hoxe
+        );
       } catch (error) {
         console.error("Erro cargando exercicios:", error);
       }
     },
     async eliminarExercicio(id) {
+      const usuarioStore = useUsuarioStore();
+      const idUsuario = usuarioStore.id;
       try {
         const response = await fetch(
           `http://localhost:8001/api/exercicios/${id}/`,
@@ -52,7 +60,7 @@ export default {
         if (!response.ok) throw new Error("Erro ao eliminar exercicio");
 
         this.exerciciosHoxe = this.exerciciosHoxe.filter(
-          (ex) => ex.id_exercicio !== id
+          (ex) => ex.usuario === idUsuario && ex.id_exercicio !== id
         );
         window.location.reload();
       } catch (error) {
