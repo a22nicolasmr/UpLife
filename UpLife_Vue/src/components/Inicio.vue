@@ -1,5 +1,6 @@
 <script>
 import axios from "axios";
+import { useUsuarioStore } from "@/stores/useUsuario";
 
 export default {
   data() {
@@ -28,6 +29,10 @@ export default {
         });
 
         if (response.status === 200) {
+          const usuarioStore = useUsuarioStore();
+          await usuarioStore.cargarUsuario(this.email);
+          await usuarioStore.actualizarDatos();
+
           // redirixese a ruta desexada mandando como query o nome do usuario
           this.$router.push({
             name: "tarefas",

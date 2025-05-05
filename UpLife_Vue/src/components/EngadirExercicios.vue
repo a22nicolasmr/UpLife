@@ -8,7 +8,8 @@ export default {
       repeticions: "",
       peso: null,
       categoriaSeleccionada: "",
-      categorias: ["Peito", "Espalda", "Core", "Brazo", "Pierna"],
+      categorias: ["Peito", "Espalda", "Core", "Brazo", "Perna"],
+      erro: "", // mensaje de error añadido
     };
   },
   computed: {
@@ -32,9 +33,13 @@ export default {
       return mapa[nome];
     },
     async engadirExercicio() {
+      this.erro = ""; // limpiamos error
+
       const idCategoria = this.obterIdCategoria(this.categoriaSeleccionada);
       if (!this.nome || !this.repeticions || !this.peso || !idCategoria) {
-        alert("Por favor, cobre todos os campos.");
+        console.log(this.nome, this.repeticions, this.peso, this.categorias);
+
+        this.erro = "Por favor, cobre todos os campos.";
         return;
       }
 
@@ -109,6 +114,8 @@ export default {
       <label for="peso">Peso (kg)</label>
       <input type="number" id="peso" v-model="peso" min="0" step="0.1" />
 
+      <span v-if="erro" class="error">{{ erro }}</span>
+
       <button @click="engadirExercicio">Engadir</button>
     </div>
   </div>
@@ -152,5 +159,11 @@ select {
   width: 100%;
   box-sizing: border-box;
   margin-bottom: 5%;
+}
+.error {
+  color: #ff4d4d;
+  display: block;
+  margin-top: 2%;
+  font-size: medium;
 }
 </style>

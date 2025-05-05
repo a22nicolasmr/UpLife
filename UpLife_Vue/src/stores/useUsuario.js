@@ -6,6 +6,14 @@ export const useUsuarioStore = defineStore("usuario", {
     nome: "",
     imagen: "/imaxes/usuario.png",
     medallas: 0,
+    altura: 0,
+    peso: 0,
+    xenero: "",
+    obxectivo: "",
+    actividade: "",
+    idade: 0,
+    calorias: 0,
+    auga: 0,
   }),
   actions: {
     // cargar datos de usuario
@@ -20,7 +28,7 @@ export const useUsuarioStore = defineStore("usuario", {
         this.nome = usuario.nome;
         this.imagen = usuario.imaxe_perfil || "/imaxes/usuario.png";
 
-        // gardar solo o necesario no localStorage
+        // Guardar solo lo necesario en localStorage
         localStorage.setItem(
           "usuario",
           JSON.stringify({
@@ -50,7 +58,6 @@ export const useUsuarioStore = defineStore("usuario", {
     },
 
     // cargar datos de usuario desde localStorage
-
     cargarDesdeStorage() {
       const datos = localStorage.getItem("usuario");
       if (datos) {
@@ -61,12 +68,57 @@ export const useUsuarioStore = defineStore("usuario", {
       }
     },
 
+    // Guardar los datos completos del usuario en el localStorage
+    guardarUsuarioActualizado() {
+      localStorage.setItem(
+        "usuario",
+        JSON.stringify({
+          id: this.id,
+          nome: this.nome,
+          imagen: this.imagen,
+          altura: this.altura,
+          peso: this.peso,
+          xenero: this.xenero,
+          obxectivo: this.obxectivo,
+          actividade: this.actividade,
+          idade: this.idade,
+          calorias: this.calorias,
+          auga: this.auga,
+        })
+      );
+    },
+
     cerrarSesion() {
       localStorage.removeItem("usuario");
       this.id = null;
       this.nome = "";
       this.imagen = "/imaxes/usuario.png";
       this.medallas = 0;
+    },
+    async actualizarDatos() {
+      if (this.id) {
+        try {
+          const response = await fetch(
+            `http://localhost:8001/api/usuarios/${this.id}/`
+          );
+          const data = await response.json();
+
+          this.imagen = data.imaxe_perfil || "/imaxes/usuario.png";
+          this.nome = data.nome;
+          this.altura = data.altura;
+          this.peso = data.peso;
+          this.xenero = data.xenero;
+          this.obxectivo = data.obxectivo;
+          this.actividade = data.actividade;
+          this.idade = data.idade;
+          this.calorias = data.calorias_diarias;
+          this.auga = data.auga_diaria;
+
+          this.guardarUsuarioActualizado();
+        } catch (error) {
+          console.error("Erro ao actualizar datos:", error);
+        }
+      }
     },
   },
   // cargar datos desde localStorage se existen

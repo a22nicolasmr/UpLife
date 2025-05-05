@@ -1,4 +1,6 @@
 <script>
+import { useUsuarioStore } from "@/stores/useUsuario";
+
 export default {
   props: {
     dataSeleccionada: {
@@ -12,7 +14,13 @@ export default {
       tarefasConHora: {},
     };
   },
+  computed: {
+    usuarioStore() {
+      return useUsuarioStore();
+    },
+  },
   watch: {
+    // cargar tareas cando cambia 'dataSeleccionada'
     dataSeleccionada: {
       immediate: true,
       handler(novaData) {
@@ -25,11 +33,25 @@ export default {
         });
       },
     },
+    // tarefas cando cambia o usuario
+    "usuarioStore.id": {
+      immediate: true,
+      handler() {
+        // limpar estado das tarefas cando cambia o usuario
+        this.tarefasPorData = {};
+        this.tarefasConHora = {};
+        if (this.dataSeleccionada) {
+          this.cargarTarefas(this.dataSeleccionada);
+        }
+      },
+    },
   },
   methods: {
     emitirDatasConTarefas(tarefasConHora) {
       this.$emit("datas-con-tarefas", tarefasConHora);
     },
+
+    // cando se fai click nunha data con tarefas, facer scroll ata as tarefas
     scrollAtaData(data) {
       this.$nextTick(() => {
         const dataISO = new Date(data).toLocaleDateString("en-CA");
@@ -54,6 +76,8 @@ export default {
     },
 
     async cargarTarefas(data) {
+      const usuarioStore = useUsuarioStore();
+      const idUsuario = usuarioStore.id;
       if (!data) return;
       const dataISO = new Date(data).toLocaleDateString("en-CA");
 
@@ -67,11 +91,12 @@ export default {
 
         const hoyISO = new Date().toISOString().split("T")[0];
         this.tarefasConHora = tarefas.filter(
-          (t) => t.hora != null && t.data === hoyISO
+          (t) => t.usuario === idUsuario && t.hora != null && t.data === hoyISO
         );
 
         const agrupadas = {};
-        for (const tarefa of tarefas) {
+        const tarefasUsuario = tarefas.filter((t) => t.usuario === idUsuario);
+        for (const tarefa of tarefasUsuario) {
           if (!agrupadas[tarefa.data]) agrupadas[tarefa.data] = [];
           agrupadas[tarefa.data].push(tarefa);
         }

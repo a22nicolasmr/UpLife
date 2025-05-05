@@ -1,6 +1,7 @@
 <script>
 import EngadirAuga from "@/components/EngadirAuga.vue";
 import HistorialAuga from "@/components/HistorialAuga.vue";
+import { useUsuarioStore } from "@/stores/useUsuario";
 
 export default {
   components: {
@@ -13,36 +14,57 @@ export default {
       augaHoxe: [],
     };
   },
+
+  computed: {
+    idUsuario() {
+      return useUsuarioStore().id;
+    },
+    dataHoxeISO() {
+      return new Date().toISOString().split("T")[0];
+    },
+    augaTotalNecesaria() {
+      return useUsuarioStore().auga;
+    },
+    augaInxeridaHoxe() {
+      return this.augaHoxe.reduce((total, a) => total + a.cantidade, 0);
+    },
+    porcentaxeAuga() {
+      const total = this.augaTotalNecesaria;
+      const inxerida = this.augaInxeridaHoxe;
+
+      if (!total || total <= 0) return 0;
+
+      return Math.min(Math.round((inxerida / total) * 100), 100);
+    },
+  },
   mounted() {
-    // this.cargarAugaHoxe();
+    this.cargarAugaHoxe();
   },
   methods: {
     async cargarAugaHoxe() {
-      const hoxe = new Date().toISOString().split("T")[0];
       try {
-        const response = await fetch("http://localhost:8001/api/exercicios/");
-        if (!response.ok) throw new Error("Erro ao cargar exercicios");
+        const response = await fetch("http://localhost:8001/api/auga/");
+        if (!response.ok) throw new Error("Erro ao cargar auga");
 
-        const exercicios = await response.json();
-        this.augaHoxe = exercicios.filter((ex) => ex.data === hoxe);
+        const auga = await response.json();
+        this.augaHoxe = auga.filter(
+          (ex) => ex.usuario === this.idUsuario && ex.data === this.dataHoxeISO
+        );
       } catch (error) {
-        console.error("Erro cargando exercicios:", error);
+        console.error("Erro cargando auga:", error);
       }
     },
-    async eliminarExercicio(id) {
+    async eliminarAuga(id) {
       try {
-        const response = await fetch(
-          `http://localhost:8001/api/exercicios/${id}/`,
-          {
-            method: "DELETE",
-          }
-        );
-        if (!response.ok) throw new Error("Erro ao eliminar exercicio");
+        const response = await fetch(`http://localhost:8001/api/auga/${id}/`, {
+          method: "DELETE",
+        });
+        if (!response.ok) throw new Error("Erro ao eliminar auga");
 
-        this.augaHoxe = this.augaHoxe.filter((ex) => ex.id_exercicio !== id);
+        this.augaHoxe = this.augaHoxe.filter((ex) => ex.id_auga !== id);
         window.location.reload();
       } catch (error) {
-        console.error("Erro eliminando exercicio:", error);
+        console.error("Erro eliminando auga:", error);
       }
     },
   },
@@ -52,6 +74,7 @@ export default {
 <template>
   <div id="divXeral2">
     <h1 class="titulo">Auga</h1>
+
     <div class="tarxetas">
       <div
         class="tarxeta"
@@ -69,36 +92,60 @@ export default {
       </div>
     </div>
 
-    <div class="exercicios-layout">
+    <div class="auga-layout">
       <div class="esquerda">
-        <div class="esquerdaArriba">
-          <h2>Exercicios de hoxe</h2>
-          <button id="engadirP">Engadir plantilla</button>
+        <!-- GRÁFICO DE PROGRESO -->
+        <div class="grafico-auga">
+          <svg viewBox="0 0 36 36" class="circular-chart">
+            <path
+              class="circle-bg"
+              d="M18 2.0845
+                 a 15.9155 15.9155 0 0 1 0 31.831
+                 a 15.9155 15.9155 0 0 1 0 -31.831"
+            />
+            <path
+              class="circle"
+              :stroke-dasharray="porcentaxeAuga + ', 100'"
+              d="M18 2.0845
+                 a 15.9155 15.9155 0 0 1 0 31.831
+                 a 15.9155 15.9155 0 0 1 0 -31.831"
+            />
+            <text x="18" y="20.35" class="percentage">
+              {{ porcentaxeAuga }}%
+            </text>
+          </svg>
+          <div class="info-auga">
+            <p>
+              <strong>Auga restante:</strong>
+              {{ augaTotalNecesaria - augaInxeridaHoxe }} ml
+            </p>
+            <p><strong>Auga inxerida:</strong> {{ augaInxeridaHoxe }} ml</p>
+          </div>
         </div>
+
         <div class="esquerdaAbaixo">
           <table>
             <thead>
               <tr>
+                <th>Cantidade(ml)</th>
                 <th>Hora</th>
-                <th>Cantidade</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="exercicio in augaHoxe" :key="exercicio.id_exercicio">
-                <td>{{ exercicio.nome }}</td>
-                <td>{{ nomeCategoriaPorId(exercicio.categoria) }}</td>
-                <td>{{ exercicio.repeticions }}</td>
-                <td>{{ exercicio.peso }} kg</td>
+              <tr v-for="auga in augaHoxe" :key="auga.id_auga">
+                <td>{{ auga.cantidade }}</td>
+                <td>{{ auga.hora }}</td>
                 <td>
                   <img
                     src="/imaxes/trash.png"
                     alt="icona borrar"
-                    @click="eliminarExercicio(exercicio.id_exercicio)"
+                    @click="eliminarAuga(auga.id_auga)"
                   />
                 </td>
               </tr>
               <tr v-if="augaHoxe.length === 0">
-                <td colspan="4">Non hai exercicios rexistrados para hoxe.</td>
+                <td colspan="3">Non hai rexistros de auga para hoxe.</td>
               </tr>
             </tbody>
           </table>
@@ -117,59 +164,11 @@ export default {
 </template>
 
 <style scoped>
-#engadirA {
-  font-size: xx-large;
-}
-#engadirP {
-  font-size: smaller;
-  width: 25%;
-}
-.esquerdaAbaixo {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  width: 100%;
-}
-table {
-  width: 100%;
-}
-tr {
-  display: flex;
-  justify-content: space-around;
-}
-.esquerdaArriba {
-  display: flex;
-  justify-content: space-between;
-  margin-left: 2%;
-  margin-right: 2%;
-}
-button {
-  margin-top: 3%;
-  padding: 1%;
-  background-color: #4880ff;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  width: 9%;
-  height: 5%;
-}
-html,
-body {
-  height: 100%;
-  width: 100%;
-}
-.esquerda {
-  width: 60%;
-}
 #divXeral2 {
   display: flex;
   flex-direction: column;
   height: 85%;
   overflow-y: auto;
-  margin: none;
 }
 
 .titulo {
@@ -177,6 +176,7 @@ body {
   font-size: xx-large;
   font-weight: bold;
   margin-bottom: 2%;
+  color: #7f5af0;
 }
 
 .tarxetas {
@@ -201,7 +201,7 @@ body {
   color: #fff;
 }
 
-.exercicios-layout {
+.auga-layout {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -211,31 +211,59 @@ body {
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
   margin-right: 4%;
   height: 100%;
-  margin-bottom: 1%;
 }
-h2 {
-  color: #7f5af0;
+
+.esquerda {
+  width: 60%;
+  padding: 2%;
 }
-h1 {
-  display: flex;
-  align-self: flex-start;
-  font-size: 2vw;
-  margin-bottom: 3vh;
-  color: #7f5af0;
-}
-/* Compoñente dereita */
+
 .dereita {
   width: 40%;
   background-color: #1c1c1c;
   color: white;
   box-sizing: border-box;
 }
-.esquerdaAbaixo {
+
+.grafico-auga {
   display: flex;
-  justify-content: center;
-  flex-direction: column;
-  width: 100%;
-  padding: 2%;
+  align-items: center;
+  gap: 5%;
+  justify-content: left;
+  margin-bottom: 3%;
+}
+
+.circular-chart {
+  max-width: 15%;
+  max-height: 15%;
+}
+
+.circle-bg {
+  fill: none;
+  stroke: #eee;
+  stroke-width: 3.8;
+}
+
+.circle {
+  fill: none;
+  stroke: #4880ff;
+  stroke-width: 3.8;
+  stroke-linecap: round;
+  transform: rotate(-90deg);
+  transform-origin: center;
+  transition: stroke-dasharray 0.5s;
+}
+
+.percentage {
+  fill: #4880ff;
+  font-size: x-small;
+  text-anchor: middle;
+}
+
+.info-auga p {
+  margin: 2px 0;
+  color: #666;
+  font-size: large;
 }
 
 table {
@@ -262,7 +290,7 @@ thead {
 }
 
 tbody tr {
-  border-bottom: 1% solid #acacac;
+  border-bottom: 1px solid #acacac;
 }
 
 tr {
@@ -271,9 +299,27 @@ tr {
   align-items: center;
 }
 
-td[colspan="4"] {
+td[colspan="3"] {
   text-align: center;
   color: #aaa;
   font-style: italic;
+}
+
+button {
+  margin-top: 3%;
+  padding: 1%;
+  background-color: #4880ff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 9%;
+  height: 5%;
+}
+
+#engadirA {
+  font-size: xx-large;
 }
 </style>

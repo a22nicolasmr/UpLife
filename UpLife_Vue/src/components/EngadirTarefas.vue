@@ -12,10 +12,11 @@ export default {
     return {
       tarefa: "",
       hora: "",
+      erro: "", // mensaje de error añadido
     };
   },
   computed: {
-    id() {
+    idUsuario() {
       const store = useUsuarioStore();
       return store.id;
     },
@@ -45,12 +46,19 @@ export default {
   },
   methods: {
     async engadirTarefa() {
+      this.erro = ""; // limpiamos error
+
+      if (!this.tarefa || !this.hora) {
+        this.erro = "Por favor, cobre todos os campos.";
+        return;
+      }
+
       if (
         this.dataSeleccionada.toDateString() === new Date().toDateString() &&
         this.hora <= this.minHora
       ) {
-      } else {
-        alert("Non podes engadir unha tarefa para unha hora pasada de hoxe.");
+        this.erro =
+          "Non podes engadir unha tarefa para unha hora pasada de hoxe.";
         return;
       }
 
@@ -59,7 +67,7 @@ export default {
         titulo: this.tarefa,
         data: this.dataSeleccionada.toLocaleDateString("en-CA"),
         completado: false,
-        usuario: this.id,
+        usuario: this.idUsuario,
       };
 
       try {
@@ -89,12 +97,11 @@ export default {
 
 <template>
   <div class="engadir-container">
-    <h2>Engadir tarefa</h2>
-    <p class="data">
-      <strong>{{ dataFormateada }}</strong>
-    </p>
-
     <div class="formulario">
+      <h2>Engadir tarefa</h2>
+      <p class="data">
+        <strong>{{ dataFormateada }}</strong>
+      </p>
       <label for="hora">Hora</label>
       <input type="time" id="hora" v-model="hora" :min="minHora" />
 
@@ -106,6 +113,8 @@ export default {
         placeholder="Escribe a túa tarefa"
       />
 
+      <span v-if="erro" class="error">{{ erro }}</span>
+
       <button @click="engadirTarefa">Engadir</button>
     </div>
   </div>
@@ -114,6 +123,7 @@ export default {
 <style scoped>
 .formulario {
   padding-top: 0;
+  width: 100%;
 }
 .engadir-container {
   background-color: black;
@@ -135,6 +145,8 @@ h2 {
 .data {
   color: white;
   font-weight: 500;
+  padding: 0;
+  margin: 0;
 }
 
 label {
@@ -150,7 +162,7 @@ select {
   border: 1px solid #ddd;
   font-size: medium;
   width: 100%;
-  box-sizing: border-box; /* 🔹 asegura que el padding no sume al width */
+  box-sizing: border-box;
 }
 
 button {
@@ -163,10 +175,17 @@ button {
   cursor: pointer;
   transition: background-color 0.3s ease;
   width: 100%;
-  box-sizing: border-box; /* 🔹 asegura que el padding no sume al width */
+  box-sizing: border-box;
 }
 
 button:hover {
   background-color: #3461cc;
+}
+
+.error {
+  color: #ff4d4d;
+  display: block;
+  margin-top: 2%;
+  font-size: medium;
 }
 </style>

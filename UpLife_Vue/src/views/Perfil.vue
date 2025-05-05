@@ -38,6 +38,7 @@ export default {
           );
           const data = await response.json();
 
+          // Actualizar los datos en el componente
           this.imagen = data.imaxe_perfil || "/imaxes/usuario.png";
           this.nome = data.nome;
           this.email = data.email;
@@ -50,6 +51,24 @@ export default {
           this.idade = data.idade;
           this.calorias = data.calorias_diarias;
           this.auga = data.auga_diaria;
+
+          // Guardar los datos en el store y en localStorage
+          const store = useUsuarioStore();
+          store.imagen = this.imagen;
+          store.nome = this.nome;
+          store.altura = this.altura;
+          store.peso = this.peso;
+          store.xenero = this.xenero;
+          store.obxectivo = this.obxectivo;
+          store.actividade = this.actividade;
+          store.idade = this.idade;
+          store.calorias = this.calorias;
+          store.auga = this.auga;
+
+          console.log("agua guardada " + store.auga);
+
+          // Guardar en el localStorage
+          store.guardarUsuarioActualizado();
         } catch (error) {
           console.error("Erro ao actualizar datos:", error);
         }

@@ -1,13 +1,111 @@
 <script>
+import { useUsuarioStore } from "@/stores/useUsuario";
+
 export default {
   data() {
-    return { name: "Apples", message: "I like apples" };
+    return {
+      cantidade: "",
+      hora: "",
+      erro: "",
+    };
+  },
+  computed: {
+    idUsuario() {
+      const store = useUsuarioStore();
+      return store.id;
+    },
+    dataHoxeISO() {
+      return new Date().toISOString().split("T")[0]; // formato YYYY-MM-DD
+    },
+  },
+  methods: {
+    async engadirExercicio() {
+      this.erro = "";
+
+      if (!this.cantidade || !this.hora) {
+        this.erro = "Por favor, cobre todos os campos.";
+        return;
+      }
+
+      const payload = {
+        cantidade: this.cantidade,
+        hora: this.hora,
+        data: this.dataHoxeISO,
+        usuario: this.idUsuario,
+      };
+
+      try {
+        const response = await fetch("http://localhost:8001/api/auga/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        });
+
+        if (!response.ok) {
+          throw new Error("Erro ao engadir auga");
+        }
+
+        const resultado = await response.json();
+
+        this.cantidade = "";
+        this.hora = "";
+
+        window.location.reload();
+      } catch (error) {
+        console.error("❗Erro no try-catch:", error);
+        this.erro = "Houbo un erro ao engadir auga."; // Mensaje de error al usuario
+      }
+    },
   },
 };
 </script>
+
 <template>
-  <div>
-    <h2>Engadir Auga</h2>
+  <div class="engadir-container">
+    <div class="formulario">
+      <h2>Engadir auga</h2>
+
+      <label for="cantidade">Cantidade</label>
+      <input
+        type="text"
+        id="cantidade"
+        v-model="cantidade"
+        placeholder="Cantidade(ml)"
+      />
+
+      <label for="hora">Hora</label>
+      <input
+        type="time"
+        id="hora"
+        v-model="hora"
+        placeholder="Nome do exercicio"
+      />
+
+      <span v-if="erro" class="error">{{ erro }}</span>
+
+      <button @click="engadirExercicio">Engadir</button>
+    </div>
   </div>
 </template>
-<style></style>
+
+<style scoped>
+.formulario button {
+  margin-bottom: 4%;
+  width: 100%;
+}
+
+label {
+  color: white;
+}
+h2 {
+  color: #7f5af0;
+}
+.error {
+  color: #ff4d4d;
+  display: block;
+  margin-top: 2%;
+  font-size: medium;
+}
+</style>

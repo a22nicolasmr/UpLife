@@ -7,16 +7,23 @@ export default {
       exerciciosPorDia: {},
     };
   },
+  computed: {
+    idUsuario() {
+      const store = useUsuarioStore();
+      return store.id;
+    },
+    dataHoxeISO() {
+      return new Date().toISOString().split("T")[0]; // formato YYYY-MM-DD
+    },
+  },
   async mounted() {
-    const usuarioStore = useUsuarioStore();
-    const idUsuario = usuarioStore.id;
     try {
       const response = await fetch("http://localhost:8001/api/exercicios/");
       if (!response.ok) throw new Error("Erro ao cargar exercicios");
 
       const exercicios = await response.json();
       const exerciciosPorUsuario = exercicios.filter(
-        (e) => e.usuario === idUsuario
+        (e) => e.usuario === this.idUsuario
       );
       const seteDiasAtras = new Date();
       seteDiasAtras.setDate(seteDiasAtras.getDate() - 6); // últimos 7 días incluindo hoxe
@@ -43,15 +50,7 @@ export default {
       console.error("Erro ao obter historial:", error);
     }
   },
-  computed: {
-    idUsuario() {
-      const store = useUsuarioStore();
-      return store.id;
-    },
-    dataHoxeISO() {
-      return new Date().toISOString().split("T")[0]; // formato YYYY-MM-DD
-    },
-  },
+
   methods: {
     async engadirExercicio(exercicio) {
       const payload = {
