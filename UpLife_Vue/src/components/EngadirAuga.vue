@@ -19,7 +19,7 @@ export default {
     },
   },
   methods: {
-    async engadirExercicio() {
+    async engadirAuga() {
       this.erro = "";
 
       if (!this.cantidade || !this.hora) {
@@ -35,6 +35,9 @@ export default {
       };
 
       try {
+        const usuarioStore = useUsuarioStore();
+        await usuarioStore.cargarUsuario(this.idUsuario);
+        await usuarioStore.actualizarDatos();
         const response = await fetch("http://localhost:8001/api/auga/", {
           method: "POST",
           headers: {
@@ -85,7 +88,7 @@ export default {
 
       <span v-if="erro" class="error">{{ erro }}</span>
 
-      <button @click="engadirExercicio">Engadir</button>
+      <button @click="engadirAuga">Engadir</button>
     </div>
   </div>
 </template>
@@ -107,5 +110,10 @@ h2 {
   display: block;
   margin-top: 2%;
   font-size: medium;
+}
+.engadir-container {
+  display: flex;
+  align-content: center;
+  margin-top: 12%;
 }
 </style>

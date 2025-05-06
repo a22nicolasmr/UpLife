@@ -65,8 +65,6 @@ export default {
           store.calorias = this.calorias;
           store.auga = this.auga;
 
-          console.log("agua guardada " + store.auga);
-
           // Guardar en el localStorage
           store.guardarUsuarioActualizado();
         } catch (error) {
@@ -95,7 +93,6 @@ export default {
           }
         );
         const resultado = await response.json();
-        console.log("Imagen actualizada:", resultado);
         this.actualizarDatos();
         const store = useUsuarioStore();
         store.imagen = resultado.imaxe_perfil || "/imaxes/usuario.png";

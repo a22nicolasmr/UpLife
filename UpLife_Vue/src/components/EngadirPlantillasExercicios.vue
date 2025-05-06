@@ -7,7 +7,8 @@ export default {
 </script>
 <template>
   <div>
-    <h2>EngadirPlantillasExercicios</h2>
+    <h2>{{ name }}</h2>
+    <p>{{ message }}</p>
   </div>
 </template>
 <style></style>

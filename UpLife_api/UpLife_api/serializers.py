@@ -34,7 +34,7 @@ class ExerciciosSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class PlantillasSerializer(serializers.ModelSerializer):
-    exercicios = ExerciciosSerializer(many=True)
+    exercicios = ExerciciosSerializer(many=True, read_only=True)
 
     class Meta:
         model = Plantillas

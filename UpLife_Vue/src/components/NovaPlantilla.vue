@@ -15,7 +15,7 @@ export default {
         "/imaxes/abdominales.png",
         "/imaxes/human-body.png",
       ],
-      seleccionada: "/imaxes/musculo.png",
+      seleccionada: "",
     };
   },
   computed: {
@@ -31,11 +31,6 @@ export default {
     async engadirNovaPlantilla() {
       this.erro = "";
 
-      console.log("📦 Preparando envío de nova plantilla");
-      console.log("🔤 Nome:", this.nome);
-      console.log("🖼 Icona:", this.icona);
-      console.log("👤 Usuario ID:", this.idUsuario);
-
       if (!this.nome || !this.icona) {
         this.erro = "Por favor, cobre todos os campos.";
         return;
@@ -47,8 +42,6 @@ export default {
         usuario: this.idUsuario,
       };
 
-      console.log("📤 Payload final:", payload);
-
       try {
         const response = await fetch("http://localhost:8001/api/plantillas/", {
           method: "POST",
@@ -58,20 +51,15 @@ export default {
           body: JSON.stringify(payload),
         });
 
-        const respostaTexto = await response.text(); // Para ver el error como texto plano
-        console.log("🔍 Resposta da API:", respostaTexto);
-
+        const respostaTexto = await response.text();
         if (!response.ok) {
-          console.error("❌ Resposta NON OK");
           throw new Error("Erro ao engadir plantillas");
         }
 
-        console.log("✅ Plantilla engadida correctamente");
         this.nome = "";
         this.icona = "";
         window.location.reload();
       } catch (error) {
-        console.error("❗Erro no try-catch:", error);
         this.erro = "Houbo un erro ao engadir plantillas.";
       }
     },
@@ -144,19 +132,18 @@ p {
 
 .imaxe {
   background-color: white;
-  padding: 10px;
   border-radius: 8px;
   cursor: pointer;
   border: 2px solid transparent;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100px;
+  height: 100%;
 }
 
 .imaxe img {
-  width: 60px;
-  height: 60px;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
 }
 

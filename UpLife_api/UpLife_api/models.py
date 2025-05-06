@@ -110,7 +110,7 @@ class Plantillas(models.Model):
     nome=models.CharField(max_length=255)
     icona = models.CharField(max_length=255)
     usuario = models.ForeignKey(Usuarios, on_delete=models.CASCADE, null=True, blank=True)
-    exercicios=models.ManyToManyField(Exercicios,null=True,blank=True)
+    exercicios = models.ManyToManyField(Exercicios, blank=True)
 
     def __str__(self):
         return f"nome={self.nome}, icona={self.icona}, exercicios={[e.nome for e in self.exercicios.all()]}"

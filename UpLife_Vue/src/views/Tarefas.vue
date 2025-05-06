@@ -275,7 +275,6 @@ body,
 h1 {
   display: flex;
   align-self: flex-start;
-  font-size: large;
   margin-bottom: 3vh;
   color: #7f5af0;
 }

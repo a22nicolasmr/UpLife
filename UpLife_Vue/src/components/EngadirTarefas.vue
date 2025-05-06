@@ -124,28 +124,31 @@ export default {
 .formulario {
   padding-top: 0;
   width: 100%;
+  margin-top: 11%;
 }
 .engadir-container {
   background-color: black;
-  padding: 7%;
-  border-radius: 12px;
   margin: auto;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
   text-align: left;
   display: flex;
   flex-direction: column;
+  align-content: center;
   height: 100%;
 }
 
 h2 {
   color: #7f5af0;
-  font-size: 24px;
+  font-size: x-large;
 }
 
 .data {
   color: white;
   font-weight: 500;
-  padding: 0;
+  font-size: 1rem;
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
   margin: 0;
 }
 

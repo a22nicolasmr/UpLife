@@ -11,7 +11,7 @@ export default {
   data() {
     return {
       componenteActivo: "nova",
-      plantillaHoxe: [],
+      plantillas: [],
     };
   },
 
@@ -38,33 +38,42 @@ export default {
     },
   },
   mounted() {
-    // this.cargarplantillaHoxe();
+    this.cargarDatos();
   },
   methods: {
-    // async cargarplantillaHoxe() {
-    //   try {
-    //     const response = await fetch("http://localhost:8001/api/plantilla/");
-    //     if (!response.ok) throw new Error("Erro ao cargar plantilla");
-    //     const plantilla = await response.json();
-    //     this.plantillaHoxe = plantilla.filter(
-    //       (ex) => ex.usuario === this.idUsuario && ex.data === this.dataHoxeISO
-    //     );
-    //   } catch (error) {
-    //     console.error("Erro cargando plantilla:", error);
-    //   }
-    // },
-    // async eliminarplantilla(id) {
-    //   try {
-    //     const response = await fetch(`http://localhost:8001/api/plantilla/${id}/`, {
-    //       method: "DELETE",
-    //     });
-    //     if (!response.ok) throw new Error("Erro ao eliminar plantilla");
-    //     this.plantillaHoxe = this.plantillaHoxe.filter((ex) => ex.id_plantilla !== id);
-    //     window.location.reload();
-    //   } catch (error) {
-    //     console.error("Erro eliminando plantilla:", error);
-    //   }
-    // },
+    async cargarDatos() {
+      try {
+        const usuarioStore = useUsuarioStore();
+        const idUsuario = usuarioStore.id;
+        const response = await fetch(`http://localhost:8001/api/plantillas/`);
+
+        if (!response.ok) throw new Error("Erro ao cargar plantillas");
+        const plantillas = await response.json();
+
+        this.plantillas = plantillas.filter((p) => p.usuario === idUsuario);
+      } catch (error) {
+        console.error("Erro cargando datos:", error);
+      }
+    },
+    async borrarPlantilla(id) {
+      try {
+        const response = await fetch(
+          `http://localhost:8001/api/plantillas/${id}/`,
+          {
+            method: "DELETE",
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Erro ao eliminar a plantilla");
+        }
+
+        this.plantillas = this.plantillas.filter((p) => p.id_plantilla !== id);
+        window.location.reload();
+      } catch (error) {
+        console.error("❌ Erro eliminando plantilla:", error);
+      }
+    },
   },
 };
 </script>
@@ -86,19 +95,49 @@ export default {
         :class="{ inactiva: componenteActivo !== 'engadirE' }"
         @click="componenteActivo = 'engadirE'"
       >
-        Engadir plantilla
+        Engadir
       </div>
     </div>
 
     <div class="plantilla-layout">
       <div class="esquerda">
-        <!-- GRÁFICO DE PROGRESO -->
+        <h1>Lista de plantillas</h1>
+        <div
+          v-for="plantilla in this.plantillas"
+          :key="plantilla.id"
+          id="divPlantilla"
+        >
+          <div class="plantilla-header">
+            <img :src="plantilla.icona" alt="icona plantilla" />
+            <h3>{{ plantilla.nome }}</h3>
+            <button class="button" @click="componenteActivo = 'engadirE'">
+              +
+            </button>
+            <img
+              src="/imaxes/trash.png"
+              alt="icona borrar"
+              @click="borrarPlantilla(plantilla.id_plantilla)"
+            />
+          </div>
 
-        <div class="esquerdaAbaixo">
-          <button @click="componenteActivo = 'engadirE'" id="engadirE">
-            +
-          </button>
+          <div class="exercicios-plantilla">
+            <template
+              v-if="plantilla.exercicios && plantilla.exercicios.length"
+            >
+              <div
+                v-for="ex in plantilla.exercicios"
+                :key="ex.id_exercicio"
+                class="exercicio"
+              >
+                {{ ex.nome }} - {{ ex.repeticions }} - {{ ex.peso }}kg
+              </div>
+            </template>
+            <p v-else class="sen-exercicios">
+              Esta plantilla non ten exercicios.
+            </p>
+          </div>
         </div>
+        <button @click="componenteActivo = 'nova'" id="engadirE">+</button>
       </div>
 
       <div class="dereita">
@@ -110,18 +149,44 @@ export default {
 </template>
 
 <style scoped>
+.button {
+  background-color: #d8d8d8;
+  color: #7f5af0;
+  font-size: xx-large;
+  display: flex;
+  justify-self: center;
+}
+#divPlantilla {
+  background-color: #d8d8d8;
+  border-radius: 2%;
+  margin-bottom: 2%;
+  padding: 1%;
+  display: flex;
+  flex-direction: column;
+}
+
+.plantilla-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#divPlantilla > .plantilla-header img:first-child {
+  height: 8%;
+  width: 8%;
+}
+
 #divXeral2 {
   display: flex;
   flex-direction: column;
   height: 85%;
-  overflow-y: auto;
+  overflow: hidden;
 }
 
 .titulo {
   text-align: center;
   font-size: xx-large;
   font-weight: bold;
-  margin-bottom: 2%;
   color: #7f5af0;
 }
 
@@ -153,15 +218,19 @@ export default {
   justify-content: center;
   background-color: white;
   border-radius: 2%;
-  overflow: hidden;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
   margin-right: 4%;
-  height: 100%;
+  flex-grow: 1;
+  height: calc(100vh - 30vh);
+  overflow: hidden;
 }
 
 .esquerda {
   width: 60%;
   padding: 2%;
+  box-sizing: border-box;
+  height: 100%;
+  overflow-y: auto;
 }
 
 .dereita {
@@ -171,89 +240,14 @@ export default {
   box-sizing: border-box;
 }
 
-.grafico-plantilla {
-  display: flex;
-  align-items: center;
-  gap: 5%;
-  justify-content: left;
-  margin-bottom: 3%;
-}
-
-.circular-chart {
-  max-width: 15%;
-  max-height: 15%;
-}
-
-.circle-bg {
-  fill: none;
-  stroke: #eee;
-  stroke-width: 3.8;
-}
-
-.circle {
-  fill: none;
-  stroke: #4880ff;
-  stroke-width: 3.8;
-  stroke-linecap: round;
-  transform: rotate(-90deg);
-  transform-origin: center;
-  transition: stroke-dasharray 0.5s;
-}
-
-.percentage {
-  fill: #4880ff;
-  font-size: x-small;
-  text-anchor: middle;
-}
-
 .info-plantilla p {
   margin: 2px 0;
   color: #666;
   font-size: large;
 }
 
-table {
-  width: 96%;
-  border-collapse: collapse;
-  background-color: #d8d8d8;
-  color: black;
-  border-radius: 2%;
-  overflow: hidden;
-}
-
-th,
-td {
-  padding: 2%;
-  text-align: center;
-  flex: 1;
-}
-
-thead {
-  background-color: #7f5af0;
-  color: white;
-  font-weight: bold;
-  text-transform: uppercase;
-}
-
-tbody tr {
-  border-bottom: 1px solid #acacac;
-}
-
-tr {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-td[colspan="3"] {
-  text-align: center;
-  color: #aaa;
-  font-style: italic;
-}
-
 button {
   margin-top: 3%;
-  padding: 1%;
   background-color: #4880ff;
   color: white;
   border: none;
@@ -262,10 +256,26 @@ button {
   cursor: pointer;
   transition: background-color 0.3s ease;
   width: 9%;
-  height: 5%;
 }
 
 #engadirE {
   font-size: xx-large;
+}
+
+.exercicios-plantilla {
+  width: 100%;
+  margin-top: 1%;
+  background-color: #f0f0f0;
+  border-radius: 8px;
+}
+
+.exercicio {
+  border-bottom: 1px solid #ccc;
+  color: black;
+}
+
+.sen-exercicios {
+  font-style: italic;
+  color: #777;
 }
 </style>

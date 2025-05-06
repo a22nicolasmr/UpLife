@@ -507,11 +507,24 @@
   }
 },
 {
+  "model": "admin.logentry",
+  "pk": 72,
+  "fields": {
+    "action_time": "2025-05-06T08:34:56.313Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "4",
+    "object_repr": "nome=Primeiros pasos, descripcion=Entra a páxina por primeira vez., completado=True, icona=media/primeirosPasos_532MVGb.png",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Icona\"]}}]"
+  }
+},
+{
   "model": "auth.user",
   "pk": 1,
   "fields": {
     "password": "pbkdf2_sha256$600000$qwmwkfhq907kvw2HMz9sbQ$as+6Jwi30tqPp/7f7PVESGpU15XsLtJZ54htHLQAP90=",
-    "last_login": "2025-04-21T11:47:34.909Z",
+    "last_login": "2025-05-06T12:16:58.760Z",
     "is_superuser": true,
     "username": "root",
     "first_name": "",
@@ -530,6 +543,14 @@
   "fields": {
     "session_data": ".eJxVjEEOwiAQRe_C2pABCjIu3fcMzcCAVA0kpV0Z765NutDtf-_9l5hoW8u09bRMM4uLUOL0uwWKj1R3wHeqtyZjq-syB7kr8qBdjo3T83q4fweFevnW2RKyTQoha1QcLaMhtsE4A54cmujO7EMEh2AMYNJeRzVkxxpAD0q8P93iNww:1u7BUG:wUjWYju15CvQ9tlSjCAKr4pMuPGl_D3cmpSjaDliAyY",
     "expire_date": "2025-05-06T11:08:24.363Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "40e3lguxix74moe6ijvbjv9xgdnzle2b",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQRe_C2pABCjIu3fcMzcCAVA0kpV0Z765NutDtf-_9l5hoW8u09bRMM4uLUOL0uwWKj1R3wHeqtyZjq-syB7kr8qBdjo3T83q4fweFevnW2RKyTQoha1QcLaMhtsE4A54cmujO7EMEh2AMYNJeRzVkxxpAD0q8P93iNww:1uCHEI:4S1mK_MmNThuDKpsmDaqKlZEmsEqO88Qu6_we7NE1PI",
+    "expire_date": "2025-05-20T12:16:58.764Z"
   }
 },
 {
@@ -589,13 +610,33 @@
   }
 },
 {
+  "model": "UpLife_api.auga",
+  "pk": 4,
+  "fields": {
+    "cantidade": 100,
+    "hora": "10:17:00",
+    "usuario": 1,
+    "data": "2025-05-06"
+  }
+},
+{
+  "model": "UpLife_api.auga",
+  "pk": 5,
+  "fields": {
+    "cantidade": 200,
+    "hora": "10:18:00",
+    "usuario": 1,
+    "data": "2025-05-06"
+  }
+},
+{
   "model": "UpLife_api.medallas",
   "pk": 4,
   "fields": {
     "nome": "Primeiros pasos",
     "descripcion": "Entra a páxina por primeira vez.",
     "completado": true,
-    "icona": "media/primeirosPasos.png",
+    "icona": "media/primeirosPasos_532MVGb.png",
     "usuarios": [
       1
     ]
@@ -787,6 +828,52 @@
     "data": "2025-05-01",
     "usuario": 1,
     "categoria": 2
+  }
+},
+{
+  "model": "UpLife_api.exercicios",
+  "pk": 4,
+  "fields": {
+    "nome": "Sentadilla",
+    "repeticions": "5x10",
+    "peso": 111.0,
+    "data": "2025-05-06",
+    "usuario": 1,
+    "categoria": 1
+  }
+},
+{
+  "model": "UpLife_api.exercicios",
+  "pk": 5,
+  "fields": {
+    "nome": "Sentadilla",
+    "repeticions": "5x10",
+    "peso": 1112.0,
+    "data": null,
+    "usuario": 1,
+    "categoria": 1
+  }
+},
+{
+  "model": "UpLife_api.exercicios",
+  "pk": 6,
+  "fields": {
+    "nome": "Sentadilla",
+    "repeticions": "5x10",
+    "peso": 12222.0,
+    "data": null,
+    "usuario": 1,
+    "categoria": 1
+  }
+},
+{
+  "model": "UpLife_api.plantillas",
+  "pk": 13,
+  "fields": {
+    "nome": "Plantilla de perna",
+    "icona": "/imaxes/leg.png",
+    "usuario": 1,
+    "exercicios": []
   }
 }
 ]

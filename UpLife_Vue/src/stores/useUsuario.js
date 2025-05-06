@@ -96,6 +96,8 @@ export const useUsuarioStore = defineStore("usuario", {
       this.medallas = 0;
     },
     async actualizarDatos() {
+      console.log("actualizar ejecutado");
+
       if (this.id) {
         try {
           const response = await fetch(

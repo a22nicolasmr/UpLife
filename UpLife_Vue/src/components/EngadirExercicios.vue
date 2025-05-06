@@ -22,6 +22,28 @@ export default {
     },
   },
   methods: {
+    comprobarCampos() {
+      this.erro = "";
+
+      if (
+        !this.plantillaSeleccionada ||
+        !this.nomeExercicio ||
+        !this.categoriaSeleccionada ||
+        !this.repeticions ||
+        !this.peso
+      ) {
+        this.erro = "Por favor, cobre todos os campos.";
+        return false;
+      }
+
+      return true;
+    },
+
+    obterIdCategoriaPorId(id) {
+      const categoria = this.categorias.find((c) => c.id === parseInt(id));
+      return categoria ? categoria.id : null;
+    },
+
     obterIdCategoria(nome) {
       const mapa = {
         Perna: 1,
@@ -33,49 +55,75 @@ export default {
       return mapa[nome];
     },
     async engadirExercicio() {
-      this.erro = ""; // limpiamos error
+      if (!this.comprobarCampos()) return;
 
-      const idCategoria = this.obterIdCategoria(this.categoriaSeleccionada);
-      if (!this.nome || !this.repeticions || !this.peso || !idCategoria) {
-        console.log(this.nome, this.repeticions, this.peso, this.categorias);
-
-        this.erro = "Por favor, cobre todos os campos.";
-        return;
-      }
-
-      const payload = {
-        nome: this.nome,
-        repeticions: this.repeticions,
-        peso: this.peso,
-        data: this.dataHoxeISO,
-        usuario: this.idUsuario,
-        categoria: this.obterIdCategoria(this.categoriaSeleccionada),
-      };
+      if (this.erro) return;
 
       try {
-        const response = await fetch("http://localhost:8001/api/exercicios/", {
+        const usuarioStore = useUsuarioStore();
+        const idUsuario = usuarioStore.id;
+
+        const idCategoria = this.obterIdCategoriaPorId(
+          this.categoriaSeleccionada
+        );
+
+        // 1. Crear exercicio
+        const exercicioPayload = {
+          nome: this.nomeExercicio,
+          repeticions: this.repeticions,
+          peso: parseFloat(this.peso),
+          data: new Date().toISOString().split("T")[0],
+          usuario: idUsuario,
+          categoria: idCategoria,
+        };
+
+        const resEx = await fetch("http://localhost:8001/api/exercicios/", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(payload),
+          body: JSON.stringify(exercicioPayload),
         });
 
-        if (!response.ok) {
-          throw new Error("Erro ao engadir exercicio");
-        }
+        if (!resEx.ok) throw new Error("Erro ao crear exercicio");
+        const exercicioCreado = await resEx.json();
 
-        const resultado = await response.json();
+        // 2. Añadir exercicio a plantilla
+        const plantilla = this.plantillas.find(
+          (p) => p.id === this.plantillaSeleccionada
+        );
 
-        // Limpiar formulario
-        this.nome = "";
+        const novaLista = [
+          ...(plantilla.exercicios || []),
+          exercicioCreado.id_exercicio,
+        ];
+
+        const resPatch = await fetch(
+          `http://localhost:8001/api/plantillas/${this.plantillaSeleccionada}/`,
+          {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ exercicios: novaLista }),
+          }
+        );
+
+        if (!resPatch.ok)
+          throw new Error("Erro ao engadir exercicio á plantilla");
+
+        alert("Exercicio engadido correctamente!");
+
+        // limpiar campos
+        this.nomeExercicio = "";
         this.repeticions = "";
-        this.peso = null;
+        this.peso = 0;
         this.categoriaSeleccionada = "";
-
-        window.location.reload();
+        this.plantillaSeleccionada = "";
+        this.erro = "";
       } catch (error) {
-        console.error("❗Erro no try-catch:", error);
+        console.error("❌ Erro engadindo exercicio:", error);
+        this.erro = "Houbo un erro ao engadir o exercicio.";
       }
     },
   },
@@ -116,7 +164,7 @@ export default {
 
       <span v-if="erro" class="error">{{ erro }}</span>
 
-      <button @click="engadirExercicio">Engadir</button>
+      <button @click.prevent="engadirExercicio">Engadir</button>
     </div>
   </div>
 </template>
