@@ -1,5 +1,5 @@
 from .models import Usuarios, Auga, Medallas, Tarefas, Categorias, Exercicios, Plantillas, Comidas, Grupos
-from .serializers import UsuariosSerializer, AugaSerializer, MedallasSerializer, TarefasSerializer, CategoriasSerializer, ExerciciosSerializer, PlantillasSerializer, ComidasSerializer, GruposSerializer
+from .serializers import UsuariosSerializer, AugaSerializer, MedallasSerializer, TarefasSerializer, CategoriasSerializer, ExerciciosSerializer, PlantillasSerializer, ComidasSerializer, GruposSerializer,PlantillasDetailSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
@@ -57,6 +57,12 @@ class ExerciciosViewSet(viewsets.ModelViewSet):
 class PlantillasViewSet(viewsets.ModelViewSet):
     queryset = Plantillas.objects.all()
     serializer_class = PlantillasSerializer
+
+    def get_serializer_class(self):
+        if self.action == 'retrieve' or self.action == 'list':
+            return PlantillasDetailSerializer
+        return PlantillasSerializer
+
 
 class ComidasViewSet(viewsets.ModelViewSet):
     queryset = Comidas.objects.all()

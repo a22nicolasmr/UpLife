@@ -14,10 +14,12 @@ export default {
     return {
       componenteActivo: "historial",
       exerciciosHoxe: [],
+      plantillasHoxe: [],
     };
   },
   mounted() {
     this.cargarExerciciosHoxe();
+    this.cargarPlantillasHoxe();
   },
   methods: {
     nomeCategoriaPorId(id) {
@@ -27,6 +29,7 @@ export default {
         3: "Core",
         4: "Espalda",
         5: "Peito",
+        6: "Todo corpo",
       };
       return mapa[id] || "Descoñecida";
     },
@@ -67,6 +70,82 @@ export default {
         console.error("Erro eliminando exercicio:", error);
       }
     },
+    async cargarPlantillasHoxe() {
+      const usuarioStore = useUsuarioStore();
+      const idUsuario = usuarioStore.id;
+
+      const hoxe = new Date().toISOString().split("T")[0];
+      try {
+        const response = await fetch("http://localhost:8001/api/plantillas/");
+        if (!response.ok) throw new Error("Erro ao cargar plantillas");
+
+        const plantillas = await response.json();
+        this.plantillasHoxe = plantillas.filter(
+          (p) => p.usuario === idUsuario && p.data === hoxe
+        );
+      } catch (error) {
+        console.error("Erro cargando plantillas hoxe:", error);
+      }
+    },
+    async engadirPlantilla(plantillaSeleccionada) {
+      const usuarioStore = useUsuarioStore();
+      const idUsuario = usuarioStore.id;
+      try {
+        console.log(
+          "plantilla seleccionada desde Exercicios ",
+          plantillaSeleccionada
+        );
+        const response = await fetch(`http://localhost:8001/api/plantillas/`, {
+          method: "GET",
+        });
+        const plantillas = await response.json();
+        const plantillaFiltrada = plantillas.find(
+          (p) => p.usuario === idUsuario && p.nome === plantillaSeleccionada
+        );
+
+        const hoxe = new Date().toISOString().split("T")[0]; // YYYY-MM-DD
+
+        const response2 = await fetch(
+          `http://localhost:8001/api/plantillas/${plantillaFiltrada.id_plantilla}/`,
+          {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              data: hoxe,
+            }),
+          }
+        );
+
+        if (!response2.ok) {
+          throw new Error("Erro ao actualizar a plantilla");
+        }
+        this.cargarPlantillasHoxe();
+        window.location.reload();
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async eliminarPlantilla(id_plantilla) {
+      const response2 = await fetch(
+        `http://localhost:8001/api/plantillas/${id_plantilla}/`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            data: null,
+          }),
+        }
+      );
+
+      if (!response2.ok) {
+        throw new Error("Erro ao actualizar a plantilla");
+      }
+      this.cargarPlantillasHoxe();
+    },
   },
 };
 </script>
@@ -102,7 +181,6 @@ export default {
       <div class="esquerda">
         <div class="esquerdaArriba">
           <h2>Exercicios de hoxe</h2>
-          <button id="engadirP">Engadir plantilla</button>
         </div>
         <div class="esquerdaAbaixo">
           <table>
@@ -137,26 +215,78 @@ export default {
               </tr>
             </tbody>
           </table>
-          <button @click="componenteActivo = 'engadirE'" id="engadirE">
-            +
-          </button>
+          <button @click="componenteActivo = 'engadirE'">+</button>
+        </div>
+
+        <!-- NOVA TÁBOA DE PLANTILLAS -->
+        <div class="esquerdaAbaixo">
+          <h2>Plantillas de hoxe</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Icona</th>
+                <th>Nome</th>
+                <th>Eliminar</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                v-for="plantilla in plantillasHoxe"
+                :key="plantilla.id_plantilla"
+              >
+                <td>
+                  <img
+                    :src="plantilla.icona"
+                    alt="icona plantilla"
+                    class="icona"
+                  />
+                </td>
+                <td>{{ plantilla.nome }}</td>
+                <td>
+                  <img
+                    src="/imaxes/trash.png"
+                    alt="icona borrar"
+                    @click="eliminarPlantilla(plantilla.id_plantilla)"
+                    class="icon"
+                  />
+                </td>
+              </tr>
+              <tr v-if="plantillasHoxe.length === 0">
+                <td colspan="3">Non hai plantillas rexistradas para hoxe.</td>
+              </tr>
+            </tbody>
+          </table>
+          <button @click="componenteActivo = 'engadirP'">+</button>
         </div>
       </div>
 
       <div class="dereita">
         <HistorialExercicios v-if="componenteActivo === 'historial'" />
         <EngadirExercicios v-if="componenteActivo === 'engadirE'" />
-        <EngadirPlantillasExercicios v-if="componenteActivo === 'engadirP'" />
+        <EngadirPlantillasExercicios
+          v-if="componenteActivo === 'engadirP'"
+          @engadirPlantilla="engadirPlantilla"
+        />
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
+.icon {
+  height: 12%;
+  width: 12%;
+}
+.icona {
+  height: 20%;
+  width: 20%;
+  background: white;
+  border-radius: 4px;
+}
 #engadirE {
   font-size: xx-large;
 }
-#engadirP {
+#engadirPbutton {
   font-size: smaller;
   width: 25%;
 }
@@ -197,9 +327,7 @@ body {
   height: 100%;
   width: 100%;
 }
-.esquerda {
-  width: 60%;
-}
+
 #divXeral2 {
   display: flex;
   flex-direction: column;
@@ -242,13 +370,31 @@ body {
   flex-direction: row;
   justify-content: center;
   background-color: white;
-  border-radius: 2%;
-  overflow: hidden;
+  border-radius: 8px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
   margin-right: 4%;
-  height: 100%;
   margin-bottom: 1%;
+  height: 60vh;
+  overflow: hidden;
 }
+
+.esquerda {
+  width: 60%;
+  height: 100%;
+  overflow-y: auto;
+  padding: 1%;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+.esquerdaAbaixo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  padding: 2%;
+}
+
 h2 {
   color: #7f5af0;
 }
@@ -266,21 +412,15 @@ h1 {
   color: white;
   box-sizing: border-box;
 }
-.esquerdaAbaixo {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  width: 100%;
-  padding: 2%;
-}
 
 table {
   width: 96%;
   border-collapse: collapse;
   background-color: #d8d8d8;
   color: black;
-  border-radius: 2%;
+  border-radius: 8px;
   overflow: hidden;
+  margin: 0;
 }
 
 th,
@@ -307,7 +447,8 @@ tr {
   align-items: center;
 }
 
-td[colspan="4"] {
+td[colspan="4"],
+td[colspan="3"] {
   text-align: center;
   color: #aaa;
   font-style: italic;

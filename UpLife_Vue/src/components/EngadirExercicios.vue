@@ -8,7 +8,7 @@ export default {
       repeticions: "",
       peso: null,
       categoriaSeleccionada: "",
-      categorias: ["Peito", "Espalda", "Core", "Brazo", "Perna"],
+      categorias: ["Peito", "Espalda", "Core", "Brazo", "Perna", "Todo corpo"],
       erro: "", // mensaje de error añadido
     };
   },
@@ -24,10 +24,19 @@ export default {
   methods: {
     comprobarCampos() {
       this.erro = "";
+      console.log(
+        "nome",
+        this.nome,
+        "categoria",
+        this.categoriaSeleccionada,
+        "repeticions",
+        this.repeticions,
+        "peso",
+        this.peso
+      );
 
       if (
-        !this.plantillaSeleccionada ||
-        !this.nomeExercicio ||
+        !this.nome ||
         !this.categoriaSeleccionada ||
         !this.repeticions ||
         !this.peso
@@ -51,6 +60,7 @@ export default {
         Core: 3,
         Espalda: 4,
         Peito: 5,
+        "Todo corpo": 6,
       };
       return mapa[nome];
     },
@@ -63,18 +73,16 @@ export default {
         const usuarioStore = useUsuarioStore();
         const idUsuario = usuarioStore.id;
 
-        const idCategoria = this.obterIdCategoriaPorId(
-          this.categoriaSeleccionada
-        );
+        const idCategoria = this.obterIdCategoria(this.categoriaSeleccionada);
 
         // 1. Crear exercicio
         const exercicioPayload = {
-          nome: this.nomeExercicio,
+          categoria: idCategoria,
+          nome: this.nome,
           repeticions: this.repeticions,
           peso: parseFloat(this.peso),
           data: new Date().toISOString().split("T")[0],
           usuario: idUsuario,
-          categoria: idCategoria,
         };
 
         const resEx = await fetch("http://localhost:8001/api/exercicios/", {
@@ -86,40 +94,11 @@ export default {
         });
 
         if (!resEx.ok) throw new Error("Erro ao crear exercicio");
-        const exercicioCreado = await resEx.json();
-
-        // 2. Añadir exercicio a plantilla
-        const plantilla = this.plantillas.find(
-          (p) => p.id === this.plantillaSeleccionada
-        );
-
-        const novaLista = [
-          ...(plantilla.exercicios || []),
-          exercicioCreado.id_exercicio,
-        ];
-
-        const resPatch = await fetch(
-          `http://localhost:8001/api/plantillas/${this.plantillaSeleccionada}/`,
-          {
-            method: "PATCH",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ exercicios: novaLista }),
-          }
-        );
-
-        if (!resPatch.ok)
-          throw new Error("Erro ao engadir exercicio á plantilla");
-
-        alert("Exercicio engadido correctamente!");
-
         // limpiar campos
         this.nomeExercicio = "";
         this.repeticions = "";
         this.peso = 0;
         this.categoriaSeleccionada = "";
-        this.plantillaSeleccionada = "";
         this.erro = "";
       } catch (error) {
         console.error("❌ Erro engadindo exercicio:", error);
@@ -150,7 +129,6 @@ export default {
         v-model="nome"
         placeholder="Nome do exercicio"
       />
-
       <label for="repeticions">Repeticións</label>
       <input
         type="text"
@@ -186,7 +164,6 @@ export default {
   height: 100%;
   width: 100%;
   overflow-y: auto;
-
   display: flex;
   justify-content: center;
   align-items: center;

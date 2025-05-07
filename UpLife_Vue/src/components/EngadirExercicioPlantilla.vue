@@ -44,13 +44,15 @@ export default {
 
         if (!resEx.ok) throw new Error("Erro ao crear exercicio");
         const exercicioCreado = await resEx.json();
+        console.log("exercicio creado ", exercicioCreado);
 
+        await this.cargarDatos();
         const plantilla = this.plantillas.find(
           (p) => p.id_plantilla === this.plantillaSeleccionada
         );
 
         const novaLista = [
-          ...(plantilla.exercicios || []).map((ex) => Number(ex)),
+          ...(plantilla.exercicios || []).map((ex) => Number(ex.id_exercicio)),
           Number(exercicioCreado.id_exercicio),
         ];
 
@@ -73,16 +75,17 @@ export default {
         const responsePatchData = await resPatch.json();
         console.log("📦 Resposta do PATCH:", responsePatchData);
 
-        // Recargar datos para actualizar a lista de plantillas
+        // recargar datos para actualizar a lista de plantillas
         await this.cargarDatos();
 
-        // Resetear os campos
+        // resetear os campos
         this.nomeExercicio = "";
         this.repeticions = "";
         this.peso = null;
         this.categoriaSeleccionada = "";
         this.plantillaSeleccionada = "";
         this.erro = "";
+        window.location.reload();
       } catch (error) {
         console.error("❌ Erro engadindo exercicio:", error);
         this.erro = "Houbo un erro ao engadir o exercicio.";

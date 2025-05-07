@@ -210,7 +210,7 @@ export default {
 }
 .divsArriba > div {
   background-color: white;
-  border-radius: 5%;
+  border-radius: 8px;
 }
 .tarefas-wrapper {
   background-color: #f5f6f8;
@@ -257,7 +257,8 @@ body,
   flex-direction: row;
   justify-content: center;
   background-color: white;
-  border-radius: 2%;
+  border-radius: 8px;
+
   overflow: hidden;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
   margin-right: 4%;
@@ -307,7 +308,8 @@ h1 {
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 50%;
+  border-radius: 8px;
+
   transition: background-color 0.3s, transform 0.2s;
 }
 

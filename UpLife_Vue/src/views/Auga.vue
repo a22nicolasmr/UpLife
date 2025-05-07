@@ -206,7 +206,8 @@ export default {
   flex-direction: row;
   justify-content: center;
   background-color: white;
-  border-radius: 2%;
+  border-radius: 8px;
+
   overflow: hidden;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
   margin-right: 4%;
@@ -271,7 +272,8 @@ table {
   border-collapse: collapse;
   background-color: #d8d8d8;
   color: black;
-  border-radius: 2%;
+  border-radius: 8px;
+
   overflow: hidden;
 }
 

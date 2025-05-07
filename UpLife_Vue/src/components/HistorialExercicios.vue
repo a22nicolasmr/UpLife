@@ -5,6 +5,7 @@ export default {
   data() {
     return {
       exerciciosPorDia: {},
+      plantillasPorDia: [],
     };
   },
   computed: {
@@ -13,7 +14,7 @@ export default {
       return store.id;
     },
     dataHoxeISO() {
-      return new Date().toISOString().split("T")[0]; // formato YYYY-MM-DD
+      return new Date().toISOString().split("T")[0];
     },
   },
   async mounted() {
@@ -26,31 +27,40 @@ export default {
         (e) => e.usuario === this.idUsuario
       );
       const seteDiasAtras = new Date();
-      seteDiasAtras.setDate(seteDiasAtras.getDate() - 6); // últimos 7 días incluindo hoxe
+      seteDiasAtras.setDate(seteDiasAtras.getDate() - 6);
 
       const exerciciosFiltrados = exerciciosPorUsuario.filter((ex) => {
         const dataEx = new Date(ex.data);
         return dataEx >= seteDiasAtras;
       });
 
-      // Agrupar por data (YYYY-MM-DD)
       const agrupados = {};
       exerciciosFiltrados.forEach((ex) => {
         if (!agrupados[ex.data]) agrupados[ex.data] = [];
         agrupados[ex.data].push(ex);
       });
 
-      // Ordenar por data descendente
       this.exerciciosPorDia = Object.fromEntries(
         Object.entries(agrupados).sort(
           (a, b) => new Date(b[0]) - new Date(a[0])
         )
       );
+
+      const response2 = await fetch("http://localhost:8001/api/plantillas/");
+      const plantillas = await response2.json();
+
+      const seteDiasAtras2 = new Date();
+      seteDiasAtras2.setDate(seteDiasAtras2.getDate() - 6);
+      const seteDiasAtrasISO = seteDiasAtras2.toISOString().split("T")[0];
+
+      const plantillasFiltradas = plantillas.filter(
+        (p) => p.usuario === this.idUsuario && p.data >= seteDiasAtrasISO
+      );
+      this.plantillasPorDia = plantillasFiltradas;
     } catch (error) {
       console.error("Erro ao obter historial:", error);
     }
   },
-
   methods: {
     async engadirExercicio(exercicio) {
       const payload = {
@@ -71,15 +81,30 @@ export default {
           body: JSON.stringify(payload),
         });
 
-        if (!response.ok) {
-          throw new Error("Erro ao engadir exercicio");
-        }
+        if (!response.ok) throw new Error("Erro ao engadir exercicio");
 
-        const resultado = await response.json();
-
+        await response.json();
         window.location.reload();
       } catch (error) {
         console.error("❗Erro no try-catch:", error);
+      }
+    },
+    async engadirPlantilla(plantilla) {
+      const response = await fetch(
+        `http://localhost:8001/api/plantillas/${plantilla.id_plantilla}/`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ data: this.dataHoxeISO }),
+        }
+      );
+
+      if (!response.ok) {
+        console.error("Erro ao actualizar plantilla");
+      } else {
+        window.location.reload();
       }
     },
     nomeCategoria(idCategoria) {
@@ -89,8 +114,9 @@ export default {
         3: "Core",
         4: "Espalda",
         5: "Peito",
+        6: "Todo corpo",
       };
-      return mapa[idCategoria] || "Descoñecida";
+      return mapa[idCategoria] || "Desco\u00f1ecida";
     },
   },
 };
@@ -118,11 +144,24 @@ export default {
           <li v-for="ex in exs" :key="ex.id_exercicio">
             <div class="fila-exercicio">
               <span>
-                {{ ex.nome }} - {{ ex.repeticions }} - {{ ex.peso }}kg ({{
+                [E] {{ ex.nome }} - {{ ex.repeticions }} - {{ ex.peso }}kg ({{
                   nomeCategoria(ex.categoria)
                 }})
               </span>
               <button class="boton-dereita" @click="engadirExercicio(ex)">
+                +
+              </button>
+            </div>
+          </li>
+        </ul>
+        <ul>
+          <li
+            v-for="p in plantillasPorDia.filter((x) => x.data === data)"
+            :key="p.id_plantilla"
+          >
+            <div class="fila-exercicio">
+              <span id="spanPlantilla"> [P] {{ p.nome }} </span>
+              <button class="boton-dereita" @click="engadirPlantilla(p)">
                 +
               </button>
             </div>
@@ -134,6 +173,12 @@ export default {
 </template>
 
 <style scoped>
+.icona {
+  height: 10%;
+  width: 10%;
+  background: white;
+  border-radius: 4px;
+}
 #divXeral {
   padding: 5%;
 }

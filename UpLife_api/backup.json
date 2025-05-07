@@ -520,6 +520,97 @@
   }
 },
 {
+  "model": "admin.logentry",
+  "pk": 73,
+  "fields": {
+    "action_time": "2025-05-07T07:25:37.675Z",
+    "user": 1,
+    "content_type": 12,
+    "object_id": "43",
+    "object_repr": "nome=Sentadilla, repeticions=5x10, peso=120.0, usuario=nome=lupi, nome_usuario=lupi, email=lupi@gmail.com, contrasinal=pbkdf2_sha256$600000$PRQo908qwKQGJ5eoW6WXf4$AHdxJ9VAImwzx0gm7ag2f4KCyQFAkwHDBpoAs",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 74,
+  "fields": {
+    "action_time": "2025-05-07T07:25:40.904Z",
+    "user": 1,
+    "content_type": 12,
+    "object_id": "42",
+    "object_repr": "nome=Sentadilla, repeticions=5x10, peso=120.0, usuario=nome=lupi, nome_usuario=lupi, email=lupi@gmail.com, contrasinal=pbkdf2_sha256$600000$PRQo908qwKQGJ5eoW6WXf4$AHdxJ9VAImwzx0gm7ag2f4KCyQFAkwHDBpoAs",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 75,
+  "fields": {
+    "action_time": "2025-05-07T07:25:44.020Z",
+    "user": 1,
+    "content_type": 12,
+    "object_id": "41",
+    "object_repr": "nome=Exercicio exemplo plantilla de perna, repeticions=5x10, peso=111.0, usuario=nome=lupi, nome_usuario=lupi, email=lupi@gmail.com, contrasinal=pbkdf2_sha256$600000$PRQo908qwKQGJ5eoW6WXf4$AHdxJ9VAImw",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 76,
+  "fields": {
+    "action_time": "2025-05-07T07:25:48.055Z",
+    "user": 1,
+    "content_type": 12,
+    "object_id": "39",
+    "object_repr": "nome=Exercicio de perna de proba, repeticions=4x20, peso=20.0, usuario=nome=lupi, nome_usuario=lupi, email=lupi@gmail.com, contrasinal=pbkdf2_sha256$600000$PRQo908qwKQGJ5eoW6WXf4$AHdxJ9VAImwzx0gm7ag2f",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 77,
+  "fields": {
+    "action_time": "2025-05-07T07:25:51.568Z",
+    "user": 1,
+    "content_type": 12,
+    "object_id": "6",
+    "object_repr": "nome=Sentadilla, repeticions=5x10, peso=12222.0, usuario=nome=lupi, nome_usuario=lupi, email=lupi@gmail.com, contrasinal=pbkdf2_sha256$600000$PRQo908qwKQGJ5eoW6WXf4$AHdxJ9VAImwzx0gm7ag2f4KCyQFAkwHDBpo",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 78,
+  "fields": {
+    "action_time": "2025-05-07T07:25:55.872Z",
+    "user": 1,
+    "content_type": 12,
+    "object_id": "5",
+    "object_repr": "nome=Sentadilla, repeticions=5x10, peso=1112.0, usuario=nome=lupi, nome_usuario=lupi, email=lupi@gmail.com, contrasinal=pbkdf2_sha256$600000$PRQo908qwKQGJ5eoW6WXf4$AHdxJ9VAImwzx0gm7ag2f4KCyQFAkwHDBpoA",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 79,
+  "fields": {
+    "action_time": "2025-05-07T08:01:00.287Z",
+    "user": 1,
+    "content_type": 11,
+    "object_id": "6",
+    "object_repr": "nome=Todo corpo",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
   "model": "auth.user",
   "pk": 1,
   "fields": {
@@ -627,6 +718,26 @@
     "hora": "10:18:00",
     "usuario": 1,
     "data": "2025-05-06"
+  }
+},
+{
+  "model": "UpLife_api.auga",
+  "pk": 16,
+  "fields": {
+    "cantidade": 200,
+    "hora": "10:18:00",
+    "usuario": 1,
+    "data": "2025-05-07"
+  }
+},
+{
+  "model": "UpLife_api.auga",
+  "pk": 17,
+  "fields": {
+    "cantidade": 200,
+    "hora": "10:18:00",
+    "usuario": 1,
+    "data": "2025-05-07"
   }
 },
 {
@@ -795,6 +906,13 @@
   }
 },
 {
+  "model": "UpLife_api.categorias",
+  "pk": 6,
+  "fields": {
+    "nome": "Todo corpo"
+  }
+},
+{
   "model": "UpLife_api.exercicios",
   "pk": 1,
   "fields": {
@@ -844,11 +962,11 @@
 },
 {
   "model": "UpLife_api.exercicios",
-  "pk": 5,
+  "pk": 44,
   "fields": {
-    "nome": "Sentadilla",
+    "nome": "Xemelgos",
     "repeticions": "5x10",
-    "peso": 1112.0,
+    "peso": 1.0,
     "data": null,
     "usuario": 1,
     "categoria": 1
@@ -856,24 +974,136 @@
 },
 {
   "model": "UpLife_api.exercicios",
-  "pk": 6,
+  "pk": 45,
   "fields": {
-    "nome": "Sentadilla",
-    "repeticions": "5x10",
-    "peso": 12222.0,
+    "nome": "Cuádriceps",
+    "repeticions": "4x20",
+    "peso": 12.0,
     "data": null,
     "usuario": 1,
     "categoria": 1
   }
 },
 {
+  "model": "UpLife_api.exercicios",
+  "pk": 46,
+  "fields": {
+    "nome": "Cuádriceps",
+    "repeticions": "5x10",
+    "peso": 111.0,
+    "data": null,
+    "usuario": 1,
+    "categoria": 1
+  }
+},
+{
+  "model": "UpLife_api.exercicios",
+  "pk": 47,
+  "fields": {
+    "nome": "Cuádriceps",
+    "repeticions": "5x10",
+    "peso": 11.0,
+    "data": null,
+    "usuario": 1,
+    "categoria": 1
+  }
+},
+{
+  "model": "UpLife_api.exercicios",
+  "pk": 48,
+  "fields": {
+    "nome": "Cuádriceps",
+    "repeticions": "5x10",
+    "peso": 11.0,
+    "data": null,
+    "usuario": 1,
+    "categoria": 1
+  }
+},
+{
+  "model": "UpLife_api.exercicios",
+  "pk": 49,
+  "fields": {
+    "nome": "Femoral",
+    "repeticions": "5x10",
+    "peso": 30.0,
+    "data": null,
+    "usuario": 1,
+    "categoria": 1
+  }
+},
+{
+  "model": "UpLife_api.exercicios",
+  "pk": 50,
+  "fields": {
+    "nome": "Boxeo",
+    "repeticions": "1",
+    "peso": 1.0,
+    "data": "2025-05-07",
+    "usuario": 1,
+    "categoria": 6
+  }
+},
+{
+  "model": "UpLife_api.exercicios",
+  "pk": 51,
+  "fields": {
+    "nome": "Boxeo",
+    "repeticions": "1",
+    "peso": 1.0,
+    "data": "2025-05-07",
+    "usuario": 1,
+    "categoria": 6
+  }
+},
+{
+  "model": "UpLife_api.exercicios",
+  "pk": 52,
+  "fields": {
+    "nome": "Xemelgos",
+    "repeticions": "4x20",
+    "peso": 1.0,
+    "data": null,
+    "usuario": 1,
+    "categoria": 1
+  }
+},
+{
+  "model": "UpLife_api.exercicios",
+  "pk": 53,
+  "fields": {
+    "nome": "Pres de banca",
+    "repeticions": "5x7",
+    "peso": 80.0,
+    "data": null,
+    "usuario": 1,
+    "categoria": 5
+  }
+},
+{
   "model": "UpLife_api.plantillas",
-  "pk": 13,
+  "pk": 15,
   "fields": {
     "nome": "Plantilla de perna",
     "icona": "/imaxes/leg.png",
+    "data": null,
     "usuario": 1,
-    "exercicios": []
+    "exercicios": [
+      52
+    ]
+  }
+},
+{
+  "model": "UpLife_api.plantillas",
+  "pk": 16,
+  "fields": {
+    "nome": "Plantilla de peito",
+    "icona": "/imaxes/torso.png",
+    "data": "2025-05-07",
+    "usuario": 1,
+    "exercicios": [
+      53
+    ]
   }
 }
 ]

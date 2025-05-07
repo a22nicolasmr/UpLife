@@ -52,6 +52,8 @@ export default {
         });
 
         const respostaTexto = await response.text();
+        console.log(respostaTexto);
+
         if (!response.ok) {
           throw new Error("Erro ao engadir plantillas");
         }
@@ -101,6 +103,14 @@ export default {
 </template>
 
 <style scoped>
+.engadir-container {
+  height: 100%;
+  width: 100%;
+  overflow-y: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 h2 {
   color: #7f5af0;
 }
