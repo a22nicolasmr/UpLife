@@ -62,9 +62,25 @@ class ComidasSerializer(serializers.ModelSerializer):
         model = Comidas
         fields = '__all__'
 
+# Serializer básico con solo las claves primarias de comidas
 class GruposSerializer(serializers.ModelSerializer):
-    comidas = ComidasSerializer(many=True)
+    comidas = serializers.PrimaryKeyRelatedField(
+        many=True,
+        queryset=Comidas.objects.all(),
+        required=False,
+        allow_null=True,
+        default=[]
+    )
 
     class Meta:
         model = Grupos
         fields = '__all__'
+
+
+# Serializer detallado con los datos completos de comidas
+class GruposDetailSerializer(serializers.ModelSerializer):
+    comidas = ComidasSerializer(many=True, read_only=True)
+    class Meta:
+        model = Grupos
+        fields = '__all__'
+

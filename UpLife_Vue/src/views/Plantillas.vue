@@ -1,6 +1,6 @@
 <script>
-import EngadirExercicioPlantilla from "@/components/EngadirExercicioPlantilla.vue";
-import NovaPlantilla from "@/components/NovaPlantilla.vue";
+import EngadirExercicioPlantilla from "@/components/Plantillas/EngadirExercicioPlantilla.vue";
+import NovaPlantilla from "@/components/Plantillas/NovaPlantilla.vue";
 import { useUsuarioStore } from "@/stores/useUsuario";
 
 export default {
@@ -14,6 +14,7 @@ export default {
       plantillas: [],
       expandedPlantillas: [],
       plantillaSeleccionada: null, // Nueva propiedad para gestionar la plantilla seleccionada
+      plantillaSeleccionadaMandar: null, // Nueva propiedad para gestionar la plantilla seleccionada
     };
   },
 
@@ -157,7 +158,7 @@ export default {
                 class="button-add"
                 @click="
                   componenteActivo = 'engadirE';
-                  plantillaSeleccionada = plantilla.id_plantilla;
+                  this.plantillaSeleccionadaMandar = plantilla.id_plantilla;
                 "
               >
                 +
@@ -207,7 +208,10 @@ export default {
 
       <div class="dereita">
         <NovaPlantilla v-if="componenteActivo === 'nova'" />
-        <EngadirExercicioPlantilla v-if="componenteActivo === 'engadirE'" />
+        <EngadirExercicioPlantilla
+          v-if="componenteActivo === 'engadirE'"
+          :plantillaSeleccionadaMandar="plantillaSeleccionadaMandar"
+        />
       </div>
     </div>
   </div>

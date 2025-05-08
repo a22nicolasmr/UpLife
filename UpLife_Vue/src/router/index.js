@@ -1,19 +1,19 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 import Formularios from "@/views/Formularios.vue";
-import Inicio from "@/components/Inicio.vue";
-import Rexistro from "@/components/Rexistro.vue";
+import Inicio from "@/components/Formularios/Inicio.vue";
+import Rexistro from "@/components/Formularios/Rexistro.vue";
 import Tarefas from "@/views/Tarefas.vue";
-import ListaTarefas from "@/components/ListaTarefas.vue";
-import EngadirTarefas from "@/components/EngadirTarefas.vue";
+import ListaTarefas from "@/components/Tarefas/ListaTarefas.vue";
+import EngadirTarefas from "@/components/Tarefas/EngadirTarefas.vue";
 import Auga from "@/views/Auga.vue";
 import Comidas from "@/views/Comidas.vue";
 import Exercicios from "@/views/Exercicios.vue";
 import Medallas from "@/views/Medallas.vue";
 import Perfil from "@/views/Perfil.vue";
 import Plantillas from "@/views/Plantillas.vue";
-import Calculadora from "@/components/Calculadora.vue";
-import Calculador from "@/components/Calculador.vue";
+import Calculadora from "@/components/Perfil/Calculadora.vue";
+import Calculador from "@/components/Perfil/Calculador.vue";
 
 const routes = [
   {

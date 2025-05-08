@@ -1,6 +1,6 @@
 <script>
-import ListaTarefas from "@/components/ListaTarefas.vue";
-import EngadirTarefas from "@/components/EngadirTarefas.vue";
+import ListaTarefas from "@/components/Tarefas/ListaTarefas.vue";
+import EngadirTarefas from "@/components/Tarefas/EngadirTarefas.vue";
 
 export default {
   components: {

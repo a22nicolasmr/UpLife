@@ -1,5 +1,5 @@
 <script>
-import Calculadora from "@/components/Calculadora.vue";
+import Calculadora from "@/components/Perfil/Calculadora.vue";
 import { useUsuarioStore } from "@/stores/useUsuario";
 
 export default {

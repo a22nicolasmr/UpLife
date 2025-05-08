@@ -1,6 +1,6 @@
 <script>
-import EngadirAuga from "@/components/EngadirAuga.vue";
-import HistorialAuga from "@/components/HistorialAuga.vue";
+import EngadirAuga from "@/components/Auga/EngadirAuga.vue";
+import HistorialAuga from "@/components/Auga/HistorialAuga.vue";
 import { useUsuarioStore } from "@/stores/useUsuario";
 
 export default {
@@ -211,12 +211,13 @@ export default {
   overflow: hidden;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
   margin-right: 4%;
-  height: 100%;
+  height: 60vh;
 }
 
 .esquerda {
   width: 60%;
   padding: 2%;
+  overflow-y: auto;
 }
 
 .dereita {
@@ -224,6 +225,7 @@ export default {
   background-color: #1c1c1c;
   color: white;
   box-sizing: border-box;
+  overflow-y: auto;
 }
 
 .grafico-auga {

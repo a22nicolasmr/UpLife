@@ -14,8 +14,25 @@ export default {
       erro: "",
     };
   },
+  props: {
+    plantillaSeleccionadaMandar: "",
+  },
   mounted() {
     this.cargarDatos();
+  },
+  watch: {
+    plantillaSeleccionadaMandar: {
+      immediate: true,
+      handler(novoValor) {
+        if (novoValor != null) {
+          this.plantillaSeleccionada = Number(novoValor);
+
+          console.log("🔄 novoValor asignado:", novoValor);
+        } else {
+          console.log("⚠ novoValor é null ou undefined");
+        }
+      },
+    },
   },
   methods: {
     async engadirExercicio() {
@@ -142,7 +159,7 @@ export default {
       <h2>Engadir exercicio a plantilla</h2>
 
       <label for="selectPlantilla">Plantilla</label>
-      <select id="selectPlantilla" v-model="plantillaSeleccionada">
+      <select id="selectPlantilla" v-model.number="plantillaSeleccionada">
         <option value="">Selecciona unha opción</option>
         <option
           v-for="plantilla in plantillas"

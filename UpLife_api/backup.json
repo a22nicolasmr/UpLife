@@ -611,6 +611,32 @@
   }
 },
 {
+  "model": "admin.logentry",
+  "pk": 80,
+  "fields": {
+    "action_time": "2025-05-08T09:34:34.734Z",
+    "user": 1,
+    "content_type": 14,
+    "object_id": "2",
+    "object_repr": "nome=Salmon, peso=11.0, graxas=111.0, carbohidratos=111.0, proteinas=111.0, calorias=11.0, usuario=nome=lupi, nome_usuario=lupi, email=lupi@gmail.com, contrasinal=pbkdf2_sha256$600000$PRQo908qwKQGJ5eo",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 81,
+  "fields": {
+    "action_time": "2025-05-08T09:34:37.127Z",
+    "user": 1,
+    "content_type": 14,
+    "object_id": "1",
+    "object_repr": "nome=Salmon, peso=111.0, graxas=111.0, carbohidratos=111.0, proteinas=111.0, calorias=111.0, usuario=nome=lupi, nome_usuario=lupi, email=lupi@gmail.com, contrasinal=pbkdf2_sha256$600000$PRQo908qwKQGJ5",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
   "model": "auth.user",
   "pk": 1,
   "fields": {
@@ -738,6 +764,26 @@
     "hora": "10:18:00",
     "usuario": 1,
     "data": "2025-05-07"
+  }
+},
+{
+  "model": "UpLife_api.auga",
+  "pk": 18,
+  "fields": {
+    "cantidade": 200,
+    "hora": "10:18:00",
+    "usuario": 1,
+    "data": "2025-05-08"
+  }
+},
+{
+  "model": "UpLife_api.auga",
+  "pk": 28,
+  "fields": {
+    "cantidade": 100,
+    "hora": "10:17:00",
+    "usuario": 1,
+    "data": "2025-05-08"
   }
 },
 {
@@ -1081,6 +1127,42 @@
   }
 },
 {
+  "model": "UpLife_api.exercicios",
+  "pk": 54,
+  "fields": {
+    "nome": "Paseo longo",
+    "repeticions": "1",
+    "peso": 1.0,
+    "data": "2025-05-08",
+    "usuario": 1,
+    "categoria": 6
+  }
+},
+{
+  "model": "UpLife_api.exercicios",
+  "pk": 55,
+  "fields": {
+    "nome": "Muscle up",
+    "repeticions": "1x3",
+    "peso": 1.0,
+    "data": "2025-05-08",
+    "usuario": 1,
+    "categoria": 4
+  }
+},
+{
+  "model": "UpLife_api.exercicios",
+  "pk": 56,
+  "fields": {
+    "nome": "Sentadilla",
+    "repeticions": "5x10",
+    "peso": 111.0,
+    "data": "2025-05-08",
+    "usuario": 1,
+    "categoria": 1
+  }
+},
+{
   "model": "UpLife_api.plantillas",
   "pk": 15,
   "fields": {
@@ -1099,10 +1181,65 @@
   "fields": {
     "nome": "Plantilla de peito",
     "icona": "/imaxes/torso.png",
-    "data": "2025-05-07",
+    "data": "2025-05-08",
     "usuario": 1,
     "exercicios": [
       53
+    ]
+  }
+},
+{
+  "model": "UpLife_api.comidas",
+  "pk": 5,
+  "fields": {
+    "nome": "Patacas",
+    "peso": 150.0,
+    "graxas": 20.0,
+    "carbohidratos": 122.0,
+    "proteinas": 4.0,
+    "calorias": 200.0,
+    "data": null,
+    "usuario": 1
+  }
+},
+{
+  "model": "UpLife_api.comidas",
+  "pk": 7,
+  "fields": {
+    "nome": "Patacas",
+    "peso": 150.0,
+    "graxas": 20.0,
+    "carbohidratos": 122.0,
+    "proteinas": 4.0,
+    "calorias": 200.0,
+    "data": "2025-05-08",
+    "usuario": 1
+  }
+},
+{
+  "model": "UpLife_api.comidas",
+  "pk": 9,
+  "fields": {
+    "nome": "leite",
+    "peso": 600.0,
+    "graxas": 60.0,
+    "carbohidratos": 23.0,
+    "proteinas": 4.0,
+    "calorias": 60.0,
+    "data": "2025-05-08",
+    "usuario": 1
+  }
+},
+{
+  "model": "UpLife_api.grupos",
+  "pk": 1,
+  "fields": {
+    "nome": "Comida",
+    "icona": "/imaxes/sun.png",
+    "usuario": 1,
+    "comidas": [
+      5,
+      9
     ]
   }
 }

@@ -1,8 +1,8 @@
 <script>
-import BarraNavegacion from "./components/BarraNavegacion.vue";
-import BarraSuperior from "./components/BarraSuperior.vue";
-import VentaAviso from "./components/VentaAviso.vue";
-import VentaPechar from "./components/VentaPechar.vue";
+import BarraNavegacion from "./components/BarrasNavegacion/BarraNavegacion.vue";
+import BarraSuperior from "./components/BarrasNavegacion/BarraSuperior.vue";
+import VentaAviso from "./components/BarrasNavegacion/VentaAviso.vue";
+import VentaPechar from "./components/BarrasNavegacion/VentaPechar.vue";
 import { useUsuarioStore } from "@/stores/useUsuario";
 
 export default {

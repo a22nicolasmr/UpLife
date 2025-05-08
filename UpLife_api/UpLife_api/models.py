@@ -133,8 +133,10 @@ class Comidas(models.Model):
 class Grupos(models.Model):
     id_grupo=models.BigAutoField(primary_key=True)
     nome=models.CharField(max_length=255)
-    icona=models.ImageField(upload_to="media")
+    icona= models.CharField(max_length=255)
     comidas=models.ManyToManyField(Comidas)
+    usuario = models.ForeignKey(Usuarios, on_delete=models.CASCADE, null=True, blank=True)
+    
 
     def __str__(self):
         return f"nome={self.nome}, icona={self.icona}, comidas={[c.nome for c in self.comidas.all()]}"

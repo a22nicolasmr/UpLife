@@ -1,7 +1,7 @@
 <script>
-import EngadirExercicios from "@/components/EngadirExercicios.vue";
-import EngadirPlantillasExercicios from "@/components/EngadirPlantillasExercicios.vue";
-import HistorialExercicios from "@/components/HistorialExercicios.vue";
+import EngadirExercicios from "@/components/Exercicios/EngadirExercicios.vue";
+import EngadirPlantillasExercicios from "@/components/Exercicios/EngadirPlantillasExercicios.vue";
+import HistorialExercicios from "@/components/Exercicios/HistorialExercicios.vue";
 import { useUsuarioStore } from "@/stores/useUsuario";
 
 export default {
@@ -274,8 +274,8 @@ export default {
 
 <style scoped>
 .icon {
-  height: 12%;
-  width: 12%;
+  height: 10%;
+  width: 10%;
 }
 .icona {
   height: 20%;
@@ -411,6 +411,7 @@ h1 {
   background-color: #1c1c1c;
   color: white;
   box-sizing: border-box;
+  overflow-y: auto;
 }
 
 table {
