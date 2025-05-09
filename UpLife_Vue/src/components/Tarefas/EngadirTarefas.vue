@@ -48,7 +48,7 @@ export default {
     async engadirTarefa() {
       this.erro = ""; // limpiamos error
 
-      if (!this.tarefa || !this.hora) {
+      if (!this.tarefa) {
         this.erro = "Por favor, cobre todos os campos.";
         return;
       }

@@ -55,6 +55,7 @@ export default {
   },
   methods: {
     async cargarDatos() {
+      const hoxe = new Date().toISOString().split("T")[0];
       try {
         const response = await fetch("http://localhost:8001/api/grupos/");
         if (!response.ok) throw new Error("Erro ao cargar grupos");
@@ -62,7 +63,10 @@ export default {
 
         this.grupos = grupos
           .filter((g) => g.usuario === this.idUsuario)
-          .map((g) => ({ ...g, comidas: g.comidas || [] }));
+          .map((g) => ({
+            ...g,
+            comidas: (g.comidas || []).filter((c) => c.data === hoxe),
+          }));
       } catch (error) {
         console.error("Erro cargando datos:", error);
       }
