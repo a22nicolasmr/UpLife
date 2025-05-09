@@ -46,7 +46,7 @@ export default {
   },
   methods: {
     async engadirTarefa() {
-      this.erro = ""; // limpiamos error
+      this.erro = "";
 
       if (!this.tarefa) {
         this.erro = "Por favor, cobre todos os campos.";
@@ -54,6 +54,7 @@ export default {
       }
 
       if (
+        this.hora &&
         this.dataSeleccionada.toDateString() === new Date().toDateString() &&
         this.hora <= this.minHora
       ) {
