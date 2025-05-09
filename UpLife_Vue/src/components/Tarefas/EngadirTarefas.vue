@@ -53,14 +53,20 @@ export default {
         return;
       }
 
-      if (
-        this.hora &&
-        this.dataSeleccionada.toDateString() === new Date().toDateString() &&
-        this.hora <= this.minHora
-      ) {
-        this.erro =
-          "Non podes engadir unha tarefa para unha hora pasada de hoxe.";
-        return;
+      if (this.hora) {
+        const [horaStr, minutoStr] = this.hora.split(":");
+        const minutosIntroducidos =
+          parseInt(horaStr, 10) * 60 + parseInt(minutoStr, 10);
+
+        const ahora = new Date();
+        const minutosAhora = ahora.getHours() * 60 + ahora.getMinutes();
+
+        if (minutosIntroducidos < minutosAhora) {
+          console.log(minutosIntroducidos, minutosAhora);
+          this.erro =
+            "Non podes engadir unha tarefa para unha hora pasada de hoxe.";
+          return;
+        }
       }
 
       const payload = {
@@ -136,6 +142,7 @@ export default {
   flex-direction: column;
   align-content: center;
   height: 100%;
+  overflow-y: auto;
 }
 
 h2 {

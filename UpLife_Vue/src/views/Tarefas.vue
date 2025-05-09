@@ -53,11 +53,12 @@ export default {
       });
     },
 
+    // Asegúrate que tienes este código:
     actualizarDatasConTarefas(datas) {
       const tarefasAttrs = datas.map((dataISO) => ({
         key: `tarefa-${dataISO}`,
         highlight: {
-          color: "#add8e6", // azul claro
+          color: "#add8e6",
           fillMode: "outline",
         },
         dates: new Date(dataISO),
@@ -262,7 +263,7 @@ body,
   overflow: hidden;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
   margin-right: 4%;
-  height: 90%;
+  height: 50vh;
   margin-bottom: 2%;
 }
 
