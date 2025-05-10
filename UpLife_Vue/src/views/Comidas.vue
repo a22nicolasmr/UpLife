@@ -67,6 +67,22 @@ export default {
             ...g,
             comidas: (g.comidas || []).filter((c) => c.data === hoxe),
           }));
+
+        const seteDiasAtras = new Date();
+        seteDiasAtras.setDate(seteDiasAtras.getDate() - 7);
+        const response2 = await fetch("http://localhost:8001/api/comidas/");
+        const comidas = await response2.json();
+
+        const comidasBorrar = comidas.filter((e) => {
+          if (!e.data) return false;
+          const dataComida = new Date(e.data);
+          return dataComida < seteDiasAtras;
+        });
+        console.log("comidas borrar :", comidasBorrar);
+
+        comidasBorrar.forEach((e) => {
+          this.borrarComida(e.id_comida);
+        });
       } catch (error) {
         console.error("Erro cargando datos:", error);
       }
@@ -79,7 +95,8 @@ export default {
         );
         if (!response.ok) throw new Error("Erro ao eliminar grupo");
         this.grupos = this.grupos.filter((g) => g.id_grupo !== id);
-        window.location.reload();
+        this.componenteActivo = "historial";
+        await this.cargarDatos();
       } catch (error) {
         console.error("Erro eliminando grupo:", error);
       }
@@ -95,7 +112,8 @@ export default {
         this.grupos.forEach((g) => {
           g.comidas = g.comidas.filter((c) => c.id_comida !== idComida);
         });
-        window.location.reload();
+        this.componenteActivo = "historial";
+        await this.cargarDatos();
       } catch (error) {
         console.error("Erro eliminando comida:", error);
       }
@@ -240,13 +258,20 @@ export default {
       </div>
 
       <div class="dereita">
-        <HistorialComidas v-if="componenteActivo === 'historial'" />
+        <HistorialComidas
+          v-if="componenteActivo === 'historial'"
+          @cargarDatos="cargarDatos"
+        />
         <EngadirComida
           v-if="componenteActivo === 'engadirC'"
           :grupoSeleccionadoMandar="grupoSeleccionadoMandar"
+          @cargarDatos="cargarDatos"
         />
         <TotalComida v-if="componenteActivo === 'total'" />
-        <GrupoComida v-if="componenteActivo === 'grupo'" />
+        <GrupoComida
+          v-if="componenteActivo === 'grupo'"
+          @cargarDatos="cargarDatos"
+        />
       </div>
     </div>
   </div>
@@ -348,7 +373,8 @@ export default {
 #divXeral2 {
   display: flex;
   flex-direction: column;
-  height: 85%;
+  height: 92vh;
+  margin-bottom: 2%;
   overflow: hidden;
 }
 
@@ -390,8 +416,10 @@ export default {
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
   margin-right: 4%;
   flex-grow: 1;
-  height: calc(100vh - 30vh);
+  /* height: calc(100vh - 30vh); */
+  height: 100%;
   overflow: hidden;
+  margin-bottom: 2%;
 }
 
 .esquerda {
@@ -406,6 +434,7 @@ export default {
   width: 40%;
   background-color: #1c1c1c;
   color: white;
+  overflow-y: auto;
   box-sizing: border-box;
 }
 

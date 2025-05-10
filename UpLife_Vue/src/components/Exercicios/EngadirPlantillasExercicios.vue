@@ -42,6 +42,7 @@ export default {
       this.error = "";
       if (this.comprobarError()) {
         this.$emit("engadirPlantilla", this.plantillaSeleccionada);
+        this.$emit("cargarPlantillasHoxe");
       }
     },
   },

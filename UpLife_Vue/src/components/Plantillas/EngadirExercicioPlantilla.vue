@@ -102,7 +102,8 @@ export default {
         this.categoriaSeleccionada = "";
         this.plantillaSeleccionada = "";
         this.erro = "";
-        window.location.reload();
+        // window.location.reload();
+        this.$emit("cargarDatos");
       } catch (error) {
         console.error("❌ Erro engadindo exercicio:", error);
         this.erro = "Houbo un erro ao engadir o exercicio.";

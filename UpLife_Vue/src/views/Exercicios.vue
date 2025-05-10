@@ -43,6 +43,20 @@ export default {
         if (!response.ok) throw new Error("Erro ao cargar exercicios");
 
         const exercicios = await response.json();
+
+        const seteDiasAtras = new Date();
+        seteDiasAtras.setDate(seteDiasAtras.getDate() - 7);
+
+        const exerciciosAnteriores = exercicios.filter((e) => {
+          if (!e.data) return false;
+          const dataExercicio = new Date(e.data);
+          return dataExercicio < seteDiasAtras;
+        });
+
+        exerciciosAnteriores.forEach((e) => {
+          this.eliminarExercicio(e.id_exercicio);
+        });
+
         this.exerciciosHoxe = exercicios.filter(
           (ex) => ex.usuario === idUsuario && ex.data === hoxe
         );
@@ -65,7 +79,7 @@ export default {
         this.exerciciosHoxe = this.exerciciosHoxe.filter(
           (ex) => ex.usuario === idUsuario && ex.id_exercicio !== id
         );
-        window.location.reload();
+        this.cargarExerciciosHoxe();
       } catch (error) {
         console.error("Erro eliminando exercicio:", error);
       }
@@ -122,7 +136,6 @@ export default {
           throw new Error("Erro ao actualizar a plantilla");
         }
         this.cargarPlantillasHoxe();
-        window.location.reload();
       } catch (error) {
         console.error(error);
       }
@@ -261,11 +274,19 @@ export default {
       </div>
 
       <div class="dereita">
-        <HistorialExercicios v-if="componenteActivo === 'historial'" />
-        <EngadirExercicios v-if="componenteActivo === 'engadirE'" />
+        <HistorialExercicios
+          v-if="componenteActivo === 'historial'"
+          @cargarExerciciosHoxe="cargarExerciciosHoxe"
+          @cargarPlantillasHoxe="cargarPlantillasHoxe"
+        />
+        <EngadirExercicios
+          v-if="componenteActivo === 'engadirE'"
+          @cargarExerciciosHoxe="cargarExerciciosHoxe"
+        />
         <EngadirPlantillasExercicios
           v-if="componenteActivo === 'engadirP'"
           @engadirPlantilla="engadirPlantilla"
+          @cargarPlantillasHoxe="cargarPlantillasHoxe"
         />
       </div>
     </div>
@@ -374,7 +395,7 @@ body {
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
   margin-right: 4%;
   margin-bottom: 1%;
-  height: 60vh;
+  height: 65vh;
   overflow: hidden;
 }
 

@@ -38,7 +38,7 @@ export default {
           );
           const data = await response.json();
 
-          // Actualizar los datos en el componente
+          // actualizar os datos no componente
           this.imagen = data.imaxe_perfil || "/imaxes/usuario.png";
           this.nome = data.nome;
           this.email = data.email;
@@ -52,7 +52,7 @@ export default {
           this.calorias = data.calorias_diarias;
           this.auga = data.auga_diaria;
 
-          // Guardar los datos en el store y en localStorage
+          // gardar os datos no store e en localStorage
           const store = useUsuarioStore();
           store.imagen = this.imagen;
           store.nome = this.nome;
@@ -65,7 +65,7 @@ export default {
           store.calorias = this.calorias;
           store.auga = this.auga;
 
-          // Guardar en el localStorage
+          // gardar no localStorage
           store.guardarUsuarioActualizado();
         } catch (error) {
           console.error("Erro ao actualizar datos:", error);
@@ -162,17 +162,17 @@ h2 {
 
 html,
 body {
-  height: 100vh;
+  height: 100%;
 }
 
 .container {
   background-color: #f2f2f2;
   display: flex;
-  max-height: 70%;
   flex-direction: column;
   margin-left: 1%;
   margin-right: 1%;
   margin-bottom: 2%;
+  height: 70%;
 }
 
 .perfil-layout {
@@ -181,11 +181,10 @@ body {
   max-height: 80%;
   justify-content: center;
   align-items: stretch;
-  gap: 0; /* sin espacio explícito, el color los separa visualmente */
+  gap: 0;
   margin-right: 1%;
 }
 
-/* Columna izquierda (datos) */
 .datos {
   flex: 1;
   padding: 6%;
@@ -198,15 +197,14 @@ body {
 }
 
 #ultimoP {
-  margin-bottom: 2%; /* Añadido margen para separación adicional */
+  margin-bottom: 2%;
 }
 
 .datos p {
-  margin: 0.8% 0;
+  margin: 2% 0;
   line-height: 20%;
 }
 
-/* Columna derecha (calculadora) */
 .calculadora {
   width: 40%;
   background-color: black;

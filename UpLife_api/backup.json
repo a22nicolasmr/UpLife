@@ -637,11 +637,193 @@
   }
 },
 {
+  "model": "admin.logentry",
+  "pk": 82,
+  "fields": {
+    "action_time": "2025-05-10T07:27:26.454Z",
+    "user": 1,
+    "content_type": 14,
+    "object_id": "5",
+    "object_repr": "nome=Patacas, peso=150.0, graxas=20.0, carbohidratos=122.0, proteinas=4.0, calorias=200.0, usuario=nome=lupi, nome_usuario=lupi, email=lupi@gmail.com, contrasinal=pbkdf2_sha256$600000$PRQo908qwKQGJ5eo",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Data\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 83,
+  "fields": {
+    "action_time": "2025-05-10T08:40:34.200Z",
+    "user": 1,
+    "content_type": 13,
+    "object_id": "15",
+    "object_repr": "nome=Plantilla de perna, icona=/imaxes/leg.png, exercicios=['Xemelgos']",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Data\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 84,
+  "fields": {
+    "action_time": "2025-05-10T08:40:41.327Z",
+    "user": 1,
+    "content_type": 13,
+    "object_id": "15",
+    "object_repr": "nome=Plantilla de perna, icona=/imaxes/leg.png, exercicios=['Xemelgos']",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Data\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 85,
+  "fields": {
+    "action_time": "2025-05-10T09:24:55.111Z",
+    "user": 1,
+    "content_type": 14,
+    "object_id": "12",
+    "object_repr": "nome=Ovos, peso=160.0, graxas=11.0, carbohidratos=22.0, proteinas=15.0, calorias=100.0, usuario=nome=lupi, nome_usuario=lupi, email=lupi@gmail.com, contrasinal=pbkdf2_sha256$600000$PRQo908qwKQGJ5eoW6W",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 86,
+  "fields": {
+    "action_time": "2025-05-10T09:24:59.157Z",
+    "user": 1,
+    "content_type": 14,
+    "object_id": "10",
+    "object_repr": "nome=Ovos, peso=160.0, graxas=11.0, carbohidratos=22.0, proteinas=15.0, calorias=100.0, usuario=nome=lupi, nome_usuario=lupi, email=lupi@gmail.com, contrasinal=pbkdf2_sha256$600000$PRQo908qwKQGJ5eoW6W",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 87,
+  "fields": {
+    "action_time": "2025-05-10T10:51:28.247Z",
+    "user": 1,
+    "content_type": 12,
+    "object_id": "62",
+    "object_repr": "nome=Exercicio de proba, repeticions=5x7, peso=111.0, usuario=nome=lupi, nome_usuario=lupi, email=lupi@gmail.com, contrasinal=pbkdf2_sha256$600000$PRQo908qwKQGJ5eoW6WXf4$AHdxJ9VAImwzx0gm7ag2f4KCyQFAkw",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 88,
+  "fields": {
+    "action_time": "2025-05-10T10:51:45.935Z",
+    "user": 1,
+    "content_type": 12,
+    "object_id": "63",
+    "object_repr": "nome=Exercicio de proba 2, repeticions=5x7, peso=111.0, usuario=nome=lupi, nome_usuario=lupi, email=lupi@gmail.com, contrasinal=pbkdf2_sha256$600000$PRQo908qwKQGJ5eoW6WXf4$AHdxJ9VAImwzx0gm7ag2f4KCyQFA",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 89,
+  "fields": {
+    "action_time": "2025-05-10T10:52:38.883Z",
+    "user": 1,
+    "content_type": 12,
+    "object_id": "64",
+    "object_repr": "nome=Exercicio de proba 2, repeticions=5x7, peso=111.0, usuario=nome=lupi, nome_usuario=lupi, email=lupi@gmail.com, contrasinal=pbkdf2_sha256$600000$PRQo908qwKQGJ5eoW6WXf4$AHdxJ9VAImwzx0gm7ag2f4KCyQFA",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 90,
+  "fields": {
+    "action_time": "2025-05-10T11:03:31.691Z",
+    "user": 1,
+    "content_type": 12,
+    "object_id": "64",
+    "object_repr": "nome=Exercicio de proba 2, repeticions=5x7, peso=111.0, usuario=nome=lupi, nome_usuario=lupi, email=lupi@gmail.com, contrasinal=pbkdf2_sha256$600000$PRQo908qwKQGJ5eoW6WXf4$AHdxJ9VAImwzx0gm7ag2f4KCyQFA",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 91,
+  "fields": {
+    "action_time": "2025-05-10T11:06:38.009Z",
+    "user": 1,
+    "content_type": 12,
+    "object_id": "65",
+    "object_repr": "nome=Exercicio de proba 3, repeticions=5x7, peso=1111.0, usuario=nome=lupi, nome_usuario=lupi, email=lupi@gmail.com, contrasinal=pbkdf2_sha256$600000$PRQo908qwKQGJ5eoW6WXf4$AHdxJ9VAImwzx0gm7ag2f4KCyQF",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 92,
+  "fields": {
+    "action_time": "2025-05-10T11:41:12.728Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "32",
+    "object_repr": "cantidade=111, hora=11:41:07, usuario=nome=lupi, nome_usuario=lupi, email=lupi@gmail.com, contrasinal=pbkdf2_sha256$600000$PRQo908qwKQGJ5eoW6WXf4$AHdxJ9VAImwzx0gm7ag2f4KCyQFAkwHDBpoAssFyJtI=, imaxe_pe",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 93,
+  "fields": {
+    "action_time": "2025-05-10T11:49:44.048Z",
+    "user": 1,
+    "content_type": 14,
+    "object_id": "18",
+    "object_repr": "nome=comida non borrar, peso=111.0, graxas=111.0, carbohidratos=11.0, proteinas=111.0, calorias=11.0, usuario=nome=lupi, nome_usuario=lupi, email=lupi@gmail.com, contrasinal=pbkdf2_sha256$600000$PRQo9",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 94,
+  "fields": {
+    "action_time": "2025-05-10T11:49:59.784Z",
+    "user": 1,
+    "content_type": 14,
+    "object_id": "19",
+    "object_repr": "nome=comida borrar, peso=111.0, graxas=111.0, carbohidratos=111.0, proteinas=111.0, calorias=111.0, usuario=nome=lupi, nome_usuario=lupi, email=lupi@gmail.com, contrasinal=pbkdf2_sha256$600000$PRQo908",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 95,
+  "fields": {
+    "action_time": "2025-05-10T11:53:19.637Z",
+    "user": 1,
+    "content_type": 14,
+    "object_id": "18",
+    "object_repr": "nome=comida non borrar, peso=111.0, graxas=111.0, carbohidratos=11.0, proteinas=111.0, calorias=11.0, usuario=nome=lupi, nome_usuario=lupi, email=lupi@gmail.com, contrasinal=pbkdf2_sha256$600000$PRQo9",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
   "model": "auth.user",
   "pk": 1,
   "fields": {
     "password": "pbkdf2_sha256$600000$qwmwkfhq907kvw2HMz9sbQ$as+6Jwi30tqPp/7f7PVESGpU15XsLtJZ54htHLQAP90=",
-    "last_login": "2025-05-06T12:16:58.760Z",
+    "last_login": "2025-05-10T07:26:56.349Z",
     "is_superuser": true,
     "username": "root",
     "first_name": "",
@@ -684,6 +866,14 @@
   "fields": {
     "session_data": ".eJxVjEEOwiAQRe_C2pABCjIu3fcMzcCAVA0kpV0Z765NutDtf-_9l5hoW8u09bRMM4uLUOL0uwWKj1R3wHeqtyZjq-syB7kr8qBdjo3T83q4fweFevnW2RKyTQoha1QcLaMhtsE4A54cmujO7EMEh2AMYNJeRzVkxxpAD0q8P93iNww:1u6pcc:__aTLyONpm2sFpebdGbKXnV4AICQAwH8xkj9LLngo3o",
     "expire_date": "2025-05-05T11:47:34.915Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "r4mfqjtx91obiai77tgi1hq7yx081r8k",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQRe_C2pABCjIu3fcMzcCAVA0kpV0Z765NutDtf-_9l5hoW8u09bRMM4uLUOL0uwWKj1R3wHeqtyZjq-syB7kr8qBdjo3T83q4fweFevnW2RKyTQoha1QcLaMhtsE4A54cmujO7EMEh2AMYNJeRzVkxxpAD0q8P93iNww:1uDebo:4XVDYfIx8HZ7ZNJ6biDchIrmnt91GkuUCr_me3SvZdY",
+    "expire_date": "2025-05-24T07:26:56.357Z"
   }
 },
 {
@@ -784,6 +974,16 @@
     "hora": "10:17:00",
     "usuario": 1,
     "data": "2025-05-08"
+  }
+},
+{
+  "model": "UpLife_api.auga",
+  "pk": 31,
+  "fields": {
+    "cantidade": 200,
+    "hora": "10:18:00",
+    "usuario": 1,
+    "data": "2025-05-10"
   }
 },
 {
@@ -917,6 +1117,17 @@
   }
 },
 {
+  "model": "UpLife_api.tarefas",
+  "pk": 5,
+  "fields": {
+    "hora": null,
+    "titulo": "E",
+    "completado": false,
+    "data": "2025-05-11",
+    "usuario": 1
+  }
+},
+{
   "model": "UpLife_api.categorias",
   "pk": 1,
   "fields": {
@@ -956,42 +1167,6 @@
   "pk": 6,
   "fields": {
     "nome": "Todo corpo"
-  }
-},
-{
-  "model": "UpLife_api.exercicios",
-  "pk": 1,
-  "fields": {
-    "nome": "Exercicio1",
-    "repeticions": "5x10",
-    "peso": 20.0,
-    "data": "2025-04-30",
-    "usuario": 1,
-    "categoria": 2
-  }
-},
-{
-  "model": "UpLife_api.exercicios",
-  "pk": 2,
-  "fields": {
-    "nome": "Press de banca",
-    "repeticions": "5x7",
-    "peso": 80.0,
-    "data": "2025-05-01",
-    "usuario": 1,
-    "categoria": 5
-  }
-},
-{
-  "model": "UpLife_api.exercicios",
-  "pk": 3,
-  "fields": {
-    "nome": "Exercicio1",
-    "repeticions": "5x10",
-    "peso": 20.0,
-    "data": "2025-05-01",
-    "usuario": 1,
-    "categoria": 2
   }
 },
 {
@@ -1163,6 +1338,66 @@
   }
 },
 {
+  "model": "UpLife_api.exercicios",
+  "pk": 57,
+  "fields": {
+    "nome": "Dominadas",
+    "repeticions": "5x7",
+    "peso": 1.0,
+    "data": "2025-05-10",
+    "usuario": 1,
+    "categoria": 4
+  }
+},
+{
+  "model": "UpLife_api.exercicios",
+  "pk": 58,
+  "fields": {
+    "nome": "Curl de bíceps",
+    "repeticions": "5x8",
+    "peso": 15.0,
+    "data": "2025-05-10",
+    "usuario": 1,
+    "categoria": 4
+  }
+},
+{
+  "model": "UpLife_api.exercicios",
+  "pk": 62,
+  "fields": {
+    "nome": "Exercicio de proba",
+    "repeticions": "5x7",
+    "peso": 111.0,
+    "data": "2025-05-05",
+    "usuario": 1,
+    "categoria": 1
+  }
+},
+{
+  "model": "UpLife_api.exercicios",
+  "pk": 63,
+  "fields": {
+    "nome": "Exercicio de proba 2",
+    "repeticions": "5x7",
+    "peso": 111.0,
+    "data": "2025-05-04",
+    "usuario": 1,
+    "categoria": 3
+  }
+},
+{
+  "model": "UpLife_api.exercicios",
+  "pk": 64,
+  "fields": {
+    "nome": "Exercicio de proba 2",
+    "repeticions": "5x7",
+    "peso": 111.0,
+    "data": "2025-05-04",
+    "usuario": 1,
+    "categoria": 3
+  }
+},
+{
   "model": "UpLife_api.plantillas",
   "pk": 15,
   "fields": {
@@ -1181,25 +1416,11 @@
   "fields": {
     "nome": "Plantilla de peito",
     "icona": "/imaxes/torso.png",
-    "data": "2025-05-08",
+    "data": "2025-05-10",
     "usuario": 1,
     "exercicios": [
       53
     ]
-  }
-},
-{
-  "model": "UpLife_api.comidas",
-  "pk": 5,
-  "fields": {
-    "nome": "Patacas",
-    "peso": 150.0,
-    "graxas": 20.0,
-    "carbohidratos": 122.0,
-    "proteinas": 4.0,
-    "calorias": 200.0,
-    "data": null,
-    "usuario": 1
   }
 },
 {
@@ -1231,15 +1452,42 @@
   }
 },
 {
-  "model": "UpLife_api.grupos",
-  "pk": 1,
+  "model": "UpLife_api.comidas",
+  "pk": 24,
   "fields": {
-    "nome": "Comida",
-    "icona": "/imaxes/sun.png",
+    "nome": "Patacas",
+    "peso": 150.0,
+    "graxas": 20.0,
+    "carbohidratos": 122.0,
+    "proteinas": 4.0,
+    "calorias": 200.0,
+    "data": "2025-05-10",
+    "usuario": 1
+  }
+},
+{
+  "model": "UpLife_api.comidas",
+  "pk": 26,
+  "fields": {
+    "nome": "Patacas",
+    "peso": 150.0,
+    "graxas": 20.0,
+    "carbohidratos": 122.0,
+    "proteinas": 4.0,
+    "calorias": 200.0,
+    "data": "2025-05-10",
+    "usuario": 1
+  }
+},
+{
+  "model": "UpLife_api.grupos",
+  "pk": 2,
+  "fields": {
+    "nome": "Desayuno",
+    "icona": "/imaxes/morning.png",
     "usuario": 1,
     "comidas": [
-      5,
-      9
+      26
     ]
   }
 }

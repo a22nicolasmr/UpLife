@@ -147,7 +147,7 @@ export default {
         this.grupoSeleccionado = "";
         this.erro = "";
 
-        window.location.reload();
+        this.$emit("cargarDatos");
       } catch (error) {
         console.error("❌ Erro engadindo comida:", error);
         this.erro = "Houbo un erro ao engadir a comida.";

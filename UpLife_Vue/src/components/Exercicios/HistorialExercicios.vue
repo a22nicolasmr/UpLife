@@ -27,7 +27,7 @@ export default {
         (e) => e.usuario === this.idUsuario
       );
       const seteDiasAtras = new Date();
-      seteDiasAtras.setDate(seteDiasAtras.getDate() - 6);
+      seteDiasAtras.setDate(seteDiasAtras.getDate() - 7);
 
       const exerciciosFiltrados = exerciciosPorUsuario.filter((ex) => {
         const dataEx = new Date(ex.data);
@@ -50,7 +50,7 @@ export default {
       const plantillas = await response2.json();
 
       const seteDiasAtras2 = new Date();
-      seteDiasAtras2.setDate(seteDiasAtras2.getDate() - 6);
+      seteDiasAtras2.setDate(seteDiasAtras2.getDate() - 7);
       const seteDiasAtrasISO = seteDiasAtras2.toISOString().split("T")[0];
 
       const plantillasFiltradas = plantillas.filter(
@@ -84,7 +84,7 @@ export default {
         if (!response.ok) throw new Error("Erro ao engadir exercicio");
 
         await response.json();
-        window.location.reload();
+        this.$emit("cargarExerciciosHoxe");
       } catch (error) {
         console.error("❗Erro no try-catch:", error);
       }
@@ -104,7 +104,7 @@ export default {
       if (!response.ok) {
         console.error("Erro ao actualizar plantilla");
       } else {
-        window.location.reload();
+        this.$emit("cargarPlantillasHoxe");
       }
     },
     nomeCategoria(idCategoria) {

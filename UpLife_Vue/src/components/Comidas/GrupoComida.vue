@@ -60,7 +60,7 @@ export default {
 
         this.nome = "";
         this.icona = "";
-        window.location.reload();
+        this.$emit("cargarDatos");
       } catch (error) {
         this.erro = "Houbo un erro ao engadir plantillas.";
       }

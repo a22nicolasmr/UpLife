@@ -1,6 +1,7 @@
 <script>
 import ListaTarefas from "@/components/Tarefas/ListaTarefas.vue";
 import EngadirTarefas from "@/components/Tarefas/EngadirTarefas.vue";
+import { useUsuarioStore } from "@/stores/useUsuario";
 
 export default {
   components: {
@@ -25,10 +26,42 @@ export default {
       ],
     };
   },
+  mounted() {
+    this.cargarDatasConTarefas();
+  },
+
   methods: {
+    //comprobar se hai tarefas para unha data
+    async comprobarTarefasNaData(date) {
+      const usuarioStore = useUsuarioStore();
+      const idUsuario = usuarioStore.id;
+
+      try {
+        const response = await fetch(`http://localhost:8001/api/tarefas/`);
+        const tarefas = await response.json();
+
+        const tarefasNaData = tarefas.filter(
+          (t) =>
+            t.usuario === idUsuario &&
+            new Date(t.data).toDateString() === date.toDateString()
+        );
+
+        if (tarefasNaData.length === 0) {
+          this.componenteActivo = "engadir";
+        } else {
+          this.componenteActivo = "lista";
+        }
+      } catch (error) {
+        console.error("Erro ao comprobar tarefas na data", error);
+      }
+    },
+
+    //enviar as tarefas que teñen hora
     reenviarTarefasConHora(tarefas) {
       this.$emit("emitirDatasConTarefas", tarefas);
     },
+
+    // obter fechas deshabilitadas
     getFechasDeshabilitadas({ date }) {
       const hoy = new Date();
       hoy.setHours(0, 0, 0, 0);
@@ -38,14 +71,18 @@ export default {
 
       return comparar < hoy;
     },
+
+    //seleccionar data no calendario
     seleccionarData(dia) {
       const hoy = new Date();
-      hoy.setHours(0, 0, 0, 0); // Elimina horas para comparar solo la fecha
+      hoy.setHours(0, 0, 0, 0); // eliminar horas para comparar só a data
 
-      if (dia.date < hoy) return; // Evita selección si es día pasado
+      if (dia.date < hoy) return;
 
       this.dataSeleccionada = dia.date;
+      this.comprobarTarefasNaData(this.dataSeleccionada);
 
+      // scrollear ata as tarefas da data seleccionada
       this.$nextTick(() => {
         if (this.$refs.listaTarefasRef?.scrollAtaData) {
           this.$refs.listaTarefasRef.scrollAtaData(dia.date);
@@ -53,13 +90,13 @@ export default {
       });
     },
 
-    // Asegúrate que tienes este código:
+    // os días que teñan tarefas serán marcados cunha cor azul claro usnaod attrs de vc-calendar
     actualizarDatasConTarefas(datas) {
       const tarefasAttrs = datas.map((dataISO) => ({
         key: `tarefa-${dataISO}`,
         highlight: {
           color: "#add8e6",
-          fillMode: "outline",
+          fillMode: "light",
         },
         dates: new Date(dataISO),
       }));
@@ -73,8 +110,29 @@ export default {
         ...tarefasAttrs,
       ];
     },
+
+    // obter as tarefas filtradas por usuario e data
+    async cargarDatasConTarefas() {
+      const usuarioStore = useUsuarioStore();
+      const idUsuario = usuarioStore.id;
+      try {
+        const response = await fetch(`http://localhost:8001/api/tarefas/`);
+        const tarefas = await response.json();
+
+        const datasUnicas = [
+          ...new Set(
+            tarefas.filter((t) => t.usuario === idUsuario).map((t) => t.data)
+          ),
+        ];
+
+        this.actualizarDatasConTarefas(datasUnicas);
+      } catch (error) {
+        console.error("Erro ao cargar datas con tarefas", error);
+      }
+    },
   },
   computed: {
+    // deshabilitar todas aquelas datas por debaixo da data de hoxe
     disabledDates() {
       return [
         {
@@ -164,11 +222,13 @@ export default {
           ref="listaTarefasRef"
           :dataSeleccionada="dataSeleccionada"
           @datas-con-tarefas="reenviarTarefasConHora"
+          @cargarDatasConTarefas="cargarDatasConTarefas"
         />
 
         <EngadirTarefas
           v-if="componenteActivo === 'engadir'"
           :dataSeleccionada="dataSeleccionada"
+          @cargarDatasConTarefas="cargarDatasConTarefas"
         />
       </div>
     </div>
@@ -263,7 +323,7 @@ body,
   overflow: hidden;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
   margin-right: 4%;
-  height: 50vh;
+  height: 100%;
   margin-bottom: 2%;
 }
 

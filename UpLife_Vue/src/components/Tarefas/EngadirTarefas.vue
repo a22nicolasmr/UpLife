@@ -89,11 +89,10 @@ export default {
         if (!response.ok) throw new Error("Erro ao engadir tarefa");
 
         const resultado = await response.json();
-        console.log("Tarefa engadida:", resultado);
 
         this.tarefa = "";
         this.hora = "";
-        window.location.reload();
+        this.$emit("cargarDatasConTarefas");
       } catch (error) {
         console.error("Erro:", error);
       }

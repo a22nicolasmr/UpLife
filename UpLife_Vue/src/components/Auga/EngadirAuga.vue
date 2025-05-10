@@ -55,7 +55,7 @@ export default {
         this.cantidade = "";
         this.hora = "";
 
-        window.location.reload();
+        this.$emit("cargarAugaHoxe");
       } catch (error) {
         console.error("❗Erro no try-catch:", error);
         this.erro = "Houbo un erro ao engadir auga."; // Mensaje de error al usuario

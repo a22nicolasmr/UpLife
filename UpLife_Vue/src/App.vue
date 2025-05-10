@@ -116,7 +116,7 @@ export default {
       @toggleModal="toggleModal"
     />
     <div :class="['vista', { 'sin-barras': !mostrarBarra }]">
-      <router-view @emitirDatasConTarefas="emitirDatasConTarefas" />
+      <router-view />
     </div>
 
     <VentaPechar v-show="modalActivo" @pecharModal="toggleModal" />
@@ -135,6 +135,7 @@ body,
 #app {
   height: 100%;
   margin: 0;
+  overflow: hidden;
 }
 
 body {
@@ -158,7 +159,7 @@ body {
 .vista {
   flex: 1;
   margin-top: 4%;
-  margin-left: 15%;
+  margin-left: 16%;
   overflow-y: auto;
   min-height: 0;
 }

@@ -50,6 +50,19 @@ export default {
         this.augaHoxe = auga.filter(
           (ex) => ex.usuario === this.idUsuario && ex.data === this.dataHoxeISO
         );
+
+        const seteDiasAtras = new Date();
+        seteDiasAtras.setDate(seteDiasAtras.getDate() - 7);
+
+        const augaBorrar = auga.filter((e) => {
+          if (!e.data) return false;
+          const dataAuga = new Date(e.data);
+          return dataAuga < seteDiasAtras;
+        });
+
+        augaBorrar.forEach((e) => {
+          this.eliminarAuga(e.id_auga);
+        });
       } catch (error) {
         console.error("Erro cargando auga:", error);
       }
@@ -62,7 +75,7 @@ export default {
         if (!response.ok) throw new Error("Erro ao eliminar auga");
 
         this.augaHoxe = this.augaHoxe.filter((ex) => ex.id_auga !== id);
-        window.location.reload();
+        this.cargarAugaHoxe();
       } catch (error) {
         console.error("Erro eliminando auga:", error);
       }
@@ -156,8 +169,14 @@ export default {
       </div>
 
       <div class="dereita">
-        <HistorialAuga v-if="componenteActivo === 'historial'" />
-        <EngadirAuga v-if="componenteActivo === 'engadirA'" />
+        <HistorialAuga
+          v-if="componenteActivo === 'historial'"
+          @cargarAugaHoxe="cargarAugaHoxe"
+        />
+        <EngadirAuga
+          v-if="componenteActivo === 'engadirA'"
+          @cargarAugaHoxe="cargarAugaHoxe"
+        />
       </div>
     </div>
   </div>
@@ -207,11 +226,10 @@ export default {
   justify-content: center;
   background-color: white;
   border-radius: 8px;
-
   overflow: hidden;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
   margin-right: 4%;
-  height: 60vh;
+  height: 65vh;
 }
 
 .esquerda {

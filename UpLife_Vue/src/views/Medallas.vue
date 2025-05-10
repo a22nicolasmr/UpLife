@@ -149,7 +149,7 @@ export default {
 <style scoped>
 .general {
   width: 95%;
-  height: 70%;
+  height: 100%;
   padding: 2vw;
   box-sizing: border-box;
   background-color: white;
@@ -157,6 +157,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-bottom: 2%;
 }
 
 .medallas-container {

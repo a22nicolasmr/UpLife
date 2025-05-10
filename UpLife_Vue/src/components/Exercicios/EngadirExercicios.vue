@@ -100,7 +100,7 @@ export default {
         this.peso = 0;
         this.categoriaSeleccionada = "";
         this.erro = "";
-        window.location.reload();
+        this.$emit("cargarExerciciosHoxe");
       } catch (error) {
         console.error("❌ Erro engadindo exercicio:", error);
         this.erro = "Houbo un erro ao engadir o exercicio.";

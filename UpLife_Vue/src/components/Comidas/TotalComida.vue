@@ -11,6 +11,7 @@ export default {
       carbohidratoTotal: 0,
     };
   },
+
   computed: {
     totalMacros() {
       return this.proteinaTotal + this.graxaTotal + this.carbohidratoTotal || 1;
@@ -47,8 +48,11 @@ export default {
         const response = await fetch("http://localhost:8001/api/comidas/");
         if (!response.ok) throw new Error("Erro ao cargar comidas");
         const comidas = await response.json();
+        const hoxe = new Date().toISOString().split("T")[0];
 
-        const comidasUsuario = comidas.filter((g) => g.usuario === idUsuario);
+        const comidasUsuario = comidas.filter(
+          (g) => g.usuario === idUsuario && g.data === hoxe
+        );
         this.comidas = comidasUsuario;
 
         this.pesoTotal = 0;
@@ -159,6 +163,7 @@ export default {
   color: white;
   box-sizing: border-box;
   margin-top: 10%;
+  height: "50%";
 }
 
 .cards {

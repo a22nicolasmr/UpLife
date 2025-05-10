@@ -91,6 +91,7 @@ nav {
   height: 98%;
   border-right: 1px solid #ccc;
   position: fixed;
+  width: 10%;
 }
 
 .menu-superior {

@@ -28,7 +28,7 @@ export default {
       const auga = await response.json();
       const augaPorUsuario = auga.filter((a) => a.usuario === this.idUsuario);
       const seteDiasAtras = new Date();
-      seteDiasAtras.setDate(seteDiasAtras.getDate() - 6); // últimos 7 días incluindo hoxe
+      seteDiasAtras.setDate(seteDiasAtras.getDate() - 7); // últimos 7 días incluindo hoxe
 
       const augaFiltrados = augaPorUsuario.filter((a) => {
         const dataAuga = new Date(a.data);
@@ -77,7 +77,7 @@ export default {
         }
 
         await response.json();
-        window.location.reload();
+        this.$emit("cargarAugaHoxe");
       } catch (error) {
         console.error("❗Erro no try-catch:", error);
       }

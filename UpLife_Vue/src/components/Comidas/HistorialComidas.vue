@@ -65,6 +65,7 @@ export default {
       }
     },
     async engadirComida(comida) {
+      this.error = "";
       const grupoSeleccionado =
         this.gruposSeleccionadosPorComida[comida.id_comida];
 
@@ -117,7 +118,8 @@ export default {
 
           if (!patchResponse.ok) throw new Error("Erro ao actualizar grupo");
 
-          window.location.reload();
+          this.$emit("cargarDatos");
+          this.cargarGrupos();
         } catch (error) {
           console.error("❗Erro no try-catch:", error);
           this.error = "Produciuse un erro ao engadir a comida ao grupo.";

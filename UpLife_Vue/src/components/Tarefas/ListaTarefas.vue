@@ -82,10 +82,7 @@ export default {
       const dataISO = new Date(data).toLocaleDateString("en-CA");
 
       try {
-        const response = await fetch(
-          `http://localhost:8001/api/tarefas/?data=${dataISO}`
-        );
-
+        const response = await fetch(`http://localhost:8001/api/tarefas/`);
         if (!response.ok) throw new Error("Erro ao cargar tarefas");
         const tarefas = await response.json();
 
@@ -124,6 +121,7 @@ export default {
             delete this.tarefasPorData[data];
             this.emitirDatasConTarefas();
           }
+          this.$emit("cargarDatasConTarefas");
         }
       } catch (error) {
         console.error("Erro ao borrar tarefa:", error);
