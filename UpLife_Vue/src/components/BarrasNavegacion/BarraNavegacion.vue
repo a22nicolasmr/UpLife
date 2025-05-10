@@ -123,7 +123,7 @@ li {
   padding: 5%;
   color: black;
   cursor: pointer;
-  border-radius: 7%;
+  border-radius: 5px;
   display: flex;
   justify-content: center;
   transition: background-color 0.3s;

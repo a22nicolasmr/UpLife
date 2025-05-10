@@ -38,7 +38,7 @@ export default {
           );
           const data = await response.json();
 
-          // actualizar os datos no componente
+          // actualizar os datos no compoñente
           this.imagen = data.imaxe_perfil || "/imaxes/usuario.png";
           this.nome = data.nome;
           this.email = data.email;
@@ -77,6 +77,8 @@ export default {
     cambiarImagen() {
       this.$refs.fileInput.click();
     },
+
+    //subir nova imaxe de perfil
     async subirImagen(event) {
       const archivo = event.target.files[0];
       if (!archivo) return;
@@ -101,6 +103,7 @@ export default {
       }
     },
   },
+  //actualizar datos ao montar o compoñente
   mounted() {
     this.actualizarDatos();
   },

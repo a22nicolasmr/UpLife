@@ -22,12 +22,16 @@ export default {
     VentaAviso,
   },
   methods: {
+    //activar/desactivar modal pechar sesión
     toggleModal() {
       this.modalActivo = !this.modalActivo;
     },
-    emitirDatasConTarefas(tarefas) {
-      this.tarefasConHora = tarefas.map((t) => ({ ...t, notificada: false }));
-    },
+    // emitirDatasConTarefas(tarefas) {
+    //   this.tarefasConHora = tarefas.map((t) => ({ ...t, notificada: false }));
+    // },
+
+    //comprobar se a hora dunha tarefa coincide coa hora actual
+    //true = abrir ventá aviso
     comprobarHoras() {
       if (this.tarefasConHora) {
         const agora = new Date();
@@ -48,12 +52,14 @@ export default {
       }
     },
 
+    //pechar ventá aviso
     cerrarAviso() {
       this.avisoActivo = false;
       this.tarefaActual = null;
     },
   },
   watch: {
+    //se o aviso está activo , o son de ventá aviso execútase en bucle
     avisoActivo(novoValor) {
       const audio = this.$refs.audioAviso;
       if (audio) {
@@ -69,9 +75,12 @@ export default {
   },
 
   computed: {
+    //cambiar según a ruta na que se atope o usuario
     rutaActual() {
       return this.$route.path;
     },
+
+    //mostrar as barras de navegación en todas as pantaias menos en rexistro e inicio
     mostrarBarra() {
       return (
         this.$route.path !== "/formularios/rexistro" &&
@@ -90,10 +99,11 @@ export default {
       this.$router.push("/formularios/inicio");
     }
 
-    // Ejecutar comprobación de hora cada 30 segundos
+    // executar comprobación hora cada segundo
     this.intervalId = setInterval(this.comprobarHoras, 1000);
     // this.intervalId = setInterval(this.comprobarHoras, 5000);
   },
+  // quitar o intervalo para que non siga comprobando unha vez desmontado o compoñente
   beforeUnmount() {
     if (this.intervalId) {
       clearInterval(this.intervalId);
@@ -135,7 +145,6 @@ body,
 #app {
   height: 100%;
   margin: 0;
-  overflow: hidden;
 }
 
 body {
@@ -160,7 +169,7 @@ body {
   flex: 1;
   margin-top: 4%;
   margin-left: 16%;
-  overflow-y: auto;
+  overflow-y: hidden;
   min-height: 0;
 }
 

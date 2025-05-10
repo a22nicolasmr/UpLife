@@ -22,12 +22,15 @@ export default {
     };
   },
   computed: {
+    //cargar o id do usuario e as calorias diarias totais necesarias
     idUsuario() {
       return useUsuarioStore().id;
     },
     caloriasTotaisNecesarias() {
       return useUsuarioStore().calorias;
     },
+
+    //calcular as calorias inxeridas no día actual
     caloriasInxeridasHoxe() {
       const total = this.grupos.reduce((sum, grupo) => {
         return (
@@ -43,6 +46,7 @@ export default {
       return Math.ceil(total);
     },
 
+    //calcular porcentaxe calorías en función calorias necesarias e inxeridas
     porcentaxeCalorias() {
       const total = this.caloriasTotaisNecesarias;
       const inxerida = this.caloriasInxeridasHoxe;
@@ -54,6 +58,7 @@ export default {
     this.cargarDatos();
   },
   methods: {
+    //cargar grupos coas comidas de cada un se as ten
     async cargarDatos() {
       const hoxe = new Date().toISOString().split("T")[0];
       try {
@@ -78,7 +83,6 @@ export default {
           const dataComida = new Date(e.data);
           return dataComida < seteDiasAtras;
         });
-        console.log("comidas borrar :", comidasBorrar);
 
         comidasBorrar.forEach((e) => {
           this.borrarComida(e.id_comida);
@@ -87,6 +91,8 @@ export default {
         console.error("Erro cargando datos:", error);
       }
     },
+
+    //borrar grupo por id
     async borrarGrupo(id) {
       try {
         const response = await fetch(
@@ -101,6 +107,7 @@ export default {
         console.error("Erro eliminando grupo:", error);
       }
     },
+    //borrar comida por id
     async borrarComida(idComida) {
       try {
         const response = await fetch(
@@ -118,6 +125,7 @@ export default {
         console.error("Erro eliminando comida:", error);
       }
     },
+    //expandir menu de grupo de comida
     toggleExpand(id) {
       if (this.expandedGrupos.includes(id)) {
         this.expandedGrupos = this.expandedGrupos.filter((gid) => gid !== id);

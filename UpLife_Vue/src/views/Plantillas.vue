@@ -13,37 +13,41 @@ export default {
       componenteActivo: "nova",
       plantillas: [],
       expandedPlantillas: [],
-      plantillaSeleccionada: null, // Nueva propiedad para gestionar la plantilla seleccionada
-      plantillaSeleccionadaMandar: null, // Nueva propiedad para gestionar la plantilla seleccionada
+      plantillaSeleccionada: null,
+      plantillaSeleccionadaMandar: null,
     };
   },
 
   computed: {
+    //obter data de hoxe e id usuario
     idUsuario() {
       return useUsuarioStore().id;
     },
     dataHoxeISO() {
       return new Date().toISOString().split("T")[0];
     },
-    plantillaTotalNecesaria() {
-      return useUsuarioStore().plantilla;
-    },
-    plantillaInxeridaHoxe() {
-      return this.plantillaHoxe.reduce((total, a) => total + a.cantidade, 0);
-    },
-    porcentaxeplantilla() {
-      const total = this.plantillaTotalNecesaria;
-      const inxerida = this.plantillaInxeridaHoxe;
 
-      if (!total || total <= 0) return 0;
+    // plantillaTotalNecesaria() {
+    //   return useUsuarioStore().plantilla;
+    // },
+    // plantillaInxeridaHoxe() {
+    //   return this.plantillaHoxe.reduce((total, a) => total + a.cantidade, 0);
+    // },
+    // porcentaxeplantilla() {
+    //   const total = this.plantillaTotalNecesaria;
+    //   const inxerida = this.plantillaInxeridaHoxe;
 
-      return Math.min(Math.round((inxerida / total) * 100), 100);
-    },
+    //   if (!total || total <= 0) return 0;
+
+    //   return Math.min(Math.round((inxerida / total) * 100), 100);
+    // },
   },
+  //cargar plantillas cando se mote o compoñente
   mounted() {
     this.cargarDatos();
   },
   methods: {
+    //cargar plantillas por id de usuario
     async cargarDatos() {
       try {
         const usuarioStore = useUsuarioStore();
@@ -53,7 +57,7 @@ export default {
         if (!response.ok) throw new Error("Erro ao cargar plantillas");
         const plantillas = await response.json();
 
-        // Inicializamos 'exercicios' en caso de que no exista
+        // inicializamos exercicios no caso de que non exista
         this.plantillas = plantillas
           .filter((p) => p.usuario === idUsuario)
           .map((p) => ({ ...p, exercicios: p.exercicios || [] }));
@@ -61,6 +65,7 @@ export default {
         console.error("Erro cargando datos:", error);
       }
     },
+    // borrar plantilla por id
     async borrarPlantilla(id) {
       try {
         const response = await fetch(
@@ -72,12 +77,12 @@ export default {
           throw new Error("Erro ao eliminar a plantilla");
         }
 
-        // Actualizamos el estado sin necesidad de recargar la página
         this.plantillas = this.plantillas.filter((p) => p.id_plantilla !== id);
       } catch (error) {
         console.error("❌ Erro eliminando plantilla:", error);
       }
     },
+    //expandir o comprimir plantilla
     toggleExpand(id) {
       if (this.expandedPlantillas.includes(id)) {
         this.expandedPlantillas = this.expandedPlantillas.filter(
@@ -87,6 +92,7 @@ export default {
         this.expandedPlantillas.push(id);
       }
     },
+    //borrar exercicio por id
     async borrarExercicio(idExercicio) {
       try {
         const response = await fetch(
@@ -324,7 +330,7 @@ export default {
   margin-right: 4%;
   flex-grow: 1;
   /* height: calc(100vh - 30vh); */
-  height: 100%;
+  height: 80vh;
   overflow: hidden;
   margin-bottom: 2%;
 }

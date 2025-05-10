@@ -20,6 +20,7 @@ export default {
     this.obterMedallas();
   },
   methods: {
+    //obter medallas
     async obterMedallas() {
       try {
         const response = await fetch("http://localhost:8001/api/medallas/");
@@ -37,6 +38,8 @@ export default {
         console.error("Error cargando datos de medallas:", error);
       }
     },
+
+    //obter medallas completadas polo usuario
     medallaCompletadaPorUsuario(medalla) {
       return medalla.usuarios.includes(this.usuarioId) && medalla.completado;
     },

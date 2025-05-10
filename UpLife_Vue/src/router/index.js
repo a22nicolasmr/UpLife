@@ -14,6 +14,17 @@ import Perfil from "@/views/Perfil.vue";
 import Plantillas from "@/views/Plantillas.vue";
 import Calculadora from "@/components/Perfil/Calculadora.vue";
 import Calculador from "@/components/Perfil/Calculador.vue";
+import EngadirAuga from "@/components/Auga/EngadirAuga.vue";
+import HistorialAuga from "@/components/Auga/HistorialAuga.vue";
+import EngadirComida from "@/components/Comidas/EngadirComida.vue";
+import GrupoComida from "@/components/Comidas/GrupoComida.vue";
+import HistorialComidas from "@/components/Comidas/HistorialComidas.vue";
+import TotalComida from "@/components/Comidas/TotalComida.vue";
+import EngadirExercicios from "@/components/Exercicios/EngadirExercicios.vue";
+import EngadirExercicioPlantilla from "@/components/Plantillas/EngadirExercicioPlantilla.vue";
+import EngadirPlantillasExercicios from "@/components/Exercicios/EngadirPlantillasExercicios.vue";
+import HistorialExercicios from "@/components/Exercicios/HistorialExercicios.vue";
+import NovaPlantilla from "@/components/Plantillas/NovaPlantilla.vue";
 
 const routes = [
   {
@@ -46,8 +57,8 @@ const routes = [
     component: Tarefas,
     children: [
       {
-        path: "lista",
-        name: "lista",
+        path: "listaTarefas",
+        name: "listaTarefas",
         component: ListaTarefas,
       },
       {
@@ -61,16 +72,67 @@ const routes = [
     path: "/auga",
     name: "auga",
     component: Auga,
+    children: [
+      {
+        path: "engadirAuga",
+        name: "engadirAuga",
+        component: EngadirAuga,
+      },
+      {
+        path: "historialAuga",
+        name: "historialAuga",
+        component: HistorialAuga,
+      },
+    ],
   },
   {
     path: "/comidas",
     name: "comidas",
     component: Comidas,
+    children: [
+      {
+        path: "engadirComida",
+        name: "engadirComida",
+        component: EngadirComida,
+      },
+      {
+        path: "grupoComida",
+        name: "grupoComida",
+        component: GrupoComida,
+      },
+      {
+        path: "historialComidas",
+        name: "historialComidas",
+        component: HistorialComidas,
+      },
+      {
+        path: "totalComida",
+        name: "totalComida",
+        component: TotalComida,
+      },
+    ],
   },
   {
     path: "/exercicios",
     name: "exercicios",
     component: Exercicios,
+    children: [
+      {
+        path: "engadirExercicios",
+        name: "engadirExercicios",
+        component: EngadirExercicios,
+      },
+      {
+        path: "engadirPlantillasExercicios",
+        name: "engadirPlantillasExercicios",
+        component: EngadirPlantillasExercicios,
+      },
+      {
+        path: "historialExercicios",
+        name: "historialExercicios",
+        component: HistorialExercicios,
+      },
+    ],
   },
   {
     path: "/medallas",
@@ -100,6 +162,18 @@ const routes = [
     path: "/plantillas",
     name: "plantillas",
     component: Plantillas,
+    children: [
+      {
+        path: "engadirExercicioPlantilla",
+        name: "engadirExercicioPlantilla",
+        component: EngadirExercicioPlantilla,
+      },
+      {
+        path: "novaPlantilla",
+        name: "novaPlantilla",
+        component: NovaPlantilla,
+      },
+    ],
   },
 ];
 

@@ -198,7 +198,7 @@ export default {
 .lista-container {
   color: white;
   background-color: black;
-  padding: 5%;
+  padding: 8%;
   border-radius: 12px;
   overflow: hidden;
   display: flex;

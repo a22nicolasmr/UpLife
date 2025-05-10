@@ -93,6 +93,7 @@ export default {
         this.tarefa = "";
         this.hora = "";
         this.$emit("cargarDatasConTarefas");
+        this.$emit("comprobarRachas");
       } catch (error) {
         console.error("Erro:", error);
       }

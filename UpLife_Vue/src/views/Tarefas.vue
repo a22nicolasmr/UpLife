@@ -26,11 +26,81 @@ export default {
       ],
     };
   },
+  //cando se carga a vista, cargar as datas con tarefas
   mounted() {
     this.cargarDatasConTarefas();
+    this.comprobarRachas();
   },
 
   methods: {
+    //comprobar as rachas do usuario en función das datas anteriores a data actual
+    // en tarefas tamén comproba se están completadas
+    async comprobarRachas() {
+      const usuarioStore = useUsuarioStore();
+      const idUsuario = usuarioStore.id;
+
+      const urls = [
+        { key: "auga", var: "rAuga", url: "http://localhost:8001/api/auga/" },
+        {
+          key: "comidas",
+          var: "rComidas",
+          url: "http://localhost:8001/api/comidas/",
+        },
+        {
+          key: "exercicios",
+          var: "rExercicios",
+          url: "http://localhost:8001/api/exercicios/",
+        },
+        {
+          key: "tarefas",
+          var: "rTarefas",
+          url: "http://localhost:8001/api/tarefas/",
+        },
+      ];
+
+      this.rAuga = 0;
+      this.rComidas = 0;
+      this.rExercicios = 0;
+      this.rTarefas = 0;
+
+      for (const item of urls) {
+        const res = await fetch(item.url);
+        const data = await res.json();
+
+        const userData = data.filter((entry) => {
+          const esUsuario = entry.usuario === idUsuario;
+          const tieneFechaValida =
+            entry.data &&
+            entry.data.trim() !== "" &&
+            entry.data <= new Date().toISOString().split("T")[0];
+          const estaCompletado =
+            item.key !== "tarefas" || entry.completado === true; // solo pedir completado si es tarefas
+
+          return esUsuario && tieneFechaValida && estaCompletado;
+        });
+
+        const fechas = [...new Set(userData.map((entry) => entry.data))]
+          .sort()
+          .reverse();
+
+        let racha = 0;
+        let hoy = new Date().toISOString().split("T")[0];
+
+        for (const fecha of fechas) {
+          if (fecha === hoy) {
+            racha++;
+            hoy = new Date(new Date(hoy).getTime() - 86400000)
+              .toISOString()
+              .split("T")[0];
+          } else {
+            break;
+          }
+        }
+
+        this[item.var] = racha;
+      }
+    },
+
     //comprobar se hai tarefas para unha data
     async comprobarTarefasNaData(date) {
       const usuarioStore = useUsuarioStore();
@@ -90,25 +160,40 @@ export default {
       });
     },
 
-    // os días que teñan tarefas serán marcados cunha cor azul claro usnaod attrs de vc-calendar
+    // os días que teñan tarefas serán marcados cunha cor azul claro usando attrs de vc-calendar
     actualizarDatasConTarefas(datas) {
-      const tarefasAttrs = datas.map((dataISO) => ({
-        key: `tarefa-${dataISO}`,
-        highlight: {
-          color: "#add8e6",
-          fillMode: "light",
-        },
-        dates: new Date(dataISO),
-      }));
+      const tarefasAttrs = datas.map((dataISO) => {
+        const date = new Date(dataISO);
+        const isToday = date.toDateString() === new Date().toDateString();
 
-      this.attrs = [
-        {
+        return {
+          key: `tarefa-${dataISO}`,
+          highlight: {
+            color: isToday ? "#003366" : "#add8e6", // azul escuro se é hoxe
+            fillMode: "light",
+          },
+          dates: date,
+        };
+      });
+
+      // Eliminar posibles duplicados para hoxe
+      const xaExisteToday = tarefasAttrs.some(
+        (attr) =>
+          new Date(attr.dates).toDateString() === new Date().toDateString()
+      );
+
+      if (!xaExisteToday) {
+        tarefasAttrs.push({
           key: "today",
-          highlight: true,
+          highlight: {
+            color: "#003366", // azul máis escuro
+            fillMode: "light",
+          },
           dates: new Date(),
-        },
-        ...tarefasAttrs,
-      ];
+        });
+      }
+
+      this.attrs = tarefasAttrs;
     },
 
     // obter as tarefas filtradas por usuario e data
@@ -229,6 +314,7 @@ export default {
           v-if="componenteActivo === 'engadir'"
           :dataSeleccionada="dataSeleccionada"
           @cargarDatasConTarefas="cargarDatasConTarefas"
+          @comprobarRachas="comprobarRachas"
         />
       </div>
     </div>

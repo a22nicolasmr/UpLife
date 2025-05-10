@@ -18,10 +18,12 @@ export default {
     };
   },
   mounted() {
+    //cargar exercicios e plantillas da data actual ao montar o compoñente
     this.cargarExerciciosHoxe();
     this.cargarPlantillasHoxe();
   },
   methods: {
+    //mapear nome da categoría según o seu id
     nomeCategoriaPorId(id) {
       const mapa = {
         1: "Perna",
@@ -33,6 +35,8 @@ export default {
       };
       return mapa[id] || "Descoñecida";
     },
+
+    //cargar exercicios filtrando por data do día actual e id de usuario
     async cargarExerciciosHoxe() {
       const usuarioStore = useUsuarioStore();
       const idUsuario = usuarioStore.id;
@@ -64,6 +68,7 @@ export default {
         console.error("Erro cargando exercicios:", error);
       }
     },
+    //eliminar exercicio por id
     async eliminarExercicio(id) {
       const usuarioStore = useUsuarioStore();
       const idUsuario = usuarioStore.id;
@@ -84,6 +89,8 @@ export default {
         console.error("Erro eliminando exercicio:", error);
       }
     },
+
+    //cargar plantillas filtrando por data actual e id de usuario
     async cargarPlantillasHoxe() {
       const usuarioStore = useUsuarioStore();
       const idUsuario = usuarioStore.id;
@@ -101,6 +108,7 @@ export default {
         console.error("Erro cargando plantillas hoxe:", error);
       }
     },
+    //engadir plantilla ao usuario
     async engadirPlantilla(plantillaSeleccionada) {
       const usuarioStore = useUsuarioStore();
       const idUsuario = usuarioStore.id;
@@ -140,6 +148,7 @@ export default {
         console.error(error);
       }
     },
+    //eliminar plantilla por id
     async eliminarPlantilla(id_plantilla) {
       const response2 = await fetch(
         `http://localhost:8001/api/plantillas/${id_plantilla}/`,

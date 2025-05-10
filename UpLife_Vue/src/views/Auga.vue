@@ -16,6 +16,7 @@ export default {
   },
 
   computed: {
+    // cargar o id a data de hoxe e a auga necesaria polo usuario
     idUsuario() {
       return useUsuarioStore().id;
     },
@@ -25,9 +26,13 @@ export default {
     augaTotalNecesaria() {
       return useUsuarioStore().auga;
     },
+
+    //calcular o total de auga inxerida o día de hoxe
     augaInxeridaHoxe() {
       return this.augaHoxe.reduce((total, a) => total + a.cantidade, 0);
     },
+
+    //calcular porcentaxe de auga en función a auga necesitada e a auga inxerida
     porcentaxeAuga() {
       const total = this.augaTotalNecesaria;
       const inxerida = this.augaInxeridaHoxe;
@@ -41,6 +46,7 @@ export default {
     this.cargarAugaHoxe();
   },
   methods: {
+    //cargar a auga inxerida na fecha actual
     async cargarAugaHoxe() {
       try {
         const response = await fetch("http://localhost:8001/api/auga/");
@@ -67,6 +73,7 @@ export default {
         console.error("Erro cargando auga:", error);
       }
     },
+    //eliminar rexistros de auga
     async eliminarAuga(id) {
       try {
         const response = await fetch(`http://localhost:8001/api/auga/${id}/`, {

@@ -1,7 +1,7 @@
 <template>
   <div class="contenedor">
     <div class="izquierda">
-      <img src="/imaxes/imagen4.png" alt="" />
+      <img src="/imaxes/imagen4.png" alt="imaxe inicio" />
     </div>
 
     <div class="derecha">
@@ -53,11 +53,11 @@ body,
 }
 
 .derecha {
+  padding: 5%;
   background-color: #ffffff;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0;
   height: 100%;
 }
 
