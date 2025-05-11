@@ -26,6 +26,7 @@ export default {
       ],
     };
   },
+
   //cando se carga a vista, cargar as datas con tarefas
   mounted() {
     this.cargarDatasConTarefas();
@@ -423,7 +424,7 @@ body,
 h1 {
   display: flex;
   align-self: flex-start;
-  margin-bottom: 3vh;
+  margin-bottom: 0;
   color: #7f5af0;
 }
 /* Compoñente lateral */

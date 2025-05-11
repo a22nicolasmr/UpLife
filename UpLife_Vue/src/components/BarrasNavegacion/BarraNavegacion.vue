@@ -5,6 +5,7 @@ export default {
       modal: false,
     };
   },
+
   // cambiar ruta actual segun onde se atope o usuario
   computed: {
     rutaActual() {
@@ -21,7 +22,11 @@ export default {
     <div class="menu-superior">
       <ul>
         <li>
-          <img src="/imaxes/Logo.PNG" alt="UpLife" />
+          <img
+            src="/imaxes/Logo.PNG"
+            alt="UpLife"
+            @click="$router.push('/formularios/rexistro')"
+          />
         </li>
         <li
           :class="{ activo: rutaActual === '/tarefas' }"

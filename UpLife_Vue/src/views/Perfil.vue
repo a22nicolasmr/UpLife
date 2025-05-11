@@ -115,29 +115,42 @@ export default {
     <h1>Perfil</h1>
     <div class="perfil-layout">
       <div class="datos">
-        <h2>Detalles da conta</h2>
-        <p><strong>Nome:</strong> {{ nome }}</p>
-        <p><strong>Email:</strong> {{ email }}</p>
-        <p><strong>Nome de usuario:</strong> {{ nomeUsuario }}</p>
-        <p><strong>Imaxe de usuario:</strong></p>
-        <img :src="imagen" alt="Imaxe de usuario" @click="cambiarImagen()" />
-        <input
-          type="file"
-          ref="fileInput"
-          style="display: none"
-          @change="subirImagen"
-        />
-        <h2>Datos do usuario</h2>
-        <p><strong>Xénero:</strong> {{ xenero }}</p>
-        <p><strong>Altura:</strong> {{ altura }} cm</p>
-        <p><strong>Peso:</strong> {{ peso }} kg</p>
-        <p><strong>Obxectivo:</strong> {{ obxectivo }}</p>
-        <p><strong>Actividade:</strong> {{ actividade }}</p>
-        <p><strong>Idade:</strong> {{ idade }} anos</p>
-        <p><strong>Calorías diarias:</strong> {{ calorias }} kcal</p>
-        <p id="ultimoP">
-          <strong>Cantidad de auga diaria:</strong> {{ auga }} ml
-        </p>
+        <div id="divArriba">
+          <div id="detallesArriba">
+            <h2>Detalles da conta</h2>
+            <p><strong>Nome:</strong> {{ nome }}</p>
+            <p><strong>Email:</strong> {{ email }}</p>
+            <p><strong>Nome de usuario:</strong> {{ nomeUsuario }}</p>
+          </div>
+
+          <div class="imaxe-perfil">
+            <img
+              :src="imagen"
+              alt="Imaxe de usuario"
+              @click="cambiarImagen()"
+            />
+            <input
+              type="file"
+              ref="fileInput"
+              style="display: none"
+              @change="subirImagen"
+            />
+          </div>
+        </div>
+
+        <div>
+          <h2>Datos do usuario</h2>
+          <p><strong>Xénero:</strong> {{ xenero }}</p>
+          <p><strong>Altura:</strong> {{ altura }} cm</p>
+          <p><strong>Peso:</strong> {{ peso }} kg</p>
+          <p><strong>Obxectivo:</strong> {{ obxectivo }}</p>
+          <p><strong>Actividade:</strong> {{ actividade }}</p>
+          <p><strong>Idade:</strong> {{ idade }} anos</p>
+          <p><strong>Calorías diarias:</strong> {{ calorias }} kcal</p>
+          <p id="ultimoP">
+            <strong>Cantidad de auga diaria:</strong> {{ auga }} ml
+          </p>
+        </div>
       </div>
       <div class="calculadora">
         <Calculadora @actualizarDatos="actualizarDatos" />
@@ -147,20 +160,30 @@ export default {
 </template>
 
 <style scoped>
+#detallesArriba > p {
+  margin: 13%;
+  margin-left: 0;
+  margin-bottom: 0;
+}
+#detallesArriba {
+  width: 100%;
+}
+#divArriba {
+  display: flex;
+  flex-direction: colum;
+}
 p {
   font-size: large;
 }
-img {
-  height: 10%;
-  width: 10%;
-  border-radius: 50%;
-}
+
 h1 {
   font-size: xx-large;
+  margin-bottom: 2%;
 }
 h2 {
   color: #7f5af0;
   font-size: x-large;
+  margin: 0;
 }
 
 html,
@@ -172,7 +195,6 @@ body {
   background-color: #f2f2f2;
   display: flex;
   flex-direction: column;
-  margin-left: 1%;
   margin-right: 1%;
   margin-bottom: 2%;
   height: 70%;
@@ -204,7 +226,7 @@ body {
 }
 
 .datos p {
-  margin: 2% 0;
+  margin: 9% 0;
   line-height: 20%;
 }
 
@@ -223,5 +245,21 @@ body {
 .calculadora {
   padding-top: 2%;
   padding-bottom: 2%;
+}
+.imaxe-perfil {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  margin-top: 5%;
+  width: 40%;
+}
+
+.imaxe-perfil img {
+  width: 15vw;
+  height: 30vh;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
 }
 </style>

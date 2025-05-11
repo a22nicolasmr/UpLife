@@ -57,18 +57,18 @@ export default {
           (ex) => ex.usuario === this.idUsuario && ex.data === this.dataHoxeISO
         );
 
-        const seteDiasAtras = new Date();
-        seteDiasAtras.setDate(seteDiasAtras.getDate() - 7);
+        // const seteDiasAtras = new Date();
+        // seteDiasAtras.setDate(seteDiasAtras.getDate() - 7);
 
-        const augaBorrar = auga.filter((e) => {
-          if (!e.data) return false;
-          const dataAuga = new Date(e.data);
-          return dataAuga < seteDiasAtras;
-        });
+        // const augaBorrar = auga.filter((e) => {
+        //   if (!e.data) return false;
+        //   const dataAuga = new Date(e.data);
+        //   return dataAuga < seteDiasAtras;
+        // });
 
-        augaBorrar.forEach((e) => {
-          this.eliminarAuga(e.id_auga);
-        });
+        // augaBorrar.forEach((e) => {
+        //   this.eliminarAuga(e.id_auga);
+        // });
       } catch (error) {
         console.error("Erro cargando auga:", error);
       }
@@ -193,7 +193,7 @@ export default {
 #divXeral2 {
   display: flex;
   flex-direction: column;
-  height: 85%;
+  height: 100vh;
   overflow-y: auto;
 }
 
@@ -236,7 +236,8 @@ export default {
   overflow: hidden;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
   margin-right: 4%;
-  height: 65vh;
+  height: 100%;
+  margin-bottom: 2%;
 }
 
 .esquerda {

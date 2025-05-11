@@ -286,7 +286,7 @@ export default {
 #divXeral2 {
   display: flex;
   flex-direction: column;
-  height: 85%;
+  height: 100vh;
   overflow: hidden;
 }
 
@@ -295,6 +295,7 @@ export default {
   font-size: xx-large;
   font-weight: bold;
   color: #7f5af0;
+  margin-bottom: 0;
 }
 
 .tarxetas {
@@ -325,12 +326,11 @@ export default {
   justify-content: center;
   background-color: white;
   border-radius: 8px;
-
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
   margin-right: 4%;
   flex-grow: 1;
   /* height: calc(100vh - 30vh); */
-  height: 80vh;
+  height: 100%;
   overflow: hidden;
   margin-bottom: 2%;
 }

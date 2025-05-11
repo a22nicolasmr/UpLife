@@ -160,6 +160,7 @@ export default {
   display: flex;
   flex-direction: column;
   width: 100%;
+  margin-bottom: 2%;
 }
 .engadir-container {
   height: 100%;

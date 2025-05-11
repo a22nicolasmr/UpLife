@@ -119,7 +119,9 @@ export default {
           if (!patchResponse.ok) throw new Error("Erro ao actualizar grupo");
 
           this.$emit("cargarDatos");
+          this.cargarComidas();
           this.cargarGrupos();
+          this.gruposSeleccionadosPorComida = [];
         } catch (error) {
           console.error("❗Erro no try-catch:", error);
           this.error = "Produciuse un erro ao engadir a comida ao grupo.";

@@ -1165,12 +1165,12 @@
 },
 {
   "model": "UpLife_api.tarefas",
-  "pk": 10,
+  "pk": 14,
   "fields": {
     "hora": null,
-    "titulo": "E",
+    "titulo": "e",
     "completado": false,
-    "data": "2025-05-10",
+    "data": "2025-05-11",
     "usuario": 1
   }
 },
@@ -1433,6 +1433,18 @@
   }
 },
 {
+  "model": "UpLife_api.exercicios",
+  "pk": 69,
+  "fields": {
+    "nome": "Dominadas",
+    "repeticions": "5x7",
+    "peso": 1.0,
+    "data": "2025-05-11",
+    "usuario": 1,
+    "categoria": 4
+  }
+},
+{
   "model": "UpLife_api.plantillas",
   "pk": 15,
   "fields": {
@@ -1449,7 +1461,7 @@
   "fields": {
     "nome": "Plantilla de peito",
     "icona": "/imaxes/torso.png",
-    "data": null,
+    "data": "2025-05-11",
     "usuario": 1,
     "exercicios": []
   }
@@ -1547,6 +1559,62 @@
   }
 },
 {
+  "model": "UpLife_api.comidas",
+  "pk": 59,
+  "fields": {
+    "nome": "Patacas",
+    "peso": 150.0,
+    "graxas": 20.0,
+    "carbohidratos": 122.0,
+    "proteinas": 4.0,
+    "calorias": 200.0,
+    "data": "2025-05-11",
+    "usuario": 1
+  }
+},
+{
+  "model": "UpLife_api.comidas",
+  "pk": 60,
+  "fields": {
+    "nome": "Patacas",
+    "peso": 150.0,
+    "graxas": 20.0,
+    "carbohidratos": 122.0,
+    "proteinas": 4.0,
+    "calorias": 200.0,
+    "data": "2025-05-11",
+    "usuario": 1
+  }
+},
+{
+  "model": "UpLife_api.comidas",
+  "pk": 63,
+  "fields": {
+    "nome": "Patacas",
+    "peso": 150.0,
+    "graxas": 20.0,
+    "carbohidratos": 122.0,
+    "proteinas": 4.0,
+    "calorias": 200.0,
+    "data": "2025-05-11",
+    "usuario": 1
+  }
+},
+{
+  "model": "UpLife_api.comidas",
+  "pk": 64,
+  "fields": {
+    "nome": "Patacas",
+    "peso": 150.0,
+    "graxas": 20.0,
+    "carbohidratos": 122.0,
+    "proteinas": 4.0,
+    "calorias": 200.0,
+    "data": "2025-05-11",
+    "usuario": 1
+  }
+},
+{
   "model": "UpLife_api.grupos",
   "pk": 2,
   "fields": {
@@ -1555,18 +1623,9 @@
     "usuario": 1,
     "comidas": [
       26,
-      58
+      58,
+      59
     ]
-  }
-},
-{
-  "model": "UpLife_api.grupos",
-  "pk": 4,
-  "fields": {
-    "nome": "Rastreador consciente",
-    "icona": "/imaxes/fruta.png",
-    "usuario": 1,
-    "comidas": []
   }
 }
 ]

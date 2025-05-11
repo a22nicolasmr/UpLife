@@ -151,9 +151,8 @@ export default {
 
 <style scoped>
 .general {
-  width: 95%;
-  height: 100%;
-  padding: 2vw;
+  width: 93%;
+  padding: 3%;
   box-sizing: border-box;
   background-color: white;
   border-radius: 1vw;
@@ -169,91 +168,91 @@ export default {
   gap: 2vw;
   width: 100%;
   justify-content: center;
-  height: 100%;
 }
 
 .column {
   flex: 1 1 30%;
   display: flex;
   flex-direction: column;
-  gap: 1.5vh;
+  gap: 2vh;
 }
 
 .medalla {
   display: flex;
-  align-items: stretch; /* Asegura que todos los elementos se estiren */
   flex-direction: column;
-  height: 100%; /* Hace que las medallas tengan el mismo alto */
+  justify-content: center;
+  background-color: #f7f7f7;
+  border-radius: 1vw;
+  padding: 1vh 1vw;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  height: 13.5vh;
+  box-sizing: border-box;
 }
 
 .medalla-content {
   display: flex;
   align-items: center;
+  justify-content: flex-start;
   gap: 1vw;
   height: 100%;
 }
 
 .check-icon,
 #invisible {
-  margin-right: 0.5vw;
-  flex-shrink: 0; /* Evita que las imágenes se deformen */
+  width: 2vh;
+  height: 2vh;
+  margin-left: 0.5vw;
+  flex-shrink: 0;
 }
 
 .medalla-info {
   display: flex;
   align-items: center;
   gap: 1vw;
-  flex-grow: 1; /* Hace que el texto ocupe el espacio restante */
+  flex-grow: 1;
 }
 
 .medalla-info img {
-  width: 4vw;
-  height: 4vw;
+  width: 4.5vw;
+  height: 4.5vw;
   object-fit: cover;
-  border-radius: 8%;
-  flex-shrink: 0; /* Para que la imagen no se deforme */
+  border-radius: 10%;
+  flex-shrink: 0;
 }
 
 .medalla-info div {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  height: 100%; /* Asegura que los textos se alineen con la imagen */
 }
 
 img {
-  max-width: 5vw;
-  min-width: 1vw;
+  max-width: 100%;
   border-radius: 8%;
 }
 
 h1 {
   font-size: xx-large;
-  margin-bottom: 3vh;
+  margin-bottom: 2%;
   color: #7f5af0;
 }
 
 h3 {
-  font-size: x-large;
+  font-size: 1.2vw;
   margin: 0;
   color: #333;
 }
 
 p {
-  font-size: large;
+  font-size: 1vw;
   margin: 0;
   color: #666;
-}
-
-#check,
-#invisible {
-  height: 3vh;
-  margin-left: 2vw;
 }
 
 #todo {
   display: flex;
   flex-direction: column;
   height: 100%;
+  overflow: hidden;
 }
 </style>

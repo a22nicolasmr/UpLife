@@ -57,12 +57,14 @@ watch(
   height: 7vh;
   border-radius: 50%;
   margin-right: 2vh;
+  cursor: pointer;
 }
 
 .usuario-detalles {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  cursor: pointer;
 }
 
 .usuario-nombre {

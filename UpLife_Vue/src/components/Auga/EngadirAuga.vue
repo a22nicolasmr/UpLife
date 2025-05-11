@@ -72,7 +72,8 @@ export default {
 
       <label for="cantidade">Cantidade</label>
       <input
-        type="text"
+        type="number"
+        min="0"
         id="cantidade"
         v-model="cantidade"
         placeholder="Cantidade(ml)"

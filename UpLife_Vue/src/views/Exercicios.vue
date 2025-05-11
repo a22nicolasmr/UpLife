@@ -48,18 +48,18 @@ export default {
 
         const exercicios = await response.json();
 
-        const seteDiasAtras = new Date();
-        seteDiasAtras.setDate(seteDiasAtras.getDate() - 7);
+        // const seteDiasAtras = new Date();
+        // seteDiasAtras.setDate(seteDiasAtras.getDate() - 7);
 
-        const exerciciosAnteriores = exercicios.filter((e) => {
-          if (!e.data) return false;
-          const dataExercicio = new Date(e.data);
-          return dataExercicio < seteDiasAtras;
-        });
+        // const exerciciosAnteriores = exercicios.filter((e) => {
+        //   if (!e.data) return false;
+        //   const dataExercicio = new Date(e.data);
+        //   return dataExercicio < seteDiasAtras;
+        // });
 
-        exerciciosAnteriores.forEach((e) => {
-          this.eliminarExercicio(e.id_exercicio);
-        });
+        // exerciciosAnteriores.forEach((e) => {
+        //   this.eliminarExercicio(e.id_exercicio);
+        // });
 
         this.exerciciosHoxe = exercicios.filter(
           (ex) => ex.usuario === idUsuario && ex.data === hoxe
@@ -229,6 +229,7 @@ export default {
                     src="/imaxes/trash.png"
                     alt="icona borrar"
                     @click="eliminarExercicio(exercicio.id_exercicio)"
+                    class="icon2"
                   />
                 </td>
               </tr>
@@ -306,6 +307,12 @@ export default {
 .icon {
   height: 10%;
   width: 10%;
+  cursor: pointer;
+}
+.icon2 {
+  height: 15%;
+  width: 15%;
+  cursor: pointer;
 }
 .icona {
   height: 20%;
@@ -361,7 +368,7 @@ body {
 #divXeral2 {
   display: flex;
   flex-direction: column;
-  height: 85%;
+  height: 100vh;
   overflow-y: auto;
   margin: none;
 }
@@ -370,7 +377,7 @@ body {
   text-align: center;
   font-size: xx-large;
   font-weight: bold;
-  margin-bottom: 2%;
+  margin-bottom: 0;
 }
 
 .tarxetas {
@@ -404,7 +411,7 @@ body {
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
   margin-right: 4%;
   margin-bottom: 1%;
-  height: 65vh;
+  height: 100%;
   overflow: hidden;
 }
 

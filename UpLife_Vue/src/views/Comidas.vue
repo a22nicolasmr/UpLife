@@ -73,20 +73,20 @@ export default {
             comidas: (g.comidas || []).filter((c) => c.data === hoxe),
           }));
 
-        const seteDiasAtras = new Date();
-        seteDiasAtras.setDate(seteDiasAtras.getDate() - 7);
-        const response2 = await fetch("http://localhost:8001/api/comidas/");
-        const comidas = await response2.json();
+        // const seteDiasAtras = new Date();
+        // seteDiasAtras.setDate(seteDiasAtras.getDate() - 7);
+        // const response2 = await fetch("http://localhost:8001/api/comidas/");
+        // const comidas = await response2.json();
 
-        const comidasBorrar = comidas.filter((e) => {
-          if (!e.data) return false;
-          const dataComida = new Date(e.data);
-          return dataComida < seteDiasAtras;
-        });
+        // const comidasBorrar = comidas.filter((e) => {
+        //   if (!e.data) return false;
+        //   const dataComida = new Date(e.data);
+        //   return dataComida < seteDiasAtras;
+        // });
 
-        comidasBorrar.forEach((e) => {
-          this.borrarComida(e.id_comida);
-        });
+        // comidasBorrar.forEach((e) => {
+        //   this.borrarComida(e.id_comida);
+        // });
       } catch (error) {
         console.error("Erro cargando datos:", error);
       }
@@ -102,7 +102,9 @@ export default {
         if (!response.ok) throw new Error("Erro ao eliminar grupo");
         this.grupos = this.grupos.filter((g) => g.id_grupo !== id);
         this.componenteActivo = "historial";
-        await this.cargarDatos();
+        // window.location.reload();
+        this.$refs.hijoRef.cargarComidas();
+        this.$refs.hijoRef.cargarGrupos();
       } catch (error) {
         console.error("Erro eliminando grupo:", error);
       }
@@ -120,7 +122,9 @@ export default {
           g.comidas = g.comidas.filter((c) => c.id_comida !== idComida);
         });
         this.componenteActivo = "historial";
-        await this.cargarDatos();
+        // window.location.reload();
+        this.$refs.hijoRef.cargarComidas();
+        this.$refs.hijoRef.cargarGrupos();
       } catch (error) {
         console.error("Erro eliminando comida:", error);
       }
@@ -269,6 +273,7 @@ export default {
         <HistorialComidas
           v-if="componenteActivo === 'historial'"
           @cargarDatos="cargarDatos"
+          ref="hijoRef"
         />
         <EngadirComida
           v-if="componenteActivo === 'engadirC'"
@@ -381,7 +386,8 @@ export default {
 #divXeral2 {
   display: flex;
   flex-direction: column;
-  height: 92vh;
+  height: 100vh;
+
   margin-bottom: 2%;
   overflow: hidden;
 }
