@@ -845,6 +845,58 @@
   }
 },
 {
+  "model": "admin.logentry",
+  "pk": 98,
+  "fields": {
+    "action_time": "2025-05-12T06:55:04.978Z",
+    "user": 1,
+    "content_type": 10,
+    "object_id": "29",
+    "object_repr": "titulo=Cars, hora=None, data=2025-05-11, completado=False, usuario=nome=lupi, nome_usuario=lupi, email=lupi@gmail.com, contrasinal=pbkdf2_sha256$600000$PRQo908qwKQGJ5eoW6WXf4$AHdxJ9VAImwzx0gm7ag2f4KCy",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 99,
+  "fields": {
+    "action_time": "2025-05-12T12:00:25.076Z",
+    "user": 1,
+    "content_type": 12,
+    "object_id": "84",
+    "object_repr": "nome=Exercicio de proba, repeticions=5x10, peso=111.0, usuario=nome=lupi, nome_usuario=lupi, email=lupi@gmail.com, contrasinal=pbkdf2_sha256$600000$PRQo908qwKQGJ5eoW6WXf4$AHdxJ9VAImwzx0gm7ag2f4KCyQFAk",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 100,
+  "fields": {
+    "action_time": "2025-05-12T12:34:41.958Z",
+    "user": 1,
+    "content_type": 12,
+    "object_id": "84",
+    "object_repr": "nome=Exercicio de proba, repeticions=5x10, peso=111.0, usuario=nome=lupi, nome_usuario=lupi, email=lupi@gmail.com, contrasinal=pbkdf2_sha256$600000$PRQo908qwKQGJ5eoW6WXf4$AHdxJ9VAImwzx0gm7ag2f4KCyQFAk",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 101,
+  "fields": {
+    "action_time": "2025-05-12T12:35:10.593Z",
+    "user": 1,
+    "content_type": 12,
+    "object_id": "85",
+    "object_repr": "nome=Exercicio de proba, repeticions=5x10, peso=11.0, usuario=nome=lupi, nome_usuario=lupi, email=lupi@gmail.com, contrasinal=pbkdf2_sha256$600000$PRQo908qwKQGJ5eoW6WXf4$AHdxJ9VAImwzx0gm7ag2f4KCyQFAkw",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
   "model": "auth.user",
   "pk": 1,
   "fields": {
@@ -1023,6 +1075,16 @@
   }
 },
 {
+  "model": "UpLife_api.auga",
+  "pk": 34,
+  "fields": {
+    "cantidade": 100,
+    "hora": "11:24:00",
+    "usuario": 1,
+    "data": "2025-05-12"
+  }
+},
+{
   "model": "UpLife_api.medallas",
   "pk": 4,
   "fields": {
@@ -1054,7 +1116,7 @@
   "fields": {
     "nome": "No camiño",
     "descripcion": "Completa 5 días de exercicios na mesma semana.",
-    "completado": false,
+    "completado": true,
     "icona": "media/noCaminho.jpg",
     "usuarios": [
       1
@@ -1154,22 +1216,44 @@
 },
 {
   "model": "UpLife_api.tarefas",
-  "pk": 5,
+  "pk": 26,
   "fields": {
     "hora": null,
-    "titulo": "E",
-    "completado": false,
-    "data": "2025-05-11",
+    "titulo": "tarfefa",
+    "completado": true,
+    "data": "2025-05-12",
     "usuario": 1
   }
 },
 {
   "model": "UpLife_api.tarefas",
-  "pk": 14,
+  "pk": 27,
   "fields": {
     "hora": null,
-    "titulo": "e",
+    "titulo": "tarfefa",
+    "completado": true,
+    "data": "2025-05-12",
+    "usuario": 1
+  }
+},
+{
+  "model": "UpLife_api.tarefas",
+  "pk": 28,
+  "fields": {
+    "hora": null,
+    "titulo": "tarfefa",
     "completado": false,
+    "data": "2025-05-13",
+    "usuario": 1
+  }
+},
+{
+  "model": "UpLife_api.tarefas",
+  "pk": 29,
+  "fields": {
+    "hora": null,
+    "titulo": "Cars",
+    "completado": true,
     "data": "2025-05-11",
     "usuario": 1
   }
@@ -1445,14 +1529,163 @@
   }
 },
 {
+  "model": "UpLife_api.exercicios",
+  "pk": 70,
+  "fields": {
+    "nome": "Dominadas",
+    "repeticions": "5x102",
+    "peso": 4.0,
+    "data": "2025-05-12",
+    "usuario": 1,
+    "categoria": 4
+  }
+},
+{
+  "model": "UpLife_api.exercicios",
+  "pk": 71,
+  "fields": {
+    "nome": "Extensión de cuádriceps",
+    "repeticions": "5x10",
+    "peso": 80.0,
+    "data": null,
+    "usuario": 1,
+    "categoria": 1
+  }
+},
+{
+  "model": "UpLife_api.exercicios",
+  "pk": 72,
+  "fields": {
+    "nome": "Xemelgos",
+    "repeticions": "5x20",
+    "peso": 83.0,
+    "data": null,
+    "usuario": 1,
+    "categoria": 1
+  }
+},
+{
+  "model": "UpLife_api.exercicios",
+  "pk": 73,
+  "fields": {
+    "nome": "Prensa",
+    "repeticions": "5x10",
+    "peso": 200.0,
+    "data": null,
+    "usuario": 1,
+    "categoria": 1
+  }
+},
+{
+  "model": "UpLife_api.exercicios",
+  "pk": 74,
+  "fields": {
+    "nome": "Curl de femoral",
+    "repeticions": "5x10",
+    "peso": 45.0,
+    "data": null,
+    "usuario": 1,
+    "categoria": 1
+  }
+},
+{
+  "model": "UpLife_api.exercicios",
+  "pk": 75,
+  "fields": {
+    "nome": "Dominadas",
+    "repeticions": "5x7",
+    "peso": 84.0,
+    "data": null,
+    "usuario": 1,
+    "categoria": 4
+  }
+},
+{
+  "model": "UpLife_api.exercicios",
+  "pk": 76,
+  "fields": {
+    "nome": "Curl de bíceps",
+    "repeticions": "5x11",
+    "peso": 17.5,
+    "data": null,
+    "usuario": 1,
+    "categoria": 2
+  }
+},
+{
+  "model": "UpLife_api.exercicios",
+  "pk": 77,
+  "fields": {
+    "nome": "Cable pulldown",
+    "repeticions": "5x10",
+    "peso": 35.0,
+    "data": null,
+    "usuario": 1,
+    "categoria": 4
+  }
+},
+{
+  "model": "UpLife_api.exercicios",
+  "pk": 78,
+  "fields": {
+    "nome": "Curl martillo",
+    "repeticions": "5x10",
+    "peso": 17.5,
+    "data": null,
+    "usuario": 1,
+    "categoria": 2
+  }
+},
+{
+  "model": "UpLife_api.exercicios",
+  "pk": 79,
+  "fields": {
+    "nome": "Remo sentado",
+    "repeticions": "3x7",
+    "peso": 30.0,
+    "data": null,
+    "usuario": 1,
+    "categoria": 4
+  }
+},
+{
+  "model": "UpLife_api.exercicios",
+  "pk": 80,
+  "fields": {
+    "nome": "Levantamentos de escápula",
+    "repeticions": "5x12",
+    "peso": 40.0,
+    "data": null,
+    "usuario": 1,
+    "categoria": 4
+  }
+},
+{
+  "model": "UpLife_api.exercicios",
+  "pk": 85,
+  "fields": {
+    "nome": "Exercicio de proba",
+    "repeticions": "5x10",
+    "peso": 11.0,
+    "data": "2025-05-09",
+    "usuario": 1,
+    "categoria": 1
+  }
+},
+{
   "model": "UpLife_api.plantillas",
   "pk": 15,
   "fields": {
     "nome": "Plantilla de perna",
     "icona": "/imaxes/leg.png",
-    "data": "2025-05-10",
+    "data": "2025-05-12",
     "usuario": 1,
-    "exercicios": []
+    "exercicios": [
+      71,
+      72,
+      73,
+      74
+    ]
   }
 },
 {
@@ -1461,7 +1694,7 @@
   "fields": {
     "nome": "Plantilla de peito",
     "icona": "/imaxes/torso.png",
-    "data": "2025-05-11",
+    "data": null,
     "usuario": 1,
     "exercicios": []
   }
@@ -1485,7 +1718,14 @@
     "icona": "/imaxes/atras.png",
     "data": null,
     "usuario": 1,
-    "exercicios": []
+    "exercicios": [
+      75,
+      76,
+      77,
+      78,
+      79,
+      80
+    ]
   }
 },
 {
@@ -1615,6 +1855,20 @@
   }
 },
 {
+  "model": "UpLife_api.comidas",
+  "pk": 65,
+  "fields": {
+    "nome": "Patacas",
+    "peso": 150.0,
+    "graxas": 20.0,
+    "carbohidratos": 122.0,
+    "proteinas": 4.0,
+    "calorias": 200.0,
+    "data": "2025-05-12",
+    "usuario": 1
+  }
+},
+{
   "model": "UpLife_api.grupos",
   "pk": 2,
   "fields": {
@@ -1623,8 +1877,9 @@
     "usuario": 1,
     "comidas": [
       26,
+      59,
       58,
-      59
+      65
     ]
   }
 }

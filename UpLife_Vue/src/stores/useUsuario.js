@@ -122,6 +122,18 @@ export const useUsuarioStore = defineStore("usuario", {
         }
       }
     },
+    async updateNumeroMedallas() {
+      // Cuenta solo las medallas completadas
+      fetch("http://localhost:8001/api/medallas/")
+        .then((res) => res.json())
+        .then((data) => {
+          const completadas = data.filter(
+            (m) => m.usuarios.includes(this.id) && m.completado
+          );
+          this.medallas = completadas.length;
+        })
+        .catch((err) => console.error("Erro cargando medallas:", err));
+    },
   },
   // cargar datos desde localStorage se existen
   persist: true,

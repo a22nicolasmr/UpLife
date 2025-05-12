@@ -95,7 +95,7 @@ export default {
 
         if (!resEx.ok) throw new Error("Erro ao crear exercicio");
         // limpiar campos
-        this.nomeExercicio = "";
+        this.nome = "";
         this.repeticions = "";
         this.peso = 0;
         this.categoriaSeleccionada = "";

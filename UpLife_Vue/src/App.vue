@@ -13,6 +13,7 @@ export default {
       tarefasConHora: [],
       tarefaActual: null,
       intervalId: null,
+      valorMedallas: [],
     };
   },
   components: {
@@ -22,6 +23,9 @@ export default {
     VentaAviso,
   },
   methods: {
+    mandarRachas(valorMedallas) {
+      this.valorMedallas = valorMedallas;
+    },
     //activar/desactivar modal pechar sesión
     toggleModal() {
       this.modalActivo = !this.modalActivo;
@@ -126,7 +130,10 @@ export default {
       @toggleModal="toggleModal"
     />
     <div :class="['vista', { 'sin-barras': !mostrarBarra }]">
-      <router-view />
+      <router-view
+        @mandarRachas="mandarRachas"
+        :valorMedallas="valorMedallas"
+      />
     </div>
 
     <VentaPechar v-show="modalActivo" @pecharModal="toggleModal" />

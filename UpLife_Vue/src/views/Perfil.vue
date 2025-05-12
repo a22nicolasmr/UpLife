@@ -161,7 +161,7 @@ export default {
 
 <style scoped>
 #detallesArriba > p {
-  margin: 13%;
+  margin: 10%;
   margin-left: 0;
   margin-bottom: 0;
 }
@@ -226,7 +226,7 @@ body {
 }
 
 .datos p {
-  margin: 9% 0;
+  margin: 6% 0;
   line-height: 20%;
 }
 

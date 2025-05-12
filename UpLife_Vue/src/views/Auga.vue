@@ -12,6 +12,7 @@ export default {
     return {
       componenteActivo: "historial",
       augaHoxe: [],
+      editando: { id: null, campo: null, valor: "" },
     };
   },
 
@@ -46,6 +47,32 @@ export default {
     this.cargarAugaHoxe();
   },
   methods: {
+    activarEdicion(id, campo) {
+      const entrada = this.augaHoxe.find((a) => a.id_auga === id);
+      if (!entrada) return;
+
+      this.editando = { id, campo, valor: entrada[campo] };
+
+      this.$nextTick(() => {
+        const ref = this.$refs[`editInput-${id}-${campo}`];
+        if (ref && ref.focus) ref.focus();
+      });
+    },
+    async guardarCampoEditado(id, campo) {
+      const novoValor = this.editando.valor;
+      this.editando = { id: null, campo: null, valor: "" };
+      try {
+        await fetch(`http://localhost:8001/api/auga/${id}/`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ [campo]: novoValor }),
+        });
+        this.cargarAugaHoxe();
+        this.$refs.filloAuga.cargarAuga();
+      } catch (error) {
+        console.error("Erro ao actualizar rexistro de auga:", error);
+      }
+    },
     //cargar a auga inxerida na fecha actual
     async cargarAugaHoxe() {
       try {
@@ -69,6 +96,7 @@ export default {
         // augaBorrar.forEach((e) => {
         //   this.eliminarAuga(e.id_auga);
         // });
+        this.$refs.filloAuga.cargarAuga();
       } catch (error) {
         console.error("Erro cargando auga:", error);
       }
@@ -83,6 +111,7 @@ export default {
 
         this.augaHoxe = this.augaHoxe.filter((ex) => ex.id_auga !== id);
         this.cargarAugaHoxe();
+        this.$refs.filloAuga.cargarAuga();
       } catch (error) {
         console.error("Erro eliminando auga:", error);
       }
@@ -154,8 +183,38 @@ export default {
             </thead>
             <tbody>
               <tr v-for="auga in augaHoxe" :key="auga.id_auga">
-                <td>{{ auga.cantidade }}</td>
-                <td>{{ auga.hora }}</td>
+                <td @click="activarEdicion(auga.id_auga, 'cantidade')">
+                  <input
+                    :ref="`editInput-${auga.id_auga}-cantidade`"
+                    v-if="
+                      editando.id === auga.id_auga &&
+                      editando.campo === 'cantidade'
+                    "
+                    type="number"
+                    v-model.number="editando.valor"
+                    @blur="guardarCampoEditado(auga.id_auga, 'cantidade')"
+                    @keyup.enter="
+                      guardarCampoEditado(auga.id_auga, 'cantidade')
+                    "
+                    @click.stop
+                  />
+                  <span v-else>{{ auga.cantidade }}</span>
+                </td>
+                <td @click="activarEdicion(auga.id_auga, 'hora')">
+                  <input
+                    :ref="`editInput-${auga.id_auga}-hora`"
+                    v-if="
+                      editando.id === auga.id_auga && editando.campo === 'hora'
+                    "
+                    type="time"
+                    v-model="editando.valor"
+                    @blur="guardarCampoEditado(auga.id_auga, 'hora')"
+                    @keyup.enter="guardarCampoEditado(auga.id_auga, 'hora')"
+                    @click.stop
+                  />
+                  <span v-else>{{ auga.hora }}</span>
+                </td>
+
                 <td>
                   <img
                     src="/imaxes/trash.png"
@@ -179,6 +238,7 @@ export default {
         <HistorialAuga
           v-if="componenteActivo === 'historial'"
           @cargarAugaHoxe="cargarAugaHoxe"
+          ref="filloAuga"
         />
         <EngadirAuga
           v-if="componenteActivo === 'engadirA'"

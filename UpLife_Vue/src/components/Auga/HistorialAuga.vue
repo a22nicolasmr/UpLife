@@ -21,40 +21,43 @@ export default {
     },
   },
   async mounted() {
-    try {
-      const response = await fetch("http://localhost:8001/api/auga/");
-      if (!response.ok) throw new Error("Erro ao cargar auga");
-
-      const auga = await response.json();
-      const augaPorUsuario = auga.filter((a) => a.usuario === this.idUsuario);
-      const seteDiasAtras = new Date();
-      seteDiasAtras.setDate(seteDiasAtras.getDate() - 7); // últimos 7 días incluindo hoxe
-
-      const augaFiltrados = augaPorUsuario.filter((a) => {
-        const dataAuga = new Date(a.data);
-
-        return dataAuga >= seteDiasAtras;
-      });
-
-      // Agrupar por data (YYYY-MM-DD)
-      const agrupados = {};
-      augaFiltrados.forEach((a) => {
-        if (!agrupados[a.data]) agrupados[a.data] = [];
-        agrupados[a.data].push(a);
-      });
-
-      // Ordenar por data descendente
-      this.augaPorDia = Object.fromEntries(
-        Object.entries(agrupados).sort(
-          (a, b) => new Date(b[0]) - new Date(a[0])
-        )
-      );
-    } catch (error) {
-      console.error("Erro ao obter historial:", error);
-    }
+    this.cargarAuga();
   },
 
   methods: {
+    async cargarAuga() {
+      try {
+        const response = await fetch("http://localhost:8001/api/auga/");
+        if (!response.ok) throw new Error("Erro ao cargar auga");
+
+        const auga = await response.json();
+        const augaPorUsuario = auga.filter((a) => a.usuario === this.idUsuario);
+        const seteDiasAtras = new Date();
+        seteDiasAtras.setDate(seteDiasAtras.getDate() - 7); // últimos 7 días incluindo hoxe
+
+        const augaFiltrados = augaPorUsuario.filter((a) => {
+          const dataAuga = new Date(a.data);
+
+          return dataAuga >= seteDiasAtras;
+        });
+
+        // Agrupar por data (YYYY-MM-DD)
+        const agrupados = {};
+        augaFiltrados.forEach((a) => {
+          if (!agrupados[a.data]) agrupados[a.data] = [];
+          agrupados[a.data].push(a);
+        });
+
+        // Ordenar por data descendente
+        this.augaPorDia = Object.fromEntries(
+          Object.entries(agrupados).sort(
+            (a, b) => new Date(b[0]) - new Date(a[0])
+          )
+        );
+      } catch (error) {
+        console.error("Erro ao obter historial:", error);
+      }
+    },
     async engadirAuga(auga) {
       const payload = {
         cantidade: auga.cantidade,

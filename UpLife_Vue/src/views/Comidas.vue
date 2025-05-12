@@ -19,18 +19,16 @@ export default {
       expandedGrupos: [],
       grupoSeleccionado: null,
       grupoSeleccionadoMandar: null,
+      editando: { id: null, campo: null, valor: "" },
     };
   },
   computed: {
-    //cargar o id do usuario e as calorias diarias totais necesarias
     idUsuario() {
       return useUsuarioStore().id;
     },
     caloriasTotaisNecesarias() {
       return useUsuarioStore().calorias;
     },
-
-    //calcular as calorias inxeridas no día actual
     caloriasInxeridasHoxe() {
       const total = this.grupos.reduce((sum, grupo) => {
         return (
@@ -45,8 +43,6 @@ export default {
       }, 0);
       return Math.ceil(total);
     },
-
-    //calcular porcentaxe calorías en función calorias necesarias e inxeridas
     porcentaxeCalorias() {
       const total = this.caloriasTotaisNecesarias;
       const inxerida = this.caloriasInxeridasHoxe;
@@ -58,7 +54,6 @@ export default {
     this.cargarDatos();
   },
   methods: {
-    //cargar grupos coas comidas de cada un se as ten
     async cargarDatos() {
       const hoxe = new Date().toISOString().split("T")[0];
       try {
@@ -72,27 +67,10 @@ export default {
             ...g,
             comidas: (g.comidas || []).filter((c) => c.data === hoxe),
           }));
-
-        // const seteDiasAtras = new Date();
-        // seteDiasAtras.setDate(seteDiasAtras.getDate() - 7);
-        // const response2 = await fetch("http://localhost:8001/api/comidas/");
-        // const comidas = await response2.json();
-
-        // const comidasBorrar = comidas.filter((e) => {
-        //   if (!e.data) return false;
-        //   const dataComida = new Date(e.data);
-        //   return dataComida < seteDiasAtras;
-        // });
-
-        // comidasBorrar.forEach((e) => {
-        //   this.borrarComida(e.id_comida);
-        // });
       } catch (error) {
         console.error("Erro cargando datos:", error);
       }
     },
-
-    //borrar grupo por id
     async borrarGrupo(id) {
       try {
         const response = await fetch(
@@ -102,14 +80,12 @@ export default {
         if (!response.ok) throw new Error("Erro ao eliminar grupo");
         this.grupos = this.grupos.filter((g) => g.id_grupo !== id);
         this.componenteActivo = "historial";
-        // window.location.reload();
         this.$refs.hijoRef.cargarComidas();
         this.$refs.hijoRef.cargarGrupos();
       } catch (error) {
         console.error("Erro eliminando grupo:", error);
       }
     },
-    //borrar comida por id
     async borrarComida(idComida) {
       try {
         const response = await fetch(
@@ -122,19 +98,54 @@ export default {
           g.comidas = g.comidas.filter((c) => c.id_comida !== idComida);
         });
         this.componenteActivo = "historial";
-        // window.location.reload();
         this.$refs.hijoRef.cargarComidas();
         this.$refs.hijoRef.cargarGrupos();
       } catch (error) {
         console.error("Erro eliminando comida:", error);
       }
     },
-    //expandir menu de grupo de comida
     toggleExpand(id) {
       if (this.expandedGrupos.includes(id)) {
         this.expandedGrupos = this.expandedGrupos.filter((gid) => gid !== id);
       } else {
         this.expandedGrupos.push(id);
+      }
+    },
+    calcular(valorPor100, peso) {
+      if (!valorPor100 || !peso) return 0;
+      return ((valorPor100 / 100) * peso).toFixed(1);
+    },
+    activarEdicion(id, campo) {
+      const comida = this.grupos
+        .flatMap((g) => g.comidas || [])
+        .find((c) => c.id_comida === id);
+      if (!comida) return;
+
+      this.editando = { id, campo, valor: comida[campo] };
+
+      // Espera a que se renderice el input, luego lo enfoca
+      this.$nextTick(() => {
+        const input = this.$refs.editInput;
+        if (input && input.focus) {
+          // Si hay múltiples refs (por v-for), se accede como array
+          Array.isArray(input) ? input[0].focus() : input.focus();
+        }
+      });
+    },
+    async guardarCampoEditado(id, campo) {
+      const novoValor = this.editando.valor;
+      this.editando = { id: null, campo: null, valor: "" };
+      try {
+        await fetch(`http://localhost:8001/api/comidas/${id}/`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ [campo]: novoValor }),
+        });
+        this.cargarDatos();
+        this.$refs.hijoRef.cargarGrupos();
+        this.$refs.hijoRef.cargarComidas();
+      } catch (error) {
+        console.error("Erro ao actualizar comida:", error);
       }
     },
   },
@@ -244,23 +255,70 @@ export default {
               class="exercicios-plantilla"
             >
               <template v-if="grupo.comidas && grupo.comidas.length">
-                <div
-                  v-for="comida in grupo.comidas"
-                  :key="comida.id_comida"
-                  class="exercicio"
-                >
-                  <span>
-                    {{ comida.nome }} -
-                    {{ Math.ceil((comida.calorias / 100) * comida.peso) }} kcal
-                  </span>
+                <table class="tabela-exercicios">
+                  <thead>
+                    <tr>
+                      <th>Nome</th>
+                      <th>Peso (g)</th>
+                      <th>Calorías</th>
+                      <th>Carbohidratos (g)</th>
+                      <th>Proteínas (g)</th>
+                      <th>Graxas (g)</th>
+                      <th>Eliminar</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="comida in grupo.comidas" :key="comida.id_comida">
+                      <td @click="activarEdicion(comida.id_comida, 'nome')">
+                        <input
+                          ref="editInput"
+                          v-if="
+                            editando.id === comida.id_comida &&
+                            editando.campo === 'nome'
+                          "
+                          v-model="editando.valor"
+                          @blur="guardarCampoEditado(comida.id_comida, 'nome')"
+                          @keyup.enter="
+                            guardarCampoEditado(comida.id_comida, 'nome')
+                          "
+                          @click.stop
+                        />
 
-                  <img
-                    src="/imaxes/trash.png"
-                    alt="borrar comida"
-                    class="icono-borrar-ex"
-                    @click="borrarComida(comida.id_comida)"
-                  />
-                </div>
+                        <span v-else>{{ comida.nome }}</span>
+                      </td>
+                      <td @click="activarEdicion(comida.id_comida, 'peso')">
+                        <input
+                          ref="editInput"
+                          v-if="
+                            editando.id === comida.id_comida &&
+                            editando.campo === 'peso'
+                          "
+                          type="number"
+                          v-model.number="editando.valor"
+                          @blur="guardarCampoEditado(comida.id_comida, 'peso')"
+                          @keyup.enter="
+                            guardarCampoEditado(comida.id_comida, 'peso')
+                          "
+                          @click.stop
+                        />
+
+                        <span v-else>{{ comida.peso }}</span>
+                      </td>
+                      <td>{{ calcular(comida.calorias, comida.peso) }} kcal</td>
+                      <td>{{ calcular(comida.carbos, comida.peso) }} g</td>
+                      <td>{{ calcular(comida.proteinas, comida.peso) }} g</td>
+                      <td>{{ calcular(comida.graxas, comida.peso) }} g</td>
+                      <td>
+                        <img
+                          src="/imaxes/trash.png"
+                          alt="borrar comida"
+                          class="icono-borrar-ex"
+                          @click="borrarComida(comida.id_comida)"
+                        />
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </template>
               <p v-else class="sen-exercicios">Este grupo non ten comidas.</p>
             </div>
@@ -494,8 +552,8 @@ button {
 }
 
 .icono-borrar-ex {
-  width: 2%;
-  height: 2%;
+  width: 25%;
+  height: 25%;
   cursor: pointer;
   margin-left: 8px;
 }
@@ -535,5 +593,54 @@ button {
   height: 18%;
   cursor: pointer;
   margin-top: 22%;
+}
+.tabela-exercicios {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.tabela-exercicios th,
+.tabela-exercicios td {
+  border: 1px solid #ccc;
+  padding: 0.5rem;
+  text-align: center;
+  font-size: medium;
+}
+
+.tabela-exercicios th {
+  background-color: #7f5af0;
+  font-weight: bold;
+  color: white;
+}
+
+.tabela-exercicios input {
+  width: 100%;
+  border: none;
+  outline: none;
+  text-align: center;
+  padding: 4px;
+  font-size: medium;
+}
+
+.tabela-exercicios input:focus {
+  outline: 2px solid #7f5af0;
+  border-radius: 4px;
+}
+
+.tabela-exercicios select {
+  width: 100%;
+  border: none;
+  outline: none;
+  text-align: center;
+  font-size: medium;
+}
+
+.tabela-exercicios select:focus {
+  outline: 2px solid #7f5af0;
+  border-radius: 4px;
 }
 </style>

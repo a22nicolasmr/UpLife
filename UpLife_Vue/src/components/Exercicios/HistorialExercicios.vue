@@ -18,50 +18,53 @@ export default {
     },
   },
   async mounted() {
-    try {
-      const response = await fetch("http://localhost:8001/api/exercicios/");
-      if (!response.ok) throw new Error("Erro ao cargar exercicios");
-
-      const exercicios = await response.json();
-      const exerciciosPorUsuario = exercicios.filter(
-        (e) => e.usuario === this.idUsuario
-      );
-      const seteDiasAtras = new Date();
-      seteDiasAtras.setDate(seteDiasAtras.getDate() - 7);
-
-      const exerciciosFiltrados = exerciciosPorUsuario.filter((ex) => {
-        const dataEx = new Date(ex.data);
-        return dataEx >= seteDiasAtras;
-      });
-
-      const agrupados = {};
-      exerciciosFiltrados.forEach((ex) => {
-        if (!agrupados[ex.data]) agrupados[ex.data] = [];
-        agrupados[ex.data].push(ex);
-      });
-
-      this.exerciciosPorDia = Object.fromEntries(
-        Object.entries(agrupados).sort(
-          (a, b) => new Date(b[0]) - new Date(a[0])
-        )
-      );
-
-      const response2 = await fetch("http://localhost:8001/api/plantillas/");
-      const plantillas = await response2.json();
-
-      const seteDiasAtras2 = new Date();
-      seteDiasAtras2.setDate(seteDiasAtras2.getDate() - 7);
-      const seteDiasAtrasISO = seteDiasAtras2.toISOString().split("T")[0];
-
-      const plantillasFiltradas = plantillas.filter(
-        (p) => p.usuario === this.idUsuario && p.data >= seteDiasAtrasISO
-      );
-      this.plantillasPorDia = plantillasFiltradas;
-    } catch (error) {
-      console.error("Erro ao obter historial:", error);
-    }
+    this.cargarExercicios();
   },
   methods: {
+    async cargarExercicios() {
+      try {
+        const response = await fetch("http://localhost:8001/api/exercicios/");
+        if (!response.ok) throw new Error("Erro ao cargar exercicios");
+
+        const exercicios = await response.json();
+        const exerciciosPorUsuario = exercicios.filter(
+          (e) => e.usuario === this.idUsuario
+        );
+        const seteDiasAtras = new Date();
+        seteDiasAtras.setDate(seteDiasAtras.getDate() - 7);
+
+        const exerciciosFiltrados = exerciciosPorUsuario.filter((ex) => {
+          const dataEx = new Date(ex.data);
+          return dataEx >= seteDiasAtras;
+        });
+
+        const agrupados = {};
+        exerciciosFiltrados.forEach((ex) => {
+          if (!agrupados[ex.data]) agrupados[ex.data] = [];
+          agrupados[ex.data].push(ex);
+        });
+
+        this.exerciciosPorDia = Object.fromEntries(
+          Object.entries(agrupados).sort(
+            (a, b) => new Date(b[0]) - new Date(a[0])
+          )
+        );
+
+        const response2 = await fetch("http://localhost:8001/api/plantillas/");
+        const plantillas = await response2.json();
+
+        const seteDiasAtras2 = new Date();
+        seteDiasAtras2.setDate(seteDiasAtras2.getDate() - 7);
+        const seteDiasAtrasISO = seteDiasAtras2.toISOString().split("T")[0];
+
+        const plantillasFiltradas = plantillas.filter(
+          (p) => p.usuario === this.idUsuario && p.data >= seteDiasAtrasISO
+        );
+        this.plantillasPorDia = plantillasFiltradas;
+      } catch (error) {
+        console.error("Erro ao obter historial:", error);
+      }
+    },
     async engadirExercicio(exercicio) {
       const payload = {
         nome: exercicio.nome,

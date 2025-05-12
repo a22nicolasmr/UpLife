@@ -17,11 +17,11 @@ export default {
       dataPasada: false,
       componenteActivo: "lista",
       dataSeleccionada: new Date(),
-      attrs: [
+      attrs: [],
+      valorMedallas: [
         {
-          key: "today",
-          highlight: true,
-          dates: new Date(),
+          id_medalla: 4,
+          completado: true,
         },
       ],
     };
@@ -31,9 +31,118 @@ export default {
   mounted() {
     this.cargarDatasConTarefas();
     this.comprobarRachas();
+    this.comprobarMedallas();
   },
 
   methods: {
+    async comprobarMedallas() {
+      await this.comprobarRachas();
+      const valorMedallas = [];
+
+      // Medalla 4
+      valorMedallas.push({
+        id_medalla: 4,
+        completado: true,
+      });
+      // Medalla 5 - Racha saudable: comidas 7 días seguidos
+      valorMedallas.push({
+        id_medalla: 5,
+        completado: this.rComidas >= 7,
+      });
+
+      // Medalla 6 - No camiño: exercicios 5 días na mesma semana
+      valorMedallas.push({
+        id_medalla: 6,
+        completado: this.rExercicios >= 5,
+      });
+
+      // Medalla 7 - Máster da hidratación: auga 7 días seguidos
+      valorMedallas.push({
+        id_medalla: 7,
+        completado: this.rAuga >= 7,
+      });
+
+      // Medalla 8 - Asasino de tarefas: tarefas 5 días seguidos
+      valorMedallas.push({
+        id_medalla: 8,
+        completado: this.rTarefas >= 5,
+      });
+
+      // Medalla 9 - Semana perfecta: comidas, exercicios e auga 7 días seguidos
+      valorMedallas.push({
+        id_medalla: 9,
+        completado:
+          this.rComidas >= 7 && this.rExercicios >= 7 && this.rAuga >= 7,
+      });
+
+      // Medalla 10 - Rastreador consciente: idem anterior pero antes das 22:00
+      // Esta necesitaría comprobación de hora exacta en rexistros -> non implementada aquí
+      valorMedallas.push({
+        id_medalla: 10,
+        completado: false, // Placeholder, implementa se levas control de hora rexistro
+      });
+
+      // Medalla 11 - Plantillas: 3 plantillas creadas e usadas polo menos 2 veces cada unha
+      try {
+        const plantillaRes = await fetch(
+          "http://localhost:8001/api/plantillas/"
+        );
+        const plantillas = await plantillaRes.json();
+
+        // Filtra só as do usuario actual
+        const usuarioStore = useUsuarioStore();
+        const idUsuario = usuarioStore.id;
+
+        const plantillasUsuario = plantillas.filter(
+          (p) => p.usuario === idUsuario
+        );
+
+        // Contar cantas plantillas teñen polo menos 2 usos (2 datas diferentes)
+        const usadasSuficiente = plantillasUsuario.filter((p) => {
+          if (!p.usos || !Array.isArray(p.usos)) return false;
+          const datasUsadas = p.usos.filter((u) => !!u.data);
+          return datasUsadas.length >= 2;
+        });
+
+        const completado = usadasSuficiente.length >= 3;
+
+        valorMedallas.push({
+          id_medalla: 11,
+          completado,
+        });
+      } catch (error) {
+        console.error("Erro ao comprobar medalla de plantillas:", error);
+        valorMedallas.push({
+          id_medalla: 11,
+          completado: false, // fallback se falla a consulta
+        });
+      }
+
+      // Medalla 12 - Racha perfecta 90 días
+      valorMedallas.push({
+        id_medalla: 12,
+        completado:
+          this.rComidas >= 90 &&
+          this.rExercicios >= 90 &&
+          this.rAuga >= 90 &&
+          this.rTarefas >= 90,
+      });
+
+      // Medalla 13 - Racha perfecta 365 días
+      valorMedallas.push({
+        id_medalla: 13,
+        completado:
+          this.rComidas >= 365 &&
+          this.rExercicios >= 365 &&
+          this.rAuga >= 365 &&
+          this.rTarefas >= 365,
+      });
+
+      this.valorMedallas = valorMedallas;
+      this.$emit("mandarRachas", this.valorMedallas);
+
+      return valorMedallas;
+    },
     //comprobar as rachas do usuario en función das datas anteriores a data actual
     // en tarefas tamén comproba se están completadas
     async comprobarRachas() {
@@ -163,40 +272,34 @@ export default {
 
     // os días que teñan tarefas serán marcados cunha cor azul claro usando attrs de vc-calendar
     actualizarDatasConTarefas(datas) {
-      const tarefasAttrs = datas.map((dataISO) => {
-        const date = new Date(dataISO);
-        const isToday = date.toDateString() === new Date().toDateString();
+      const today = new Date();
+      const todayISO = today.toISOString().split("T")[0];
 
-        return {
-          key: `tarefa-${dataISO}`,
+      const todayAttr = {
+        key: "today",
+        highlight: {
+          color: "#003366",
+          fillMode: "solid",
+        },
+        dates: today,
+        order: 100,
+        customData: { esHoy: true },
+      };
+
+      const taskAttrs = datas
+        .filter((date) => date !== todayISO)
+        .map((date) => ({
+          key: `task-${date}`,
           highlight: {
-            color: isToday ? "#003366" : "#add8e6", // azul escuro se é hoxe
+            color: "#add8e6",
             fillMode: "light",
           },
-          dates: date,
-        };
-      });
+          dates: new Date(date),
+          order: 1,
+        }));
 
-      // Eliminar posibles duplicados para hoxe
-      const xaExisteToday = tarefasAttrs.some(
-        (attr) =>
-          new Date(attr.dates).toDateString() === new Date().toDateString()
-      );
-
-      if (!xaExisteToday) {
-        tarefasAttrs.push({
-          key: "today",
-          highlight: {
-            color: "#003366", // azul máis escuro
-            fillMode: "light",
-          },
-          dates: new Date(),
-        });
-      }
-
-      this.attrs = tarefasAttrs;
+      this.attrs = [todayAttr, ...taskAttrs];
     },
-
     // obter as tarefas filtradas por usuario e data
     async cargarDatasConTarefas() {
       const usuarioStore = useUsuarioStore();
@@ -295,6 +398,7 @@ export default {
     <div class="tarefas-layout">
       <div class="calendario">
         <vc-calendar
+          :key="attrs.length"
           :attributes="attrs"
           @dayclick="seleccionarData"
           :min-date="new Date()"
@@ -309,6 +413,7 @@ export default {
           :dataSeleccionada="dataSeleccionada"
           @datas-con-tarefas="reenviarTarefasConHora"
           @cargarDatasConTarefas="cargarDatasConTarefas"
+          @comprobarRachas="comprobarRachas"
         />
 
         <EngadirTarefas
@@ -459,18 +564,5 @@ h1 {
   border-radius: 8px;
 
   transition: background-color 0.3s, transform 0.2s;
-}
-
-.vc-day-content.is-today {
-  background-color: #4880ff;
-  color: white;
-  font-weight: bold;
-  box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
-}
-
-.vc-day-content.is-selected {
-  background-color: #00b4d8;
-  color: white;
-  font-weight: bold;
 }
 </style>

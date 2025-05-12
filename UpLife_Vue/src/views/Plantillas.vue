@@ -2,11 +2,13 @@
 import EngadirExercicioPlantilla from "@/components/Plantillas/EngadirExercicioPlantilla.vue";
 import NovaPlantilla from "@/components/Plantillas/NovaPlantilla.vue";
 import { useUsuarioStore } from "@/stores/useUsuario";
+import draggable from "vuedraggable";
 
 export default {
   components: {
     NovaPlantilla,
     EngadirExercicioPlantilla,
+    draggable,
   },
   data() {
     return {
@@ -15,49 +17,44 @@ export default {
       expandedPlantillas: [],
       plantillaSeleccionada: null,
       plantillaSeleccionadaMandar: null,
+      editando: { id: null, campo: null, valor: "" },
+      categoriasMap: {
+        1: "Perna",
+        2: "Brazo",
+        3: "Core",
+        4: "Espalda",
+        5: "Peito",
+        6: "Todo corpo",
+      },
     };
   },
-
   computed: {
-    //obter data de hoxe e id usuario
+    // obter o ID do usuario actual desde a store
     idUsuario() {
       return useUsuarioStore().id;
     },
+    // obter a data de hoxe en formato ISO
     dataHoxeISO() {
       return new Date().toISOString().split("T")[0];
     },
-
-    // plantillaTotalNecesaria() {
-    //   return useUsuarioStore().plantilla;
-    // },
-    // plantillaInxeridaHoxe() {
-    //   return this.plantillaHoxe.reduce((total, a) => total + a.cantidade, 0);
-    // },
-    // porcentaxeplantilla() {
-    //   const total = this.plantillaTotalNecesaria;
-    //   const inxerida = this.plantillaInxeridaHoxe;
-
-    //   if (!total || total <= 0) return 0;
-
-    //   return Math.min(Math.round((inxerida / total) * 100), 100);
-    // },
   },
-  //cargar plantillas cando se mote o compoñente
   mounted() {
+    // cargar as plantillas ao montar o compoñente
     this.cargarDatos();
   },
   methods: {
-    //cargar plantillas por id de usuario
+    // obter o nome da categoría segundo o seu ID
+    nomeCategoriaPorId(id) {
+      return this.categoriasMap[id] || "Descoñecida";
+    },
+
+    // cargar as plantillas do usuario actual desde a API
     async cargarDatos() {
       try {
-        const usuarioStore = useUsuarioStore();
-        const idUsuario = usuarioStore.id;
         const response = await fetch("http://localhost:8001/api/plantillas/");
-
         if (!response.ok) throw new Error("Erro ao cargar plantillas");
         const plantillas = await response.json();
-
-        // inicializamos exercicios no caso de que non exista
+        const idUsuario = useUsuarioStore().id;
         this.plantillas = plantillas
           .filter((p) => p.usuario === idUsuario)
           .map((p) => ({ ...p, exercicios: p.exercicios || [] }));
@@ -65,59 +62,99 @@ export default {
         console.error("Erro cargando datos:", error);
       }
     },
-    // borrar plantilla por id
+
+    // eliminar unha plantilla polo seu ID
     async borrarPlantilla(id) {
       try {
-        const response = await fetch(
-          `http://localhost:8001/api/plantillas/${id}/`,
-          { method: "DELETE" }
-        );
-
-        if (!response.ok) {
-          throw new Error("Erro ao eliminar a plantilla");
-        }
-
+        await fetch(`http://localhost:8001/api/plantillas/${id}/`, {
+          method: "DELETE",
+        });
         this.plantillas = this.plantillas.filter((p) => p.id_plantilla !== id);
       } catch (error) {
-        console.error("❌ Erro eliminando plantilla:", error);
+        console.error("Erro eliminando plantilla:", error);
       }
     },
-    //expandir o comprimir plantilla
+
+    // expandir ou colapsar unha plantilla
     toggleExpand(id) {
-      if (this.expandedPlantillas.includes(id)) {
-        this.expandedPlantillas = this.expandedPlantillas.filter(
-          (pid) => pid !== id
-        );
-      } else {
-        this.expandedPlantillas.push(id);
-      }
+      this.expandedPlantillas = this.expandedPlantillas.includes(id)
+        ? this.expandedPlantillas.filter((pid) => pid !== id)
+        : [...this.expandedPlantillas, id];
     },
-    //borrar exercicio por id
-    async borrarExercicio(idExercicio) {
+
+    // eliminar un exercicio polo seu ID
+    async borrarExercicio(id) {
       try {
-        const response = await fetch(
-          `http://localhost:8001/api/exercicios/${idExercicio}/`,
-          { method: "DELETE" }
-        );
-
-        if (!response.ok) {
-          throw new Error("Erro ao eliminar exercicio");
-        }
-
+        await fetch(`http://localhost:8001/api/exercicios/${id}/`, {
+          method: "DELETE",
+        });
         this.plantillas.forEach((p) => {
-          p.exercicios = p.exercicios.filter(
-            (e) => e.id_exercicio !== idExercicio
-          );
+          p.exercicios = p.exercicios.filter((e) => e.id_exercicio !== id);
         });
       } catch (error) {
-        console.error("❌ Erro eliminando exercicio:", error);
+        console.error("Erro eliminando exercicio:", error);
+      }
+    },
+
+    // activar o formulario para engadir exercicio e expandir a plantilla
+    engadirExercicio(plantilla) {
+      this.componenteActivo = "engadirE";
+      this.plantillaSeleccionadaMandar = plantilla.id_plantilla;
+      this.toggleExpand(plantilla.id_plantilla);
+    },
+
+    // activar o modo edición nun campo dun exercicio
+    activarEdicion(id, campo) {
+      // evitar reactivar edición se xa está activa no mesmo campo
+      if (this.editando.id === id && this.editando.campo === campo) return;
+      this.editando = { id, campo, valor: this.getExercicioValue(id, campo) };
+    },
+
+    // obter o valor actual dun campo dun exercicio
+    getExercicioValue(id, campo) {
+      for (const plantilla of this.plantillas) {
+        const ex = plantilla.exercicios.find((e) => e.id_exercicio === id);
+        if (ex) return ex[campo];
+      }
+      return "";
+    },
+
+    // gardar os cambios feitos nun campo editado
+    async guardarCampoEditado(id, campo) {
+      const novoValor = this.editando.valor;
+      this.editando = { id: null, campo: null, valor: "" };
+      try {
+        await fetch(`http://localhost:8001/api/exercicios/${id}/`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ [campo]: novoValor }),
+        });
+        this.cargarDatos();
+      } catch (error) {
+        console.error("Erro ao actualizar exercicio:", error);
+      }
+    },
+
+    // gardar a nova orde dos exercicios despois de arrastralos
+    async guardarNovaOrden(plantilla) {
+      const novaLista = plantilla.exercicios.map((e) => e.id_exercicio);
+      try {
+        await fetch(
+          `http://localhost:8001/api/plantillas/${plantilla.id_plantilla}/`,
+          {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ exercicios: novaLista }),
+          }
+        );
+      } catch (error) {
+        console.error("Erro ao gardar nova orde:", error);
       }
     },
   },
 };
 </script>
 
-<
 <template>
   <div id="divXeral2">
     <h1 class="titulo">Plantillas</h1>
@@ -160,13 +197,7 @@ export default {
               >
                 ▼
               </button>
-              <button
-                class="button-add"
-                @click="
-                  componenteActivo = 'engadirE';
-                  this.plantillaSeleccionadaMandar = plantilla.id_plantilla;
-                "
-              >
+              <button class="button-add" @click="engadirExercicio(plantilla)">
                 +
               </button>
               <img
@@ -186,23 +217,120 @@ export default {
               <template
                 v-if="plantilla.exercicios && plantilla.exercicios.length"
               >
-                <div
-                  v-for="ex in plantilla.exercicios"
-                  :key="ex.id_exercicio"
-                  class="exercicio"
-                >
-                  <span
-                    >{{ ex.nome }} - {{ ex.repeticions }} -
-                    {{ ex.peso }}kg</span
-                  >
-                  <img
-                    src="/imaxes/trash.png"
-                    alt="borrar exercicio"
-                    class="icono-borrar-ex"
-                    @click="borrarExercicio(ex.id_exercicio)"
-                  />
-                </div>
+                <table class="tabela-exercicios">
+                  <thead>
+                    <tr>
+                      <th>Nome</th>
+                      <th>Repeticións</th>
+                      <th>Peso (kg)</th>
+                      <th>Categoria</th>
+                      <th>Eliminar</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      v-for="ex in plantilla.exercicios"
+                      :key="ex.id_exercicio"
+                    >
+                      <!-- NOME -->
+                      <td @click="activarEdicion(ex.id_exercicio, 'nome')">
+                        <input
+                          v-if="
+                            editando.id === ex.id_exercicio &&
+                            editando.campo === 'nome'
+                          "
+                          v-model="editando.valor"
+                          @blur="guardarCampoEditado(ex.id_exercicio, 'nome')"
+                          @keyup.enter="
+                            guardarCampoEditado(ex.id_exercicio, 'nome')
+                          "
+                          @click.stop
+                        />
+                        <span v-else>{{ ex.nome }}</span>
+                      </td>
+
+                      <!-- REPETICIONS -->
+                      <td
+                        @click="activarEdicion(ex.id_exercicio, 'repeticions')"
+                      >
+                        <input
+                          v-if="
+                            editando.id === ex.id_exercicio &&
+                            editando.campo === 'repeticions'
+                          "
+                          v-model="editando.valor"
+                          @blur="
+                            guardarCampoEditado(ex.id_exercicio, 'repeticions')
+                          "
+                          @keyup.enter="
+                            guardarCampoEditado(ex.id_exercicio, 'repeticions')
+                          "
+                          @click.stop
+                        />
+                        <span v-else>{{ ex.repeticions }}</span>
+                      </td>
+
+                      <!-- PESO -->
+                      <td @click="activarEdicion(ex.id_exercicio, 'peso')">
+                        <input
+                          v-if="
+                            editando.id === ex.id_exercicio &&
+                            editando.campo === 'peso'
+                          "
+                          type="number"
+                          v-model.number="editando.valor"
+                          @blur="guardarCampoEditado(ex.id_exercicio, 'peso')"
+                          @keyup.enter="
+                            guardarCampoEditado(ex.id_exercicio, 'peso')
+                          "
+                          @click.stop
+                        />
+                        <span v-else>{{ ex.peso }}</span>
+                      </td>
+
+                      <!-- CATEGORIA -->
+                      <td @click="activarEdicion(ex.id_exercicio, 'categoria')">
+                        <select
+                          v-if="
+                            editando.id === ex.id_exercicio &&
+                            editando.campo === 'categoria'
+                          "
+                          v-model.number="editando.valor"
+                          @blur="
+                            guardarCampoEditado(ex.id_exercicio, 'categoria')
+                          "
+                          @keyup.enter="
+                            guardarCampoEditado(ex.id_exercicio, 'categoria')
+                          "
+                          @click.stop
+                        >
+                          <option
+                            v-for="(label, key) in categoriasMap"
+                            :value="parseInt(key)"
+                            :key="key"
+                          >
+                            {{ label }}
+                          </option>
+                        </select>
+                        <span v-else>{{
+                          nomeCategoriaPorId(ex.categoria)
+                        }}</span>
+                      </td>
+
+                      <!-- BORRAR -->
+                      <td>
+                        <img
+                          src="/imaxes/trash.png"
+                          alt="borrar exercicio"
+                          class="icono-trash"
+                          @click="borrarExercicio(ex.id_exercicio)"
+                        />
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </template>
+
               <p v-else class="sen-exercicios">
                 Esta plantilla non ten exercicios.
               </p>
@@ -221,6 +349,7 @@ export default {
           v-if="componenteActivo === 'engadirE'"
           :plantillaSeleccionadaMandar="plantillaSeleccionadaMandar"
           @cargarDatos="cargarDatos"
+          ref="engadirRef"
         />
       </div>
     </div>
@@ -228,6 +357,36 @@ export default {
 </template>
 
 <style scoped>
+.tabela-exercicios {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.tabela-exercicios th,
+.tabela-exercicios td {
+  border: 1px solid #ccc;
+  padding: 0.5rem;
+  text-align: center;
+  font-size: medium;
+}
+
+.tabela-exercicios th {
+  background-color: #7f5af0;
+  font-weight: bold;
+  color: white;
+}
+
+.exercicio-datos {
+  display: flex;
+  flex-direction: row;
+  color: black;
+  gap: 4px;
+}
+
 .plantilla-header img:first-child {
   background-color: white;
   border-radius: 8px;

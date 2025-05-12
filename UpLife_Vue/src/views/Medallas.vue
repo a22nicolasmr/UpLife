@@ -2,6 +2,9 @@
 import { useUsuarioStore } from "@/stores/useUsuario";
 
 export default {
+  props: {
+    valorMedallas: Array,
+  },
   data() {
     return {
       medallas: [],
@@ -10,6 +13,18 @@ export default {
       terceirasMedallas: [],
     };
   },
+  watch: {
+    valorMedallas: {
+      handler(newVal) {
+        if (newVal && newVal.length > 0) {
+          this.actualizarMedallas();
+        }
+      },
+      immediate: true,
+      deep: true,
+    },
+  },
+
   computed: {
     usuarioId() {
       const store = useUsuarioStore();
@@ -20,8 +35,39 @@ export default {
     this.obterMedallas();
   },
   methods: {
+    async actualizarMedallas() {
+      if (!this.valorMedallas || this.valorMedallas.length === 0) return;
+
+      for (const medalla of this.valorMedallas) {
+        try {
+          await fetch(
+            `http://localhost:8001/api/medallas/${medalla.id_medalla}/`,
+            {
+              method: "PATCH",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ completado: medalla.completado }),
+            }
+          );
+        } catch (error) {
+          console.error(
+            `Erro ao actualizar medalla ${medalla.id_medalla}`,
+            error
+          );
+        }
+      }
+
+      // Recargar medallas una vez aplicados los cambios
+      this.obterMedallas();
+      const usuarioStore = useUsuarioStore();
+
+      usuarioStore.updateNumeroMedallas();
+    },
     //obter medallas
     async obterMedallas() {
+      console.log("valor medallas en medallas", this.valorMedallas);
+
       try {
         const response = await fetch("http://localhost:8001/api/medallas/");
         const medallas = await response.json();

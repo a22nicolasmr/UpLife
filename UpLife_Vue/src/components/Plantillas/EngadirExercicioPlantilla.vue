@@ -36,6 +36,8 @@ export default {
   },
   methods: {
     async engadirExercicio() {
+      console.log("engadir exercicios");
+
       this.comprobarCampos();
       if (this.erro) return;
 
@@ -100,7 +102,6 @@ export default {
         this.repeticions = "";
         this.peso = null;
         this.categoriaSeleccionada = "";
-        this.plantillaSeleccionada = "";
         this.erro = "";
         // window.location.reload();
         this.$emit("cargarDatos");
@@ -111,6 +112,8 @@ export default {
     },
 
     async cargarDatos() {
+      console.log("cargar datos ejecutado");
+
       try {
         const usuarioStore = useUsuarioStore();
         const idUsuario = usuarioStore.id;

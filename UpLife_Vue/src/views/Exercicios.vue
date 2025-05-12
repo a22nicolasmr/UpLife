@@ -15,158 +15,171 @@ export default {
       componenteActivo: "historial",
       exerciciosHoxe: [],
       plantillasHoxe: [],
-    };
-  },
-  mounted() {
-    //cargar exercicios e plantillas da data actual ao montar o compoñente
-    this.cargarExerciciosHoxe();
-    this.cargarPlantillasHoxe();
-  },
-  methods: {
-    //mapear nome da categoría según o seu id
-    nomeCategoriaPorId(id) {
-      const mapa = {
+      expandedPlantillas: [],
+      editando: { id: null, campo: null, valor: "" },
+      categoriasMap: {
         1: "Perna",
         2: "Brazo",
         3: "Core",
         4: "Espalda",
         5: "Peito",
         6: "Todo corpo",
-      };
-      return mapa[id] || "Descoñecida";
+      },
+    };
+  },
+  mounted() {
+    this.cargarExerciciosHoxe();
+    this.cargarPlantillasHoxe();
+    document.addEventListener("click", this.cancelarEdicionAoFora);
+  },
+  beforeUnmount() {
+    document.removeEventListener("click", this.cancelarEdicionAoFora);
+  },
+  methods: {
+    nomeCategoriaPorId(id) {
+      return this.categoriasMap[id] || "Descoñecida";
     },
-
-    //cargar exercicios filtrando por data do día actual e id de usuario
     async cargarExerciciosHoxe() {
-      const usuarioStore = useUsuarioStore();
-      const idUsuario = usuarioStore.id;
-
+      const idUsuario = useUsuarioStore().id;
       const hoxe = new Date().toISOString().split("T")[0];
       try {
         const response = await fetch("http://localhost:8001/api/exercicios/");
-        if (!response.ok) throw new Error("Erro ao cargar exercicios");
-
         const exercicios = await response.json();
-
-        // const seteDiasAtras = new Date();
-        // seteDiasAtras.setDate(seteDiasAtras.getDate() - 7);
-
-        // const exerciciosAnteriores = exercicios.filter((e) => {
-        //   if (!e.data) return false;
-        //   const dataExercicio = new Date(e.data);
-        //   return dataExercicio < seteDiasAtras;
-        // });
-
-        // exerciciosAnteriores.forEach((e) => {
-        //   this.eliminarExercicio(e.id_exercicio);
-        // });
-
         this.exerciciosHoxe = exercicios.filter(
           (ex) => ex.usuario === idUsuario && ex.data === hoxe
         );
+        this.$refs.historialRef?.cargarExercicios();
       } catch (error) {
         console.error("Erro cargando exercicios:", error);
       }
     },
-    //eliminar exercicio por id
     async eliminarExercicio(id) {
-      const usuarioStore = useUsuarioStore();
-      const idUsuario = usuarioStore.id;
       try {
-        const response = await fetch(
-          `http://localhost:8001/api/exercicios/${id}/`,
-          {
-            method: "DELETE",
-          }
-        );
-        if (!response.ok) throw new Error("Erro ao eliminar exercicio");
-
-        this.exerciciosHoxe = this.exerciciosHoxe.filter(
-          (ex) => ex.usuario === idUsuario && ex.id_exercicio !== id
-        );
+        await fetch(`http://localhost:8001/api/exercicios/${id}/`, {
+          method: "DELETE",
+        });
         this.cargarExerciciosHoxe();
+        this.cargarPlantillasHoxe();
+        this.$refs.historialRef?.cargarExercicios();
       } catch (error) {
         console.error("Erro eliminando exercicio:", error);
       }
     },
+    // Métodos para edición
+    activarEdicion(id, campo, valor) {
+      this.editando = { id, campo, valor };
+    },
+    cancelarEdicionAoFora(e) {
+      if (!e.target.closest(".editable")) {
+        this.editando = { id: null, campo: null, valor: "" };
+      }
+    },
+    async guardarCampoEditado(id, campo) {
+      const rawValor = this.editando.valor;
+      let valorConvertido;
 
-    //cargar plantillas filtrando por data actual e id de usuario
+      // ✅ Convertir solo si el campo necesita tipo numérico
+      if (campo === "peso") {
+        valorConvertido = parseFloat(rawValor);
+        if (isNaN(valorConvertido)) {
+          console.warn(`Valor non válido para ${campo}:`, rawValor);
+          return;
+        }
+      } else if (campo === "categoria") {
+        valorConvertido = parseInt(rawValor, 10);
+        if (isNaN(valorConvertido)) {
+          console.warn(`Valor non válido para categoría:`, rawValor);
+          return;
+        }
+      } else {
+        // ✅ Mantén strings como están (ej: repeticions = "5x10")
+        valorConvertido = String(rawValor);
+      }
+
+      try {
+        const response = await fetch(
+          `http://localhost:8001/api/exercicios/${id}/`,
+          {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ [campo]: valorConvertido }),
+          }
+        );
+
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({}));
+          console.warn("Resposta con erro (pero quizais aplicada):", errorData);
+        }
+
+        // Limpar estado de edición
+        this.editando = { id: null, campo: null, valor: "" };
+
+        // Volver cargar datos actualizados
+        this.cargarExerciciosHoxe();
+        this.cargarPlantillasHoxe();
+        this.$refs.historialRef?.cargarExercicios();
+      } catch (error) {
+        console.error("Erro ao actualizar exercicio:", error);
+      }
+    },
     async cargarPlantillasHoxe() {
-      const usuarioStore = useUsuarioStore();
-      const idUsuario = usuarioStore.id;
-
+      const idUsuario = useUsuarioStore().id;
       const hoxe = new Date().toISOString().split("T")[0];
       try {
         const response = await fetch("http://localhost:8001/api/plantillas/");
-        if (!response.ok) throw new Error("Erro ao cargar plantillas");
-
         const plantillas = await response.json();
-        this.plantillasHoxe = plantillas.filter(
-          (p) => p.usuario === idUsuario && p.data === hoxe
-        );
+        this.plantillasHoxe = plantillas
+          .filter((p) => p.usuario === idUsuario && p.data === hoxe)
+          .map((p) => ({ ...p, exercicios: p.exercicios || [] }));
+        this.$refs.historialRef?.cargarExercicios();
       } catch (error) {
         console.error("Erro cargando plantillas hoxe:", error);
       }
     },
-    //engadir plantilla ao usuario
-    async engadirPlantilla(plantillaSeleccionada) {
-      const usuarioStore = useUsuarioStore();
-      const idUsuario = usuarioStore.id;
-      try {
-        console.log(
-          "plantilla seleccionada desde Exercicios ",
-          plantillaSeleccionada
+    toggleExpandPlantilla(id) {
+      if (this.expandedPlantillas.includes(id)) {
+        this.expandedPlantillas = this.expandedPlantillas.filter(
+          (pid) => pid !== id
         );
-        const response = await fetch(`http://localhost:8001/api/plantillas/`, {
-          method: "GET",
-        });
-        const plantillas = await response.json();
-        const plantillaFiltrada = plantillas.find(
-          (p) => p.usuario === idUsuario && p.nome === plantillaSeleccionada
-        );
-
-        const hoxe = new Date().toISOString().split("T")[0]; // YYYY-MM-DD
-
-        const response2 = await fetch(
-          `http://localhost:8001/api/plantillas/${plantillaFiltrada.id_plantilla}/`,
-          {
-            method: "PATCH",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              data: hoxe,
-            }),
-          }
-        );
-
-        if (!response2.ok) {
-          throw new Error("Erro ao actualizar a plantilla");
-        }
-        this.cargarPlantillasHoxe();
-      } catch (error) {
-        console.error(error);
+      } else {
+        this.expandedPlantillas.push(id);
       }
     },
-    //eliminar plantilla por id
-    async eliminarPlantilla(id_plantilla) {
-      const response2 = await fetch(
-        `http://localhost:8001/api/plantillas/${id_plantilla}/`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            data: null,
-          }),
-        }
-      );
-
-      if (!response2.ok) {
-        throw new Error("Erro ao actualizar a plantilla");
+    async engadirPlantilla(nomePlantilla) {
+      const idUsuario = useUsuarioStore().id;
+      const hoxe = new Date().toISOString().split("T")[0];
+      try {
+        const response = await fetch("http://localhost:8001/api/plantillas/");
+        const plantillas = await response.json();
+        const plantilla = plantillas.find(
+          (p) => p.usuario === idUsuario && p.nome === nomePlantilla
+        );
+        await fetch(
+          `http://localhost:8001/api/plantillas/${plantilla.id_plantilla}/`,
+          {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ data: hoxe }),
+          }
+        );
+        this.cargarPlantillasHoxe();
+        this.$refs.historialRef?.cargarExercicios();
+      } catch (error) {
+        console.error("Erro engadindo plantilla:", error);
       }
-      this.cargarPlantillasHoxe();
+    },
+    async eliminarPlantilla(id_plantilla) {
+      try {
+        await fetch(`http://localhost:8001/api/plantillas/${id_plantilla}/`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ data: null }),
+        });
+        this.cargarPlantillasHoxe();
+        this.$refs.historialRef?.cargarExercicios();
+      } catch (error) {
+        console.error("Erro eliminando plantilla:", error);
+      }
     },
   },
 };
@@ -220,10 +233,125 @@ export default {
                 v-for="exercicio in exerciciosHoxe"
                 :key="exercicio.id_exercicio"
               >
-                <td>{{ exercicio.nome }}</td>
-                <td>{{ nomeCategoriaPorId(exercicio.categoria) }}</td>
-                <td>{{ exercicio.repeticions }}</td>
-                <td>{{ exercicio.peso }} kg</td>
+                <!-- Nome -->
+                <td
+                  @click="
+                    activarEdicion(
+                      exercicio.id_exercicio,
+                      'nome',
+                      exercicio.nome
+                    )
+                  "
+                  class="editable"
+                >
+                  <input
+                    v-if="
+                      editando.id === exercicio.id_exercicio &&
+                      editando.campo === 'nome'
+                    "
+                    v-model="editando.valor"
+                    @blur="guardarCampoEditado(exercicio.id_exercicio, 'nome')"
+                    @keyup.enter="
+                      guardarCampoEditado(exercicio.id_exercicio, 'nome')
+                    "
+                    @click.stop
+                  />
+                  <span v-else>{{ exercicio.nome }}</span>
+                </td>
+
+                <!-- Categoría -->
+                <td
+                  @click="
+                    activarEdicion(
+                      exercicio.id_exercicio,
+                      'categoria',
+                      exercicio.categoria
+                    )
+                  "
+                  class="editable"
+                >
+                  <select
+                    v-if="
+                      editando.id === exercicio.id_exercicio &&
+                      editando.campo === 'categoria'
+                    "
+                    v-model.number="editando.valor"
+                    @blur="
+                      guardarCampoEditado(exercicio.id_exercicio, 'categoria')
+                    "
+                    @keyup.enter="
+                      guardarCampoEditado(exercicio.id_exercicio, 'categoria')
+                    "
+                    @click.stop
+                  >
+                    <option
+                      v-for="(label, key) in categoriasMap"
+                      :value="parseInt(key)"
+                      :key="key"
+                    >
+                      {{ label }}
+                    </option>
+                  </select>
+                  <span v-else>{{
+                    nomeCategoriaPorId(exercicio.categoria)
+                  }}</span>
+                </td>
+
+                <!-- Repeticións -->
+                <td
+                  @click="
+                    activarEdicion(
+                      exercicio.id_exercicio,
+                      'repeticions',
+                      exercicio.repeticions
+                    )
+                  "
+                  class="editable"
+                >
+                  <input
+                    v-if="
+                      editando.id === exercicio.id_exercicio &&
+                      editando.campo === 'repeticions'
+                    "
+                    v-model="editando.valor"
+                    @blur="
+                      guardarCampoEditado(exercicio.id_exercicio, 'repeticions')
+                    "
+                    @keyup.enter="
+                      guardarCampoEditado(exercicio.id_exercicio, 'repeticions')
+                    "
+                    @click.stop
+                  />
+                  <span v-else>{{ exercicio.repeticions }}</span>
+                </td>
+
+                <!-- Peso -->
+                <td
+                  @click="
+                    activarEdicion(
+                      exercicio.id_exercicio,
+                      'peso',
+                      exercicio.peso
+                    )
+                  "
+                  class="editable"
+                >
+                  <input
+                    v-if="
+                      editando.id === exercicio.id_exercicio &&
+                      editando.campo === 'peso'
+                    "
+                    v-model.number="editando.valor"
+                    @blur="guardarCampoEditado(exercicio.id_exercicio, 'peso')"
+                    @keyup.enter="
+                      guardarCampoEditado(exercicio.id_exercicio, 'peso')
+                    "
+                    @click.stop
+                  />
+                  <span v-else>{{ exercicio.peso }} </span>
+                </td>
+
+                <!-- Eliminar -->
                 <td>
                   <img
                     src="/imaxes/trash.png"
@@ -288,6 +416,7 @@ export default {
           v-if="componenteActivo === 'historial'"
           @cargarExerciciosHoxe="cargarExerciciosHoxe"
           @cargarPlantillasHoxe="cargarPlantillasHoxe"
+          ref="historialRef"
         />
         <EngadirExercicios
           v-if="componenteActivo === 'engadirE'"
@@ -490,5 +619,29 @@ td[colspan="3"] {
   text-align: center;
   color: #aaa;
   font-style: italic;
+}
+
+/* Estilos para edición */
+.editable {
+  cursor: pointer;
+  position: relative;
+}
+
+.editable:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.editable input,
+.editable select {
+  width: 100%;
+  padding: 4px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: inherit;
+  text-align: center;
+}
+
+.editable select {
+  padding: 3px;
 }
 </style>

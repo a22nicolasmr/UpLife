@@ -122,6 +122,7 @@ export default {
             this.emitirDatasConTarefas();
           }
           this.$emit("cargarDatasConTarefas");
+          this.$emit("comprobarRachas");
         }
       } catch (error) {
         console.error("Erro ao borrar tarefa:", error);
@@ -143,6 +144,7 @@ export default {
         );
         if (!response.ok) throw new Error("Erro ao actualizar tarefa");
         tarefa.completado = !tarefa.completado;
+        this.$emit("comprobarRachas");
       } catch (error) {
         console.error("Erro ao marcar como completada:", error);
       }
