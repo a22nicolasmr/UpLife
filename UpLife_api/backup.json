@@ -897,6 +897,32 @@
   }
 },
 {
+  "model": "admin.logentry",
+  "pk": 102,
+  "fields": {
+    "action_time": "2025-05-13T07:38:31.177Z",
+    "user": 1,
+    "content_type": 12,
+    "object_id": "85",
+    "object_repr": "nome=Exercicio de proba, repeticions=5x10, peso=11.0, usuario=nome=lupi, nome_usuario=lupi, email=lupi@gmail.com, contrasinal=pbkdf2_sha256$600000$PRQo908qwKQGJ5eoW6WXf4$AHdxJ9VAImwzx0gm7ag2f4KCyQFAkw",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 103,
+  "fields": {
+    "action_time": "2025-05-13T07:39:04.074Z",
+    "user": 1,
+    "content_type": 12,
+    "object_id": "88",
+    "object_repr": "nome=Exercicio de recheo, repeticions=5x10, peso=111.0, usuario=nome=lupi, nome_usuario=lupi, email=lupi@gmail.com, contrasinal=pbkdf2_sha256$600000$PRQo908qwKQGJ5eoW6WXf4$AHdxJ9VAImwzx0gm7ag2f4KCyQFA",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
   "model": "auth.user",
   "pk": 1,
   "fields": {
@@ -961,7 +987,7 @@
     "nome": "lupi",
     "nome_usuario": "lupi",
     "email": "lupi@gmail.com",
-    "contrasinal": "pbkdf2_sha256$600000$PRQo908qwKQGJ5eoW6WXf4$AHdxJ9VAImwzx0gm7ag2f4KCyQFAkwHDBpoAssFyJtI=",
+    "contrasinal": "pbkdf2_sha256$600000$BU5yxZwBZa9jsFoTflwWwk$B87pxqHj9YZtH44a5yVJ/WdqE+UjXBncCN0I0sX6S3U=",
     "imaxe_perfil": "avatares/lunaa_gzPwiYp.jpg",
     "xenero": "Muller",
     "altura": 156,
@@ -982,6 +1008,26 @@
     "nome_usuario": "nico",
     "email": "nico@gmail.com",
     "contrasinal": "pbkdf2_sha256$600000$8FhjHTCOhRcOFY7edTwbaD$oaHfGRl0actgTdQ3AnIsYtXQmVpQaLgWBk9IgWhdc1Y=",
+    "imaxe_perfil": "",
+    "xenero": null,
+    "altura": null,
+    "peso": null,
+    "obxectivo": null,
+    "actividade": null,
+    "idade": null,
+    "calorias_diarias": null,
+    "auga_diaria": null,
+    "modo_aplicacion": "C"
+  }
+},
+{
+  "model": "UpLife_api.usuarios",
+  "pk": 35,
+  "fields": {
+    "nome": "proba",
+    "nome_usuario": "proba",
+    "email": "proba@gmail.com",
+    "contrasinal": "pbkdf2_sha256$600000$wgBsUsIdkV2uEZPi4t4HE9$GZmmfV6188cgGIKrM/tEjQ82rDM66IHACS09Fb82PU4=",
     "imaxe_perfil": "",
     "xenero": null,
     "altura": null,
@@ -1085,6 +1131,16 @@
   }
 },
 {
+  "model": "UpLife_api.auga",
+  "pk": 35,
+  "fields": {
+    "cantidade": 100,
+    "hora": "11:24:00",
+    "usuario": 1,
+    "data": "2025-05-13"
+  }
+},
+{
   "model": "UpLife_api.medallas",
   "pk": 4,
   "fields": {
@@ -1093,7 +1149,8 @@
     "completado": true,
     "icona": "media/primeirosPasos_532MVGb.png",
     "usuarios": [
-      1
+      1,
+      35
     ]
   }
 },
@@ -1242,7 +1299,7 @@
   "fields": {
     "hora": null,
     "titulo": "tarfefa",
-    "completado": false,
+    "completado": true,
     "data": "2025-05-13",
     "usuario": 1
   }
@@ -1255,6 +1312,39 @@
     "titulo": "Cars",
     "completado": true,
     "data": "2025-05-11",
+    "usuario": 1
+  }
+},
+{
+  "model": "UpLife_api.tarefas",
+  "pk": 30,
+  "fields": {
+    "hora": null,
+    "titulo": "Unha tarefa calquera",
+    "completado": true,
+    "data": "2025-05-13",
+    "usuario": 1
+  }
+},
+{
+  "model": "UpLife_api.tarefas",
+  "pk": 31,
+  "fields": {
+    "hora": null,
+    "titulo": "Unha tarefa calquera 2",
+    "completado": true,
+    "data": "2025-05-13",
+    "usuario": 1
+  }
+},
+{
+  "model": "UpLife_api.tarefas",
+  "pk": 35,
+  "fields": {
+    "hora": null,
+    "titulo": "Unha tarefa calquera",
+    "completado": false,
+    "data": "2025-05-13",
     "usuario": 1
   }
 },
@@ -1662,14 +1752,14 @@
 },
 {
   "model": "UpLife_api.exercicios",
-  "pk": 85,
+  "pk": 88,
   "fields": {
-    "nome": "Exercicio de proba",
+    "nome": "Exercicio de recheo",
     "repeticions": "5x10",
-    "peso": 11.0,
+    "peso": 111.0,
     "data": "2025-05-09",
     "usuario": 1,
-    "categoria": 1
+    "categoria": 6
   }
 },
 {
@@ -1678,7 +1768,7 @@
   "fields": {
     "nome": "Plantilla de perna",
     "icona": "/imaxes/leg.png",
-    "data": "2025-05-12",
+    "data": "2025-05-13",
     "usuario": 1,
     "exercicios": [
       71,
@@ -1716,7 +1806,7 @@
   "fields": {
     "nome": "Plantilla de espalda",
     "icona": "/imaxes/atras.png",
-    "data": null,
+    "data": "2025-05-13",
     "usuario": 1,
     "exercicios": [
       75,
@@ -1869,6 +1959,20 @@
   }
 },
 {
+  "model": "UpLife_api.comidas",
+  "pk": 66,
+  "fields": {
+    "nome": "Ovos",
+    "peso": 135.0,
+    "graxas": 11.0,
+    "carbohidratos": 11.0,
+    "proteinas": 16.0,
+    "calorias": 100.0,
+    "data": "2025-05-13",
+    "usuario": 1
+  }
+},
+{
   "model": "UpLife_api.grupos",
   "pk": 2,
   "fields": {
@@ -1879,7 +1983,8 @@
       26,
       59,
       58,
-      65
+      65,
+      66
     ]
   }
 }

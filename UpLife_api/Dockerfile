@@ -22,7 +22,6 @@
 # # Comando por defecto para ejecutar cuando se inicie el contenedor
 # CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
 
-# ----------------------------------------------------------------------
 # Usa unha imaxe de Python pequena
 FROM python:3.11-slim
 
