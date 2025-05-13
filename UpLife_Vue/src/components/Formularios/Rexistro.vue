@@ -9,17 +9,18 @@ export default {
       nomeUsuario: "",
       contrasinal: "",
       repiteContrasinal: "",
+      aceptaCondicions: false,
       errors: {
         nomeCompleto: "",
         email: "",
         nomeUsuario: "",
         contrasinal: "",
         repiteContrasinal: "",
+        aceptaCondicions: "",
       },
     };
   },
   methods: {
-    // mandar formulario de rexistro facendo un post se o formulario está correcto
     async mandarFormulario() {
       let isValid = true;
       this.errors = {
@@ -28,6 +29,7 @@ export default {
         nomeUsuario: "",
         contrasinal: "",
         repiteContrasinal: "",
+        aceptaCondicions: "",
       };
 
       if (!this.nomeCompleto) {
@@ -59,6 +61,12 @@ export default {
         isValid = false;
       } else if (this.contrasinal !== this.repiteContrasinal) {
         this.errors.repiteContrasinal = "Os contrasinais non coinciden";
+        isValid = false;
+      }
+
+      if (!this.aceptaCondicions) {
+        this.errors.aceptaCondicions =
+          "Debes aceptar os termos e condicións para continuar";
         isValid = false;
       }
 
@@ -167,13 +175,23 @@ export default {
         {{ errors.repiteContrasinal }}
       </div>
 
+      <label class="checkbox-condicions">
+        <input type="checkbox" id="idCondicions" v-model="aceptaCondicions" />
+        <span>
+          Acepto os
+          <a @click.prevent="$router.push('/condicions')">
+            termos e condicións de uso da páxina
+          </a>
+        </span>
+      </label>
+
       <button type="submit">Crear conta</button>
 
       <p>
         Xa tes unha conta?
-        <a href="#" @click.prevent="$router.push({ name: 'inicio' })"
-          >Iniciar sesión</a
-        >
+        <a href="#" @click.prevent="$router.push({ name: 'inicio' })">
+          Iniciar sesión
+        </a>
       </p>
     </form>
   </div>
@@ -184,5 +202,20 @@ export default {
   color: red;
   font-size: 0.9rem;
   margin-bottom: 8px;
+}
+
+.checkbox-condicions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem;
+  margin-bottom: 12px;
+  margin-top: 10px;
+}
+
+.checkbox-condicions input[type="checkbox"] {
+  margin: 0;
+  width: 16px;
+  height: 16px;
 }
 </style>

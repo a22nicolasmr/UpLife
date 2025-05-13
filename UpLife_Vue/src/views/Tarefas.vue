@@ -24,6 +24,12 @@ export default {
           completado: true,
         },
       ],
+      advertencias: {
+        tarefas: false,
+        exercicios: false,
+        comidas: false,
+        auga: false,
+      },
     };
   },
 
@@ -157,22 +163,19 @@ export default {
           url: "http://localhost:8001/api/comidas/",
         },
         {
-          key: "exercicios",
-          var: "rExercicios",
-          url: "http://localhost:8001/api/exercicios/",
-        },
-        {
           key: "tarefas",
           var: "rTarefas",
           url: "http://localhost:8001/api/tarefas/",
         },
       ];
 
+      // Reiniciar rachas
       this.rAuga = 0;
       this.rComidas = 0;
       this.rExercicios = 0;
       this.rTarefas = 0;
 
+      // Procesar augas, comidas, tarefas
       for (const item of urls) {
         const res = await fetch(item.url);
         const data = await res.json();
@@ -184,7 +187,7 @@ export default {
             entry.data.trim() !== "" &&
             entry.data <= new Date().toISOString().split("T")[0];
           const estaCompletado =
-            item.key !== "tarefas" || entry.completado === true; // solo pedir completado si es tarefas
+            item.key !== "tarefas" || entry.completado === true;
 
           return esUsuario && tieneFechaValida && estaCompletado;
         });
@@ -195,6 +198,12 @@ export default {
 
         let racha = 0;
         let hoy = new Date().toISOString().split("T")[0];
+
+        // Dentro del bucle for de urls (para auga, comidas, tarefas)
+        const hayHoy = userData.some(
+          (entry) => entry.data === new Date().toISOString().split("T")[0]
+        );
+        this.advertencias[item.key] = !hayHoy;
 
         for (const fecha of fechas) {
           if (fecha === hoy) {
@@ -209,8 +218,68 @@ export default {
 
         this[item.var] = racha;
       }
-    },
 
+      // ✅ Calcular rExercicios usando ejercicios + plantillas
+      try {
+        const [resEx, resPl] = await Promise.all([
+          fetch("http://localhost:8001/api/exercicios/"),
+          fetch("http://localhost:8001/api/plantillas/"),
+        ]);
+
+        const [exercicios, plantillas] = await Promise.all([
+          resEx.json(),
+          resPl.json(),
+        ]);
+
+        const ejerciciosValidos = exercicios
+          .filter(
+            (e) =>
+              e.usuario === idUsuario &&
+              e.data &&
+              e.data <= new Date().toISOString().split("T")[0]
+          )
+          .map((e) => e.data);
+
+        const plantillasValidas = plantillas
+          .filter(
+            (p) =>
+              p.usuario === idUsuario &&
+              p.data &&
+              p.data <= new Date().toISOString().split("T")[0]
+          )
+          .map((p) => p.data);
+
+        const todasFechas = new Set([
+          ...ejerciciosValidos,
+          ...plantillasValidas,
+        ]);
+        const fechasUnicasOrdenadas = [...todasFechas].sort().reverse(); // más reciente a más antigua
+
+        // Calcular racha consecutiva
+        let rachaEx = 0;
+        let hoy = new Date().toISOString().split("T")[0];
+
+        const hayHoy = [...ejerciciosValidos, ...plantillasValidas].includes(
+          new Date().toISOString().split("T")[0]
+        );
+        this.advertencias.exercicios = !hayHoy;
+
+        for (const fecha of fechasUnicasOrdenadas) {
+          if (fecha === hoy) {
+            rachaEx++;
+            hoy = new Date(new Date(hoy).getTime() - 86400000)
+              .toISOString()
+              .split("T")[0];
+          } else {
+            break;
+          }
+        }
+
+        this.rExercicios = rachaEx;
+      } catch (error) {
+        console.error("Erro ao comprobar exercicios e plantillas:", error);
+      }
+    },
     //comprobar se hai tarefas para unha data
     async comprobarTarefasNaData(date) {
       const usuarioStore = useUsuarioStore();
@@ -226,7 +295,11 @@ export default {
             new Date(t.data).toDateString() === date.toDateString()
         );
 
-        if (tarefasNaData.length === 0) {
+        const todasCompletadas =
+          tarefasNaData.length > 0 &&
+          tarefasNaData.every((t) => t.completado === true);
+
+        if (tarefasNaData.length === 0 || todasCompletadas) {
           this.componenteActivo = "engadir";
         } else {
           this.componenteActivo = "lista";
@@ -235,7 +308,6 @@ export default {
         console.error("Erro ao comprobar tarefas na data", error);
       }
     },
-
     //enviar as tarefas que teñen hora
     reenviarTarefasConHora(tarefas) {
       this.$emit("emitirDatasConTarefas", tarefas);
@@ -315,6 +387,7 @@ export default {
         ];
 
         this.actualizarDatasConTarefas(datasUnicas);
+        this.componenteActivo = "lista";
       } catch (error) {
         console.error("Erro ao cargar datas con tarefas", error);
       }
@@ -341,6 +414,9 @@ export default {
         <div>
           <p>Racha de tarefas</p>
           <p>{{ rTarefas }}</p>
+          <p v-if="advertencias.tarefas" class="advertencia">
+            ✔ Fai unha tarefa!
+          </p>
         </div>
         <div>
           <img src="/imaxes/task.png" alt="Icona tarefas" />
@@ -351,6 +427,9 @@ export default {
         <div>
           <p>Racha de exercicios</p>
           <p>{{ rExercicios }}</p>
+          <p v-if="advertencias.exercicios" class="advertencia">
+            💪 Fai un exercicio hoxe!
+          </p>
         </div>
         <div>
           <img src="/imaxes/exercise.png" alt="Icona exercicios" />
@@ -361,6 +440,9 @@ export default {
         <div>
           <p>Racha de comidas</p>
           <p>{{ rComidas }}</p>
+          <p v-if="advertencias.comidas" class="advertencia">
+            🍽️ Rexistra a túa comida!
+          </p>
         </div>
         <div>
           <img src="/imaxes/diet.png" alt="Icona comidas" />
@@ -371,6 +453,9 @@ export default {
         <div>
           <p>Racha de auga</p>
           <p>{{ rAuga }}</p>
+          <p v-if="advertencias.auga" class="advertencia">
+            💧 Rexistra a túa auga!
+          </p>
         </div>
         <div>
           <img src="/imaxes/water-bottle.png" alt="Icona auga" />
@@ -515,7 +600,7 @@ body,
   overflow: hidden;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
   margin-right: 4%;
-  height: 100%;
+  height: 60vh;
   margin-bottom: 2%;
 }
 
@@ -548,7 +633,9 @@ h1 {
   border: none !important;
   height: 100%;
 }
-
+.vc-weeks {
+  margin-top: 5%;
+}
 .vc-week {
   padding-top: 3.5%;
 }

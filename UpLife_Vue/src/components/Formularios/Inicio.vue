@@ -42,9 +42,9 @@ export default {
       } catch (error) {
         console.error("Erro ao iniciar sesión:", error);
         if (error.response?.status === 401 || error.response?.status === 404) {
-          this.erro = "Nome de usuario";
+          this.erro = "Nome de usuario ou contrasinal incorrecto";
         } else {
-          this.erro = "Erro ao iniciar sesión. Inténtao de novo.";
+          this.erro = "Erro ao iniciar sesión. Inténtao de novo";
         }
         this.contrasinal = "";
       }
@@ -72,7 +72,10 @@ export default {
         placeholder="Escribe o teu contrasinal"
         v-model="contrasinal"
       />
-
+      <div class="recuperar-contrasinal">
+        <span>Esquecíches o teu contrasinal?</span>
+        <a @click.prevent="$router.push('/formularios/cambio')">Recuperar</a>
+      </div>
       <div v-if="erro" class="erro">
         {{ erro }}
       </div>
@@ -96,5 +99,17 @@ export default {
   color: red;
   font-size: 0.9rem;
   margin-bottom: 1%;
+}
+.recuperar-contrasinal {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: 0.9rem;
+  margin: 6px 0 12px;
+  gap: 6px;
+}
+
+.recuperar-contrasinal a {
+  cursor: pointer;
 }
 </style>

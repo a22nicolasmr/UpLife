@@ -25,6 +25,8 @@ import EngadirExercicioPlantilla from "@/components/Plantillas/EngadirExercicioP
 import EngadirPlantillasExercicios from "@/components/Exercicios/EngadirPlantillasExercicios.vue";
 import HistorialExercicios from "@/components/Exercicios/HistorialExercicios.vue";
 import NovaPlantilla from "@/components/Plantillas/NovaPlantilla.vue";
+import Condicions from "@/views/Condicions.vue";
+import Cambio from "@/components/Formularios/Cambio.vue";
 
 const routes = [
   {
@@ -48,6 +50,11 @@ const routes = [
         path: "rexistro",
         name: "rexistro",
         component: Rexistro,
+      },
+      {
+        path: "cambio",
+        name: "cambio",
+        component: Cambio,
       },
     ],
   },
@@ -174,6 +181,11 @@ const routes = [
         component: NovaPlantilla,
       },
     ],
+  },
+  {
+    path: "/condicions",
+    name: "condicions",
+    component: Condicions,
   },
 ];
 

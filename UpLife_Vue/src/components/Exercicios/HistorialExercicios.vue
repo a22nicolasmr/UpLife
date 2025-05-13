@@ -6,6 +6,7 @@ export default {
     return {
       exerciciosPorDia: {},
       plantillasPorDia: [],
+      actividadesPorDia: {},
     };
   },
   computed: {
@@ -23,44 +24,54 @@ export default {
   methods: {
     async cargarExercicios() {
       try {
-        const response = await fetch("http://localhost:8001/api/exercicios/");
-        if (!response.ok) throw new Error("Erro ao cargar exercicios");
+        const [resEx, resPl] = await Promise.all([
+          fetch("http://localhost:8001/api/exercicios/"),
+          fetch("http://localhost:8001/api/plantillas/"),
+        ]);
 
-        const exercicios = await response.json();
-        const exerciciosPorUsuario = exercicios.filter(
-          (e) => e.usuario === this.idUsuario
-        );
+        if (!resEx.ok || !resPl.ok) throw new Error("Erro ao cargar datos");
+
+        const exercicios = await resEx.json();
+        const plantillas = await resPl.json();
+
         const seteDiasAtras = new Date();
         seteDiasAtras.setDate(seteDiasAtras.getDate() - 7);
+        const seteDiasAtrasISO = seteDiasAtras.toISOString().split("T")[0];
 
-        const exerciciosFiltrados = exerciciosPorUsuario.filter((ex) => {
-          const dataEx = new Date(ex.data);
-          return dataEx >= seteDiasAtras;
-        });
+        const userId = this.idUsuario;
 
-        const agrupados = {};
+        const exerciciosFiltrados = exercicios.filter(
+          (e) => e.usuario === userId && e.data >= seteDiasAtrasISO
+        );
+
+        const plantillasFiltradas = plantillas.filter(
+          (p) => p.usuario === userId && p.data >= seteDiasAtrasISO
+        );
+
+        const actividades = {};
+
+        // Agrupar exercicios
         exerciciosFiltrados.forEach((ex) => {
-          if (!agrupados[ex.data]) agrupados[ex.data] = [];
-          agrupados[ex.data].push(ex);
+          if (!actividades[ex.data]) {
+            actividades[ex.data] = { exercicios: [], plantillas: [] };
+          }
+          actividades[ex.data].exercicios.push(ex);
         });
 
-        this.exerciciosPorDia = Object.fromEntries(
-          Object.entries(agrupados).sort(
+        // Agrupar plantillas
+        plantillasFiltradas.forEach((p) => {
+          if (!actividades[p.data]) {
+            actividades[p.data] = { exercicios: [], plantillas: [] };
+          }
+          actividades[p.data].plantillas.push(p);
+        });
+
+        // Ordenar por fecha descendente
+        this.actividadesPorDia = Object.fromEntries(
+          Object.entries(actividades).sort(
             (a, b) => new Date(b[0]) - new Date(a[0])
           )
         );
-
-        const response2 = await fetch("http://localhost:8001/api/plantillas/");
-        const plantillas = await response2.json();
-
-        const seteDiasAtras2 = new Date();
-        seteDiasAtras2.setDate(seteDiasAtras2.getDate() - 7);
-        const seteDiasAtrasISO = seteDiasAtras2.toISOString().split("T")[0];
-
-        const plantillasFiltradas = plantillas.filter(
-          (p) => p.usuario === this.idUsuario && p.data >= seteDiasAtrasISO
-        );
-        this.plantillasPorDia = plantillasFiltradas;
       } catch (error) {
         console.error("Erro ao obter historial:", error);
       }
@@ -130,7 +141,7 @@ export default {
     <h2>Historial</h2>
     <div class="historial-scroll">
       <div
-        v-for="(exs, data) in exerciciosPorDia"
+        v-for="(actividades, data) in actividadesPorDia"
         :key="data"
         class="grupo-dia"
       >
@@ -143,8 +154,10 @@ export default {
             })
           }}
         </h3>
+
+        <!-- Exercicios -->
         <ul>
-          <li v-for="ex in exs" :key="ex.id_exercicio">
+          <li v-for="ex in actividades.exercicios" :key="ex.id_exercicio">
             <div class="fila-exercicio">
               <span>
                 [E] {{ ex.nome }} - {{ ex.repeticions }} - {{ ex.peso }}kg ({{
@@ -157,11 +170,10 @@ export default {
             </div>
           </li>
         </ul>
+
+        <!-- Plantillas -->
         <ul>
-          <li
-            v-for="p in plantillasPorDia.filter((x) => x.data === data)"
-            :key="p.id_plantilla"
-          >
+          <li v-for="p in actividades.plantillas" :key="p.id_plantilla">
             <div class="fila-exercicio">
               <span id="spanPlantilla"> [P] {{ p.nome }} </span>
               <button class="boton-dereita" @click="engadirPlantilla(p)">

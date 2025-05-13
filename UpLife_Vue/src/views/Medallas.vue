@@ -38,18 +38,35 @@ export default {
     async actualizarMedallas() {
       if (!this.valorMedallas || this.valorMedallas.length === 0) return;
 
+      const usuarioId = this.usuarioId;
+
       for (const medalla of this.valorMedallas) {
         try {
-          await fetch(
-            `http://localhost:8001/api/medallas/${medalla.id_medalla}/`,
-            {
-              method: "PATCH",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({ completado: medalla.completado }),
-            }
+          const res = await fetch(
+            `http://localhost:8001/api/medallas/${medalla.id_medalla}/`
           );
+          if (!res.ok) throw new Error("Erro ao obter medalla");
+
+          const medallaActual = await res.json();
+
+          const xaIncluido = medallaActual.usuarios.includes(usuarioId);
+
+          // ⚠️ Solo actualizar se está completada e o usuario non está xa asignado
+          if (medalla.completado && !xaIncluido) {
+            await fetch(
+              `http://localhost:8001/api/medallas/${medalla.id_medalla}/`,
+              {
+                method: "PATCH",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  completado: true,
+                  usuarios: [...medallaActual.usuarios, usuarioId],
+                }),
+              }
+            );
+          }
         } catch (error) {
           console.error(
             `Erro ao actualizar medalla ${medalla.id_medalla}`,
@@ -58,22 +75,17 @@ export default {
         }
       }
 
-      // Recargar medallas una vez aplicados los cambios
-      this.obterMedallas();
-      const usuarioStore = useUsuarioStore();
-
-      usuarioStore.updateNumeroMedallas();
+      await this.obterMedallas();
+      useUsuarioStore().updateNumeroMedallas();
     },
     //obter medallas
     async obterMedallas() {
-      console.log("valor medallas en medallas", this.valorMedallas);
-
       try {
         const response = await fetch("http://localhost:8001/api/medallas/");
         const medallas = await response.json();
 
         if (medallas) {
-          this.medallas = medallas;
+          this.medallas = medallas.sort((a, b) => a.id_medalla - b.id_medalla);
           const total = medallas.length;
           const tercio = Math.ceil(total / 3);
           this.primeirasMedallas = medallas.slice(0, tercio);

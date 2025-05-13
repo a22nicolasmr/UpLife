@@ -88,7 +88,9 @@ export default {
     mostrarBarra() {
       return (
         this.$route.path !== "/formularios/rexistro" &&
-        this.$route.path !== "/formularios/inicio"
+        this.$route.path !== "/formularios/inicio" &&
+        this.$route.path !== "/condicions" &&
+        this.$route.path !== "/formularios/cambio"
       );
     },
     nombreUsuario() {

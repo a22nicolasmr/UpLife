@@ -18,7 +18,18 @@ export default {
     usuarioStore() {
       return useUsuarioStore();
     },
+    tarefasFiltradasPorData() {
+      const result = {};
+      for (const [data, tarefas] of Object.entries(this.tarefasPorData)) {
+        const nonCompletadas = tarefas.filter((t) => !t.completado);
+        if (nonCompletadas.length > 0) {
+          result[data] = nonCompletadas;
+        }
+      }
+      return result;
+    },
   },
+
   watch: {
     // cargar tareas cando cambia 'dataSeleccionada'
     dataSeleccionada: {
@@ -122,7 +133,7 @@ export default {
             this.emitirDatasConTarefas();
           }
           this.$emit("cargarDatasConTarefas");
-          this.$emit("comprobarRachas");
+          // this.$emit("comprobarRachas");
         }
       } catch (error) {
         console.error("Erro ao borrar tarefa:", error);
@@ -163,16 +174,16 @@ export default {
     <h2 class="data-header">Tarefas pendentes</h2>
 
     <div class="scroll-area" ref="scrollArea">
-      <div v-if="Object.keys(tarefasPorData).length > 0">
+      <div v-if="Object.keys(tarefasFiltradasPorData).length > 0">
         <div
-          v-for="(tarefas, data) in tarefasPorData"
+          v-for="(tarefas, data) in tarefasFiltradasPorData"
           :key="data"
           :ref="'data-' + data"
         >
           <h3 class="data-header">{{ formatoData(data) }}</h3>
           <ul>
             <li
-              v-for="tarefa in tarefas"
+              v-for="tarefa in tarefas.filter((t) => !t.completado)"
               :key="tarefa.id_tarefa"
               class="tarefa-item"
             >
@@ -191,7 +202,7 @@ export default {
           </ul>
         </div>
       </div>
-      <p v-else>Non hai tarefas para esta data.</p>
+      <p v-else>Non hai tarefas pendentes.</p>
     </div>
   </div>
 </template>
