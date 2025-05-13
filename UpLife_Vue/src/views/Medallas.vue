@@ -43,7 +43,7 @@ export default {
       for (const medalla of this.valorMedallas) {
         try {
           const res = await fetch(
-            `http://localhost:8001/api/medallas/${medalla.id_medalla}/`
+            `https://uplife-4c0p.onrender.com/api/medallas/${medalla.id_medalla}/`
           );
           if (!res.ok) throw new Error("Erro ao obter medalla");
 
@@ -54,7 +54,7 @@ export default {
           // ⚠️ Solo actualizar se está completada e o usuario non está xa asignado
           if (medalla.completado && !xaIncluido) {
             await fetch(
-              `http://localhost:8001/api/medallas/${medalla.id_medalla}/`,
+              `https://uplife-4c0p.onrender.com/api/medallas/${medalla.id_medalla}/`,
               {
                 method: "PATCH",
                 headers: {
@@ -81,7 +81,9 @@ export default {
     //obter medallas
     async obterMedallas() {
       try {
-        const response = await fetch("http://localhost:8001/api/medallas/");
+        const response = await fetch(
+          "https://uplife-4c0p.onrender.com/api/medallas/"
+        );
         const medallas = await response.json();
 
         if (medallas) {

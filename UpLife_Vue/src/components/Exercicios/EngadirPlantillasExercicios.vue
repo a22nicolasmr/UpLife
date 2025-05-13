@@ -24,7 +24,9 @@ export default {
       const idUsuario = usuarioStore.id;
 
       try {
-        const response = await fetch("http://localhost:8001/api/plantillas/");
+        const response = await fetch(
+          "https://uplife-4c0p.onrender.com/api/plantillas/"
+        );
         if (!response.ok) throw new Error("Erro ao cargar plantillas");
 
         const plantillas = await response.json();

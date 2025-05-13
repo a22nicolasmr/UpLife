@@ -91,7 +91,7 @@ export default {
       // Medalla 11 - Plantillas: 3 plantillas creadas e usadas polo menos 2 veces cada unha
       try {
         const plantillaRes = await fetch(
-          "http://localhost:8001/api/plantillas/"
+          "https://uplife-4c0p.onrender.com/api/plantillas/"
         );
         const plantillas = await plantillaRes.json();
 
@@ -156,16 +156,20 @@ export default {
       const idUsuario = usuarioStore.id;
 
       const urls = [
-        { key: "auga", var: "rAuga", url: "http://localhost:8001/api/auga/" },
+        {
+          key: "auga",
+          var: "rAuga",
+          url: "https://uplife-4c0p.onrender.com/api/auga/",
+        },
         {
           key: "comidas",
           var: "rComidas",
-          url: "http://localhost:8001/api/comidas/",
+          url: "https://uplife-4c0p.onrender.com/api/comidas/",
         },
         {
           key: "tarefas",
           var: "rTarefas",
-          url: "http://localhost:8001/api/tarefas/",
+          url: "https://uplife-4c0p.onrender.com/api/tarefas/",
         },
       ];
 
@@ -222,8 +226,8 @@ export default {
       // ✅ Calcular rExercicios usando ejercicios + plantillas
       try {
         const [resEx, resPl] = await Promise.all([
-          fetch("http://localhost:8001/api/exercicios/"),
-          fetch("http://localhost:8001/api/plantillas/"),
+          fetch("https://uplife-4c0p.onrender.com/api/exercicios/"),
+          fetch("https://uplife-4c0p.onrender.com/api/plantillas/"),
         ]);
 
         const [exercicios, plantillas] = await Promise.all([
@@ -286,7 +290,9 @@ export default {
       const idUsuario = usuarioStore.id;
 
       try {
-        const response = await fetch(`http://localhost:8001/api/tarefas/`);
+        const response = await fetch(
+          `https://uplife-4c0p.onrender.com/api/tarefas/`
+        );
         const tarefas = await response.json();
 
         const tarefasNaData = tarefas.filter(
@@ -377,7 +383,9 @@ export default {
       const usuarioStore = useUsuarioStore();
       const idUsuario = usuarioStore.id;
       try {
-        const response = await fetch(`http://localhost:8001/api/tarefas/`);
+        const response = await fetch(
+          `https://uplife-4c0p.onrender.com/api/tarefas/`
+        );
         const tarefas = await response.json();
 
         const datasUnicas = [

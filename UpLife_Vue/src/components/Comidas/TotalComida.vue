@@ -45,7 +45,9 @@ export default {
       const usuarioStore = useUsuarioStore();
       const idUsuario = usuarioStore.id;
       try {
-        const response = await fetch("http://localhost:8001/api/comidas/");
+        const response = await fetch(
+          "https://uplife-4c0p.onrender.com/api/comidas/"
+        );
         if (!response.ok) throw new Error("Erro ao cargar comidas");
         const comidas = await response.json();
         const hoxe = new Date().toISOString().split("T")[0];

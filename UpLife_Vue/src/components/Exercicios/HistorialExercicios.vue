@@ -25,8 +25,8 @@ export default {
     async cargarExercicios() {
       try {
         const [resEx, resPl] = await Promise.all([
-          fetch("http://localhost:8001/api/exercicios/"),
-          fetch("http://localhost:8001/api/plantillas/"),
+          fetch("https://uplife-4c0p.onrender.com/api/exercicios/"),
+          fetch("https://uplife-4c0p.onrender.com/api/plantillas/"),
         ]);
 
         if (!resEx.ok || !resPl.ok) throw new Error("Erro ao cargar datos");
@@ -87,13 +87,16 @@ export default {
       };
 
       try {
-        const response = await fetch("http://localhost:8001/api/exercicios/", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(payload),
-        });
+        const response = await fetch(
+          "https://uplife-4c0p.onrender.com/api/exercicios/",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload),
+          }
+        );
 
         if (!response.ok) throw new Error("Erro ao engadir exercicio");
 
@@ -105,7 +108,7 @@ export default {
     },
     async engadirPlantilla(plantilla) {
       const response = await fetch(
-        `http://localhost:8001/api/plantillas/${plantilla.id_plantilla}/`,
+        `https://uplife-4c0p.onrender.com/api/plantillas/${plantilla.id_plantilla}/`,
         {
           method: "PATCH",
           headers: {

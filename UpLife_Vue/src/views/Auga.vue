@@ -62,7 +62,7 @@ export default {
       const novoValor = this.editando.valor;
       this.editando = { id: null, campo: null, valor: "" };
       try {
-        await fetch(`http://localhost:8001/api/auga/${id}/`, {
+        await fetch(`https://uplife-4c0p.onrender.com/api/auga/${id}/`, {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ [campo]: novoValor }),
@@ -76,7 +76,9 @@ export default {
     //cargar a auga inxerida na fecha actual
     async cargarAugaHoxe() {
       try {
-        const response = await fetch("http://localhost:8001/api/auga/");
+        const response = await fetch(
+          "https://uplife-4c0p.onrender.com/api/auga/"
+        );
         if (!response.ok) throw new Error("Erro ao cargar auga");
 
         const auga = await response.json();
@@ -104,9 +106,12 @@ export default {
     //eliminar rexistros de auga
     async eliminarAuga(id) {
       try {
-        const response = await fetch(`http://localhost:8001/api/auga/${id}/`, {
-          method: "DELETE",
-        });
+        const response = await fetch(
+          `https://uplife-4c0p.onrender.com/api/auga/${id}/`,
+          {
+            method: "DELETE",
+          }
+        );
         if (!response.ok) throw new Error("Erro ao eliminar auga");
 
         this.augaHoxe = this.augaHoxe.filter((ex) => ex.id_auga !== id);

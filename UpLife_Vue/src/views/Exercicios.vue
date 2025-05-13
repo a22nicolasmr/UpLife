@@ -43,7 +43,9 @@ export default {
       const idUsuario = useUsuarioStore().id;
       const hoxe = new Date().toISOString().split("T")[0];
       try {
-        const response = await fetch("http://localhost:8001/api/exercicios/");
+        const response = await fetch(
+          "https://uplife-4c0p.onrender.com/api/exercicios/"
+        );
         const exercicios = await response.json();
         this.exerciciosHoxe = exercicios.filter(
           (ex) => ex.usuario === idUsuario && ex.data === hoxe
@@ -55,7 +57,7 @@ export default {
     },
     async eliminarExercicio(id) {
       try {
-        await fetch(`http://localhost:8001/api/exercicios/${id}/`, {
+        await fetch(`https://uplife-4c0p.onrender.com/api/exercicios/${id}/`, {
           method: "DELETE",
         });
         this.cargarExerciciosHoxe();
@@ -98,7 +100,7 @@ export default {
 
       try {
         const response = await fetch(
-          `http://localhost:8001/api/exercicios/${id}/`,
+          `https://uplife-4c0p.onrender.com/api/exercicios/${id}/`,
           {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
@@ -126,7 +128,9 @@ export default {
       const idUsuario = useUsuarioStore().id;
       const hoxe = new Date().toISOString().split("T")[0];
       try {
-        const response = await fetch("http://localhost:8001/api/plantillas/");
+        const response = await fetch(
+          "https://uplife-4c0p.onrender.com/api/plantillas/"
+        );
         const plantillas = await response.json();
         this.plantillasHoxe = plantillas
           .filter((p) => p.usuario === idUsuario && p.data === hoxe)
@@ -149,13 +153,15 @@ export default {
       const idUsuario = useUsuarioStore().id;
       const hoxe = new Date().toISOString().split("T")[0];
       try {
-        const response = await fetch("http://localhost:8001/api/plantillas/");
+        const response = await fetch(
+          "https://uplife-4c0p.onrender.com/api/plantillas/"
+        );
         const plantillas = await response.json();
         const plantilla = plantillas.find(
           (p) => p.usuario === idUsuario && p.nome === nomePlantilla
         );
         await fetch(
-          `http://localhost:8001/api/plantillas/${plantilla.id_plantilla}/`,
+          `https://uplife-4c0p.onrender.com/api/plantillas/${plantilla.id_plantilla}/`,
           {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
@@ -170,11 +176,14 @@ export default {
     },
     async eliminarPlantilla(id_plantilla) {
       try {
-        await fetch(`http://localhost:8001/api/plantillas/${id_plantilla}/`, {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ data: null }),
-        });
+        await fetch(
+          `https://uplife-4c0p.onrender.com/api/plantillas/${id_plantilla}/`,
+          {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ data: null }),
+          }
+        );
         this.cargarPlantillasHoxe();
         this.$refs.historialRef?.cargarExercicios();
       } catch (error) {
