@@ -39,7 +39,6 @@ COPY . /app/
 EXPOSE 8000
 
 # Recoller os ficheiros estáticos
-RUN python manage.py collectstatic --noinput
 
 # Comando que inicia o servidor de produción
 # CMD ["uvicorn", "UpLife.asgi:application", "--host", "0.0.0.0", "--port", "8000", "--lifespan", "off"]
