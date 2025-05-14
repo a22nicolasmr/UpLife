@@ -31,7 +31,7 @@ COPY requirements.txt /app/
 RUN pip install --no-cache-dir --upgrade pip && pip install -r requirements.txt
 
 COPY . /app/
-
+RUN chmod +x /app/entrypoint.sh
 EXPOSE 8000
 
 # Ejecuta tu script de entrada
