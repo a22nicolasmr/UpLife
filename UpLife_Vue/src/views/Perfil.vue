@@ -40,9 +40,9 @@ export default {
 
           // actualizar os datos no compoñente
           const backendURL = "https://uplife-4c0p.onrender.com";
-          this.imagen = data.imaxe_perfil
-            ? `${backendURL}${data.imaxe_perfil}`
-            : "/imaxes/usuario.png";
+          this.imagen = data.imaxe_perfil?.startsWith("http")
+            ? data.imaxe_perfil
+            : `${backendURL}${data.imaxe_perfil}`;
 
           this.nome = data.nome;
           this.email = data.email;

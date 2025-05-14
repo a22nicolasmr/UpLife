@@ -30,9 +30,9 @@ export const useUsuarioStore = defineStore("usuario", {
         this.nome = usuario.nome;
 
         const backendURL = "https://uplife-4c0p.onrender.com";
-        this.imagen = usuario.imaxe_perfil
-          ? `${backendURL}${usuario.imaxe_perfil}`
-          : "/imaxes/usuario.png";
+        this.imagen = usuario.imaxe_perfil?.startsWith("http")
+          ? usuario.imaxe_perfil
+          : `${backendURL}${usuario.imaxe_perfil}`;
 
         localStorage.setItem(
           "usuario",
