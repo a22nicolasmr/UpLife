@@ -28,12 +28,9 @@ export const useUsuarioStore = defineStore("usuario", {
 
         this.id = usuario.id_usuario;
         this.nome = usuario.nome;
+        this.imagen = usuario.imaxe_perfil || "/imaxes/usuario.png";
 
-        const backendURL = "https://uplife-4c0p.onrender.com";
-        this.imagen = usuario.imaxe_perfil?.startsWith("http")
-          ? usuario.imaxe_perfil
-          : `${backendURL}${usuario.imaxe_perfil}`;
-
+        // Guardar solo lo necesario en localStorage
         localStorage.setItem(
           "usuario",
           JSON.stringify({
@@ -42,11 +39,13 @@ export const useUsuarioStore = defineStore("usuario", {
           })
         );
 
+        // cargar medallas de usuario
         await this.cargarMedallas();
       } catch (error) {
         console.error("Error cargando datos del usuario:", error);
       }
     },
+
     // cargar medallas de usuario
     async cargarMedallas() {
       try {
@@ -110,11 +109,7 @@ export const useUsuarioStore = defineStore("usuario", {
           );
           const data = await response.json();
 
-          const backendURL = "https://uplife-4c0p.onrender.com";
-          this.imagen = data.imaxe_perfil
-            ? `${backendURL}${data.imaxe_perfil}`
-            : "/imaxes/usuario.png";
-
+          this.imagen = data.imaxe_perfil || "/imaxes/usuario.png";
           this.nome = data.nome;
           this.altura = data.altura;
           this.peso = data.peso;

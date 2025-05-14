@@ -39,13 +39,7 @@ export default {
           const data = await response.json();
 
           // actualizar os datos no compoñente
-          console.log("URL de imaxe de perfil:", data.imaxe_perfil);
-
-          const backendURL = "https://uplife-4c0p.onrender.com";
-          this.imagen = data.imaxe_perfil?.startsWith("http")
-            ? data.imaxe_perfil
-            : `${backendURL}${data.imaxe_perfil}`;
-
+          this.imagen = data.imaxe_perfil || "/imaxes/usuario.png";
           this.nome = data.nome;
           this.email = data.email;
           this.nomeUsuario = data.nome_usuario;
