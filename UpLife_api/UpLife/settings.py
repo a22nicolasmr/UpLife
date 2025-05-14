@@ -4,14 +4,11 @@ import dj_database_url
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
-import environ  # 👈 asegúrate de tener esto instalado
 
 # Base directory
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# ⚠️ Cargar las variables de entorno al principio
-env = environ.Env()
-environ.Env.read_env()  # Esto leerá un .env local solo en desarrollo
+
 
 # 🔐 Seguridad
 SECRET_KEY = 'django-insecure-p@$&536+j!4mzyf338c6yln=!_jmit6hbbsy5-@u&$-xy_00b9'
@@ -34,7 +31,8 @@ INSTALLED_APPS = [
 ]
 
 # 🗃️ Configuración de la base de datos
-DATABASE_URL = env('DATABASE_URL', default=None)
+DATABASE_URL = os.environ.get("DATABASE_URL")
+
 
 if not DATABASE_URL:
     raise Exception("DATABASE_URL no está definido en el entorno.")
@@ -47,10 +45,11 @@ DATABASES = {
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': env('CLOUDINARY_CLOUD_NAME'),
-    'API_KEY': env('CLOUDINARY_API_KEY'),
-    'API_SECRET': env('CLOUDINARY_API_SECRET'),
+    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
+    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
 }
+
 
 # 🌐 Middleware
 MIDDLEWARE = [
