@@ -112,10 +112,7 @@ export const useUsuarioStore = defineStore("usuario", {
 
           this.imagen = data.imaxe_perfil || "/imaxes/usuario.png";
 
-          console.log(
-            "Ruta de imaxe cargada desde store:",
-            usuario.imaxe_perfil
-          );
+          console.log("Ruta de imaxe cargada desde store:", data.imaxe_perfil);
 
           this.nome = data.nome;
           this.altura = data.altura;
