@@ -29,6 +29,7 @@ export const useUsuarioStore = defineStore("usuario", {
         this.id = usuario.id_usuario;
         this.nome = usuario.nome;
         this.imagen = usuario.imaxe_perfil || "/imaxes/usuario.png";
+        console.log("Ruta de imaxe cargada desde store:", usuario.imaxe_perfil);
 
         // Guardar solo lo necesario en localStorage
         localStorage.setItem(
@@ -110,6 +111,12 @@ export const useUsuarioStore = defineStore("usuario", {
           const data = await response.json();
 
           this.imagen = data.imaxe_perfil || "/imaxes/usuario.png";
+
+          console.log(
+            "Ruta de imaxe cargada desde store:",
+            usuario.imaxe_perfil
+          );
+
           this.nome = data.nome;
           this.altura = data.altura;
           this.peso = data.peso;

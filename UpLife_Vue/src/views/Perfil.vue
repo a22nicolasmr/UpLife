@@ -40,6 +40,8 @@ export default {
 
           // actualizar os datos no compoñente
           this.imagen = data.imaxe_perfil || "/imaxes/usuario.png";
+          console.log("URL final da imaxe de perfil:", this.imagen);
+
           this.nome = data.nome;
           this.email = data.email;
           this.nomeUsuario = data.nome_usuario;
@@ -98,6 +100,7 @@ export default {
         this.actualizarDatos();
         const store = useUsuarioStore();
         store.imagen = resultado.imaxe_perfil || "/imaxes/usuario.png";
+        console.log("URL final da imaxe de perfil:", resultado.imaxe_perfil);
       } catch (error) {
         console.error("Erro ao subir imaxe:", error);
       }
